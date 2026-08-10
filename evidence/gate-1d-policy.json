@@ -1,0 +1,11 @@
+{
+  "gate": "BLOCKED",
+  "auto_repair_allowed": false,
+  "block_reasons": [
+    "Gemini decision is NEEDS_CONTEXT, not AUTO_REPAIR_SAFE.",
+    "Required semantic inputs remain unresolved: reason_code",
+    "Risk level is HIGH."
+  ],
+  "source_decision": "NEEDS_CONTEXT",
+  "risk_level": "HIGH"
+}

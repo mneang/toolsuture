@@ -1,0 +1,24 @@
+{
+  "scenario": "safe-return",
+  "gate": "VALIDATED",
+  "execution_allowed": true,
+  "old_required_fields": [
+    "amount",
+    "order_id"
+  ],
+  "scope_fields": [
+    "amount",
+    "order_id"
+  ],
+  "new_required_fields": [
+    "amount_minor_units",
+    "purchase_ref",
+    "reason_code"
+  ],
+  "operation_targets": [
+    "amount_minor_units",
+    "purchase_ref",
+    "reason_code"
+  ],
+  "reasons": []
+}

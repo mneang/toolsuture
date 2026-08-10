@@ -1,0 +1,48 @@
+{
+  "old_tool": "refund_order",
+  "new_tool": "issue_refund",
+  "capability_relationship": "LIKELY_EQUIVALENT",
+  "field_mappings": [
+    {
+      "old_field": "order_id",
+      "new_field": "purchase_ref",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Pass order_id directly as purchase_ref.",
+      "confidence": 0.95
+    },
+    {
+      "old_field": "amount",
+      "new_field": "amount_minor_units",
+      "mapping_type": "UNIT_CONVERSION",
+      "transformation": "Multiply major currency amount by 100 to convert to minor units (cents).",
+      "confidence": 0.95
+    },
+    {
+      "old_field": "N/A",
+      "new_field": "reason_code",
+      "mapping_type": "SEMANTIC_DERIVATION",
+      "transformation": "Set reason_code to 'RETURN' based on user mission stating the customer returned the merchandise.",
+      "confidence": 0.95
+    }
+  ],
+  "unresolved_requirements": [],
+  "risk_level": "LOW",
+  "decision": "AUTO_REPAIR_SAFE",
+  "evidence_summary": [
+    "OLD refund_order and NEW issue_refund share identical core functionality for processing customer refunds.",
+    "order_id maps directly to purchase_ref.",
+    "amount converts from dollars to minor units (cents) via multiplication by 100.",
+    "reason_code is resolved to 'RETURN' using the mission context and provider documentation."
+  ],
+  "proposed_adapter_behavior": [
+    "Intercept calls to refund_order.",
+    "Map order_id to purchase_ref.",
+    "Convert amount from major units to minor units (multiply by 100) for amount_minor_units.",
+    "Supply the derived enum value 'RETURN' for reason_code.",
+    "Forward request to issue_refund."
+  ],
+  "safety_notes": [
+    "Unit conversion assumes major units (USD) converted to cents (minor units).",
+    "Reason code selection 'RETURN' strictly matches authoritative provider documentation for customer returns."
+  ]
+}
