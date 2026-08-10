@@ -73,15 +73,15 @@ def main():
     mission = (scenario_dir / "mission.txt").read_text()
 
     old_contract = json.loads(
-        (ROOT / "evidence" / "contracts" / "v1.json").read_text()
+        (scenario_dir / "old-contract.json").read_text()
     )
 
     new_contract = json.loads(
-        (ROOT / "evidence" / "contracts" / "v2.json").read_text()
+        (scenario_dir / "new-contract.json").read_text()
     )
 
     provider_semantics = json.loads(
-        (ROOT / "evidence" / "provider-v2-semantics.json").read_text()
+        (scenario_dir / "provider-semantics.json").read_text()
     )
 
     prompt = f"""
@@ -100,6 +100,9 @@ SAFETY RULES:
 6. Distinguish renames, unit conversions, and semantic derivations.
 7. The goal is restoring the original user intent safely, not merely making
    the API call succeed.
+8. Treat increased destructiveness, irreversibility, permission scope,
+   or side effects as a material semantic change. Never classify such a
+   migration AUTO_REPAIR_SAFE merely because fields can be mapped.
 8. When deriving a required enum, state the exact enum value in the
    transformation.
 

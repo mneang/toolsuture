@@ -26,7 +26,7 @@ def main():
     )
 
     new_contract = json.loads(
-        (ROOT / "evidence" / "contracts" / "v2.json").read_text()
+        (scenario_dir / "new-contract.json").read_text()
     )
 
     block_reasons = []

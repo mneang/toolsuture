@@ -1,0 +1,35 @@
+{
+  "scenario": "response-reshape",
+  "gate": "VALIDATED",
+  "execution_allowed": true,
+  "old_required_input_fields": [
+    "tracking_id"
+  ],
+  "new_required_input_fields": [
+    "tracking_id"
+  ],
+  "request_operation_targets": [
+    "tracking_id"
+  ],
+  "old_required_response_fields": [
+    "carrier",
+    "eta_date",
+    "status",
+    "tracking"
+  ],
+  "new_response_paths": [
+    "result.shipment.carrier_name",
+    "result.shipment.estimated_delivery",
+    "result.shipment.tracking_id",
+    "result.state"
+  ],
+  "response_operation_targets": [
+    "carrier",
+    "eta_date",
+    "status",
+    "tracking"
+  ],
+  "output_contract_changed": true,
+  "scope_fields": [],
+  "reasons": []
+}

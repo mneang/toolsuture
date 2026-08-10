@@ -2,23 +2,27 @@
   "scenario": "safe-return",
   "gate": "VALIDATED",
   "execution_allowed": true,
-  "old_required_fields": [
+  "old_required_input_fields": [
     "amount",
     "order_id"
   ],
+  "new_required_input_fields": [
+    "amount_minor_units",
+    "purchase_ref",
+    "reason_code"
+  ],
+  "request_operation_targets": [
+    "amount_minor_units",
+    "purchase_ref",
+    "reason_code"
+  ],
+  "old_required_response_fields": [],
+  "new_response_paths": [],
+  "response_operation_targets": [],
+  "output_contract_changed": false,
   "scope_fields": [
     "amount",
     "order_id"
-  ],
-  "new_required_fields": [
-    "amount_minor_units",
-    "purchase_ref",
-    "reason_code"
-  ],
-  "operation_targets": [
-    "amount_minor_units",
-    "purchase_ref",
-    "reason_code"
   ],
   "reasons": []
 }

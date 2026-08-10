@@ -1,0 +1,8 @@
+{
+  "scenario": "response-reshape",
+  "replay_id": "c20f2e0a-62e2-4be0-a1b0-7fddd14cc7c0",
+  "started_at": "2026-08-10T22:39:45.657862+00:00",
+  "provider_version": "v2",
+  "adapter_plan_sha256": "6a696dc180abb8b1d102435154cfde115a3280de61bc3bbc5d8d629721855081",
+  "victim_integrity": "PASS"
+}

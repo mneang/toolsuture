@@ -1,0 +1,27 @@
+{
+  "provider_version": "v1",
+  "tools": [
+    {
+      "name": "refund_order",
+      "description": "Refund an order using the original v1 contract.",
+      "inputSchema": {
+        "properties": {
+          "order_id": {
+            "title": "Order Id",
+            "type": "string"
+          },
+          "amount": {
+            "title": "Amount",
+            "type": "number"
+          }
+        },
+        "required": [
+          "order_id",
+          "amount"
+        ],
+        "title": "refund_orderArguments",
+        "type": "object"
+      }
+    }
+  ]
+}

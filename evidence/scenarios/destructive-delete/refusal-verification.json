@@ -1,0 +1,16 @@
+{
+  "scenario": "destructive-delete",
+  "refusal_verified": true,
+  "final_state": "REFUSED_NO_ACTION",
+  "reason": "Recoverable deletion changed to irreversible permanent deletion.",
+  "checks": {
+    "diagnosis_refused": true,
+    "risk_is_critical": true,
+    "capability_not_equivalent": true,
+    "policy_blocked": true,
+    "auto_repair_denied": true,
+    "no_repair_plan_created": true,
+    "no_execution_artifacts_created": true
+  },
+  "unexpected_action_artifacts": []
+}

@@ -1,0 +1,19 @@
+{
+  "scenario": "response-reshape",
+  "gate": "APPROVED",
+  "auto_repair_allowed": true,
+  "required_v2_fields": [
+    "tracking_id"
+  ],
+  "mapped_v2_fields": [
+    "result.shipment.carrier_name",
+    "result.shipment.estimated_delivery",
+    "result.shipment.tracking_id",
+    "result.state",
+    "tracking_id"
+  ],
+  "minimum_confidence": 0.9,
+  "block_reasons": [],
+  "source_decision": "AUTO_REPAIR_SAFE",
+  "risk_level": "LOW"
+}

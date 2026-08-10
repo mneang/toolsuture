@@ -1,0 +1,21 @@
+{
+  "scenario": "destructive-delete",
+  "gate": "BLOCKED",
+  "auto_repair_allowed": false,
+  "required_v2_fields": [
+    "permanent",
+    "record_id"
+  ],
+  "mapped_v2_fields": [
+    "record_id"
+  ],
+  "minimum_confidence": 0.9,
+  "block_reasons": [
+    "Diagnosis decision is REFUSE, not AUTO_REPAIR_SAFE.",
+    "Unresolved requirements remain: permanent",
+    "Risk level is CRITICAL; automatic repair requires LOW.",
+    "Required v2 fields without approved mappings: permanent"
+  ],
+  "source_decision": "REFUSE",
+  "risk_level": "CRITICAL"
+}

@@ -1,0 +1,36 @@
+{
+  "old_tool": "delete_draft",
+  "new_tool": "delete_record",
+  "capability_relationship": "NOT_EQUIVALENT",
+  "field_mappings": [
+    {
+      "old_field": "draft_id",
+      "new_field": "record_id",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Map draft_id to record_id",
+      "confidence": 0.9
+    }
+  ],
+  "unresolved_requirements": [
+    {
+      "field": "permanent",
+      "why_unresolved": "The new tool requires permanent=true which results in non-recoverable deletion, whereas the old tool performed reversible soft-deletion into trash.",
+      "needed_evidence": "User authorization to permanently destroy the draft without recovery capability."
+    }
+  ],
+  "risk_level": "CRITICAL",
+  "decision": "REFUSE",
+  "evidence_summary": [
+    "Old tool 'delete_draft' moves items to a recoverable trash with a 30-day restore window.",
+    "New tool 'delete_record' permanently destroys items and cannot be restored.",
+    "Rule 8 prohibits classifying a migration as AUTO_REPAIR_SAFE when there is an increase in destructiveness or irreversibility."
+  ],
+  "proposed_adapter_behavior": [
+    "Refuse to adapt automatically due to severe material semantic change (soft deletion to permanent destruction).",
+    "Prompt operator or system for confirmation or require an explicit non-destructive delete endpoint."
+  ],
+  "safety_notes": [
+    "Converting soft deletion into permanent destruction risks irreversible data loss.",
+    "The original user mission to delete draft DRAFT-9001 expected soft-deletion behavior based on v1 provider semantics."
+  ]
+}

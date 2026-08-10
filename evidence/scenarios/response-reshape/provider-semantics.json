@@ -1,0 +1,46 @@
+{
+  "source": "Synthetic Shipment Provider migration documentation",
+  "capability": "Shipment status lookup",
+  "v1": {
+    "tool": "lookup_shipment",
+    "status_values": {
+      "shipped": "The shipment has been accepted by the carrier and is in transit."
+    },
+    "response": {
+      "status": "Shipment state",
+      "tracking": "Tracking identifier",
+      "carrier": "Carrier display name",
+      "eta_date": "Estimated delivery date"
+    }
+  },
+  "v2": {
+    "tool": "lookup_shipment",
+    "state_values": {
+      "in_transit": "The shipment has been accepted by the carrier and is in transit."
+    },
+    "response": {
+      "result.state": "Shipment state",
+      "result.shipment.tracking_id": "Tracking identifier",
+      "result.shipment.carrier_name": "Carrier display name",
+      "result.shipment.estimated_delivery": "Estimated delivery date"
+    }
+  },
+  "semantic_equivalences": [
+    {
+      "old": "status=shipped",
+      "new": "result.state=in_transit"
+    },
+    {
+      "old": "tracking",
+      "new": "result.shipment.tracking_id"
+    },
+    {
+      "old": "carrier",
+      "new": "result.shipment.carrier_name"
+    },
+    {
+      "old": "eta_date",
+      "new": "result.shipment.estimated_delivery"
+    }
+  ]
+}

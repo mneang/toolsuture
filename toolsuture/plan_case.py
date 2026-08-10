@@ -11,7 +11,7 @@ from pydantic import BaseModel
 ROOT = Path(__file__).resolve().parents[1]
 
 
-class RepairOperation(BaseModel):
+class RequestOperation(BaseModel):
     operation: Literal[
         "COPY",
         "MULTIPLY",
@@ -20,6 +20,24 @@ class RepairOperation(BaseModel):
     source_field: Optional[str] = None
     target_field: str
     factor: Optional[float] = None
+    value: Optional[Union[str, int, float]] = None
+    evidence: str
+
+
+class EnumMapEntry(BaseModel):
+    source_value: str
+    target_value: str
+
+
+class ResponseOperation(BaseModel):
+    operation: Literal[
+        "EXTRACT",
+        "ENUM_MAP",
+        "CONSTANT",
+    ]
+    source_field: Optional[str] = None
+    target_field: str
+    value_map: Optional[list[EnumMapEntry]] = None
     value: Optional[Union[str, int, float]] = None
     evidence: str
 
@@ -39,9 +57,14 @@ class RepairPlan(BaseModel):
     ]
 
     scope_constraints: list[ScopeConstraint]
-    operations: list[RepairOperation]
 
-    rollback_action: Literal["DISABLE_SHIM_AND_ESCALATE"]
+    request_operations: list[RequestOperation]
+    response_operations: list[ResponseOperation]
+
+    rollback_action: Literal[
+        "DISABLE_SHIM_AND_ESCALATE"
+    ]
+
     canary_mission: str
 
     decision: Literal[
@@ -65,81 +88,112 @@ def main():
     )
 
     mission = (
-        scenario_dir
-        / "mission.txt"
+        scenario_dir / "mission.txt"
     ).read_text()
 
     diagnosis = json.loads(
-        (
-            scenario_dir
-            / "diagnosis.json"
-        ).read_text()
+        (scenario_dir / "diagnosis.json").read_text()
     )
 
     policy = json.loads(
-        (
-            scenario_dir
-            / "policy.json"
-        ).read_text()
+        (scenario_dir / "policy.json").read_text()
     )
 
     old_contract = json.loads(
-        (
-            ROOT
-            / "evidence"
-            / "contracts"
-            / "v1.json"
-        ).read_text()
+        (scenario_dir / "old-contract.json").read_text()
     )
 
     new_contract = json.loads(
-        (
-            ROOT
-            / "evidence"
-            / "contracts"
-            / "v2.json"
-        ).read_text()
+        (scenario_dir / "new-contract.json").read_text()
     )
 
     semantics = json.loads(
         (
-            ROOT
-            / "evidence"
-            / "provider-v2-semantics.json"
+            scenario_dir
+            / "provider-semantics.json"
         ).read_text()
     )
 
     prompt = f"""
 You are ToolSuture's repair planner.
 
-Create a strictly typed compatibility repair plan.
+Create a strictly typed BIDIRECTIONAL compatibility repair plan.
 
 The plan will later be compiled by deterministic code.
 You are NOT writing executable Python.
 
+REQUEST OPERATIONS transform OLD tool arguments into NEW tool arguments.
+
+Allowed request operations:
+
+COPY:
+pass an old argument to a new argument unchanged.
+
+MULTIPLY:
+multiply an old numeric argument by an explicitly supported factor.
+
+CONSTANT:
+produce a value explicitly grounded in supplied evidence.
+
+RESPONSE OPERATIONS transform the NEW tool response back into the
+OLD response contract expected by the frozen consumer.
+
+Allowed response operations:
+
+EXTRACT:
+read a field from a possibly nested NEW response path and expose it
+under an OLD response field unchanged.
+
+ENUM_MAP:
+read a NEW response field and translate explicitly documented values
+into OLD response values.
+
+CONSTANT:
+produce an OLD response value only when authoritative evidence makes
+that value invariant and unambiguous.
+
 SAFETY RULES:
 
 1. Use only supplied evidence.
-2. Every required NEW tool argument must be produced by an operation.
-3. COPY means pass an old argument into a new argument unchanged.
-4. MULTIPLY requires an explicit numeric factor.
-5. CONSTANT requires an explicit value grounded in evidence.
-6. Never invent missing semantics.
-7. If a NEW argument depends on information found in the USER MISSION
-   but NOT available in the OLD TOOL ARGUMENTS, the repair MUST be
-   INCIDENT_ONLY.
-8. INCIDENT_ONLY plans must include scope constraints for EVERY required
-   OLD tool argument participating in the failed incident. If the old tool
-   requires order_id and amount, constrain BOTH order_id and amount.
-9. INCIDENT_ONLY constraints must prevent the patch from silently applying
-   to a different call that merely shares one identifier.
-10. A GENERAL repair is allowed only when every required NEW argument can
-    be derived solely from OLD TOOL arguments or authoritative invariant
-    provider rules.
-11. Rollback must be DISABLE_SHIM_AND_ESCALATE. Never assume the external
-    provider can be reverted to an earlier API version.
-12. The canary mission must exactly preserve the user's original intent.
-13. If no safe plan can be represented, return CANNOT_BUILD_SAFE_PLAN.
+
+2. Every required NEW tool INPUT must be produced by a request operation.
+
+3. If the output contract changed, every required OLD output field must
+   be reconstructible by a response operation.
+
+4. Nested response fields must use dot paths such as:
+   result.shipment.tracking_id
+
+5. ENUM_MAP requires an explicit value_map grounded in authoritative
+   provider semantics. value_map MUST be a list of typed pairs:
+   source_value = NEW provider value
+   target_value = OLD consumer value.
+
+6. Never infer undocumented enum equivalence.
+
+7. Never invent missing semantics.
+
+8. If a NEW input depends on information found in the USER MISSION but
+   not available in OLD TOOL ARGUMENTS, the repair MUST be INCIDENT_ONLY.
+
+9. INCIDENT_ONLY plans must constrain EVERY required OLD argument
+   participating in the failed incident.
+
+10. GENERAL is allowed only when the transformation is valid for all
+    calls supported by the supplied authoritative evidence.
+
+11. A read-only response reshape may be GENERAL when all mappings are
+    authoritative invariants and no incident-specific facts are used.
+
+12. Rollback must be DISABLE_SHIM_AND_ESCALATE.
+
+13. The canary mission must exactly preserve the user's original intent.
+
+14. If either direction cannot be represented safely, return
+    CANNOT_BUILD_SAFE_PLAN.
+
+15. Use an empty request_operations or response_operations array only
+    when that direction genuinely requires no adaptation.
 
 MISSION:
 {mission}
@@ -177,8 +231,7 @@ AUTHORITATIVE PROVIDER SEMANTICS:
     )
 
     output_path = (
-        scenario_dir
-        / "repair-plan.json"
+        scenario_dir / "repair-plan.json"
     )
 
     output_path.write_text(

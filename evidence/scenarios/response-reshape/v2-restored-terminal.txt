@@ -1,0 +1,23 @@
+Log setup complete: /tmp/agents_log/agent.20260810_223953.log
+To access latest log: tail -F /tmp/agents_log/agent.latest.log
+/workspaces/toolsuture/.venv/lib/python3.12/site-packages/google/adk/features/_feature_decorator.py:72: UserWarning: [EXPERIMENTAL] feature FeatureName.PLUGGABLE_AUTH is enabled.
+  check_feature_enabled()
+/workspaces/toolsuture/.venv/lib/python3.12/site-packages/google/adk/cli/cli.py:335: UserWarning: [EXPERIMENTAL] InMemoryCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  credential_service = InMemoryCredentialService()
+/workspaces/toolsuture/.venv/lib/python3.12/site-packages/google/adk/auth/credential_service/in_memory_credential_service.py:33: UserWarning: [EXPERIMENTAL] BaseCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  super().__init__()
+Running agent shipment_agent, type exit to exit.
+[user]: /workspaces/toolsuture/.venv/lib/python3.12/site-packages/google/adk/tools/mcp_tool/mcp_toolset.py:346: UserWarning: [EXPERIMENTAL] feature FeatureName._MCP_GRACEFUL_ERROR_HANDLING is enabled.
+  session = await self._mcp_session_manager.create_session(
+/workspaces/toolsuture/.venv/lib/python3.12/site-packages/pydantic_settings/sources/utils.py:47: IncompleteFieldDefinitionWarning: Field 'lifespan' has an incomplete definition: its annotation contains an unresolved forward reference, so settings sources may fail to correctly resolve its value. Call `model_rebuild()` on the model where the field is defined, once all the referenced types are defined.
+  warnings.warn(
+[08/10/26 22:39:56] INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+/workspaces/toolsuture/.venv/lib/python3.12/site-packages/google/adk/features/_feature_decorator.py:72: UserWarning: [EXPERIMENTAL] feature FeatureName.BASE_AUTHENTICATED_TOOL is enabled.
+  check_feature_enabled()
+/workspaces/toolsuture/.venv/lib/python3.12/site-packages/google/adk/models/llm_request.py:273: UserWarning: [EXPERIMENTAL] feature FeatureName.JSON_SCHEMA_FOR_FUNC_DECL is enabled.
+  declaration = tool._get_declaration()
+[08/10/26 22:39:58] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+[shipment_agent]: SHIPMENT_OK | tracking=TRACK-7001 | carrier=Northstar Parcel | eta=2026-08-14
+[user]: 

@@ -1,0 +1,76 @@
+{
+  "provider_version": "v2",
+  "tools": [
+    {
+      "name": "lookup_shipment",
+      "description": "Look up the current shipment state.",
+      "inputSchema": {
+        "properties": {
+          "tracking_id": {
+            "title": "Tracking Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tracking_id"
+        ],
+        "title": "lookup_shipmentArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "$defs": {
+          "ShipmentDetailsV2": {
+            "properties": {
+              "tracking_id": {
+                "title": "Tracking Id",
+                "type": "string"
+              },
+              "carrier_name": {
+                "title": "Carrier Name",
+                "type": "string"
+              },
+              "estimated_delivery": {
+                "title": "Estimated Delivery",
+                "type": "string"
+              }
+            },
+            "required": [
+              "tracking_id",
+              "carrier_name",
+              "estimated_delivery"
+            ],
+            "title": "ShipmentDetailsV2",
+            "type": "object"
+          },
+          "ShipmentResultV2": {
+            "properties": {
+              "state": {
+                "title": "State",
+                "type": "string"
+              },
+              "shipment": {
+                "$ref": "#/$defs/ShipmentDetailsV2"
+              }
+            },
+            "required": [
+              "state",
+              "shipment"
+            ],
+            "title": "ShipmentResultV2",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "result": {
+            "$ref": "#/$defs/ShipmentResultV2"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "ShipmentV2",
+        "type": "object"
+      }
+    }
+  ]
+}

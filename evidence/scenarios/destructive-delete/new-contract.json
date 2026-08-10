@@ -1,0 +1,27 @@
+{
+  "provider_version": "v2",
+  "tools": [
+    {
+      "name": "delete_record",
+      "description": "Permanently delete a record.",
+      "inputSchema": {
+        "properties": {
+          "record_id": {
+            "title": "Record Id",
+            "type": "string"
+          },
+          "permanent": {
+            "title": "Permanent",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "record_id",
+          "permanent"
+        ],
+        "title": "delete_recordArguments",
+        "type": "object"
+      }
+    }
+  ]
+}

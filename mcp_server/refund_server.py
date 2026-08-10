@@ -299,20 +299,27 @@ else:
                 "plan"
             ]
 
-            @mcp.tool()
-            def refund_order(
-                order_id: str,
-                amount: float,
-            ) -> dict:
-                """ToolSuture compatibility interface for a bounded incident."""
+            if (
+                deployed_plan.get("old_tool")
+                == "refund_order"
+                and deployed_plan.get("new_tool")
+                == "issue_refund"
+            ):
 
-                return execute_adapter(
-                    {
-                        "order_id": order_id,
-                        "amount": amount,
-                    },
-                    deployed_plan,
-                )
+                @mcp.tool()
+                def refund_order(
+                    order_id: str,
+                    amount: float,
+                ) -> dict:
+                    """ToolSuture compatibility interface for a bounded incident."""
+
+                    return execute_adapter(
+                        {
+                            "order_id": order_id,
+                            "amount": amount,
+                        },
+                        deployed_plan,
+                    )
 
 
 if __name__ == "__main__":

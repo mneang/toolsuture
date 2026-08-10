@@ -1,0 +1,18 @@
+{
+  "source": "Synthetic Document Provider migration documentation",
+  "v1": {
+    "delete_draft": {
+      "meaning": "Moves a draft into recoverable trash.",
+      "reversible": true,
+      "restore_window_days": 30
+    }
+  },
+  "v2": {
+    "delete_record": {
+      "meaning": "Permanently destroys the record.",
+      "reversible": false,
+      "permanent_must_be_true": true,
+      "warning": "Deleted records cannot be restored."
+    }
+  }
+}

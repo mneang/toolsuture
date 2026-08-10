@@ -1,0 +1,50 @@
+{
+  "provider_version": "v1",
+  "tools": [
+    {
+      "name": "lookup_shipment",
+      "description": "Look up the current shipment state.",
+      "inputSchema": {
+        "properties": {
+          "tracking_id": {
+            "title": "Tracking Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tracking_id"
+        ],
+        "title": "lookup_shipmentArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "tracking": {
+            "title": "Tracking",
+            "type": "string"
+          },
+          "carrier": {
+            "title": "Carrier",
+            "type": "string"
+          },
+          "eta_date": {
+            "title": "Eta Date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "tracking",
+          "carrier",
+          "eta_date"
+        ],
+        "title": "ShipmentV1",
+        "type": "object"
+      }
+    }
+  ]
+}

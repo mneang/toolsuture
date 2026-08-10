@@ -1,0 +1,22 @@
+{
+  "provider_version": "v1",
+  "tools": [
+    {
+      "name": "delete_draft",
+      "description": "Move a draft into recoverable trash.",
+      "inputSchema": {
+        "properties": {
+          "draft_id": {
+            "title": "Draft Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "draft_id"
+        ],
+        "title": "delete_draftArguments",
+        "type": "object"
+      }
+    }
+  ]
+}

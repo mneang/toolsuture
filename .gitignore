@@ -225,3 +225,7 @@ mcp_server/.deployed_adapter.json
 mcp_server/.refund_records.json
 mcp_server/.adapter_audit.jsonl
 mcp_server/.replay_context.json
+mcp_server/.delete_provider_version
+mcp_server/.shipment_provider_version
+mcp_server/.shipment_adapter_audit.jsonl
+mcp_server/.shipment_replay_context.json

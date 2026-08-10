@@ -1,0 +1,8 @@
+{
+  "source": "Synthetic Refund Provider v2 documentation",
+  "reason_code": {
+    "RETURN": "Customer returned merchandise through a normal return process.",
+    "DAMAGED": "Customer is being refunded because the merchandise was damaged.",
+    "FRAUD": "Customer is being refunded because the transaction was unauthorized or fraudulent."
+  }
+}
