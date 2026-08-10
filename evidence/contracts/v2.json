@@ -1,0 +1,32 @@
+{
+  "provider_version": "v2",
+  "tools": [
+    {
+      "name": "issue_refund",
+      "description": "Refund a purchase using the newer v2 contract.",
+      "inputSchema": {
+        "properties": {
+          "purchase_ref": {
+            "title": "Purchase Ref",
+            "type": "string"
+          },
+          "amount_minor_units": {
+            "title": "Amount Minor Units",
+            "type": "integer"
+          },
+          "reason_code": {
+            "title": "Reason Code",
+            "type": "string"
+          }
+        },
+        "required": [
+          "purchase_ref",
+          "amount_minor_units",
+          "reason_code"
+        ],
+        "title": "issue_refundArguments",
+        "type": "object"
+      }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "old_tool": "refund_order",
+  "new_tool": "issue_refund",
+  "capability_relationship": "PARTIALLY_EQUIVALENT",
+  "field_mappings": [
+    {
+      "old_field": "order_id",
+      "new_field": "purchase_ref",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Map order_id directly to purchase_ref",
+      "confidence": 0.95
+    },
+    {
+      "old_field": "amount",
+      "new_field": "amount_minor_units",
+      "mapping_type": "UNIT_CONVERSION",
+      "transformation": "Multiply amount in major currency units by 100 to yield minor currency units (cents) as an integer",
+      "confidence": 0.95
+    },
+    {
+      "old_field": "none",
+      "new_field": "reason_code",
+      "mapping_type": "NO_EQUIVALENT",
+      "transformation": "None",
+      "confidence": 0.0
+    }
+  ],
+  "unresolved_requirements": [
+    {
+      "field": "reason_code",
+      "why_unresolved": "The new tool issue_refund requires reason_code, which was not present in the v1 refund_order schema nor specified in the user mission context.",
+      "needed_evidence": "Allowed values or business logic/default rules for reason_code parameter in v2 tool."
+    }
+  ],
+  "risk_level": "HIGH",
+  "decision": "NEEDS_CONTEXT",
+  "evidence_summary": [
+    "Provider upgraded from v1 to v2.",
+    "Old tool refund_order required order_id and amount.",
+    "New tool issue_refund requires purchase_ref, amount_minor_units, and reason_code.",
+    "amount in major units ($49.99) requires unit conversion to amount_minor_units (4999 cents).",
+    "reason_code is required in v2 contract but unmapped and absent from mission."
+  ],
+  "proposed_adapter_behavior": [
+    "Transform order_id to purchase_ref.",
+    "Multiply amount by 100 to supply amount_minor_units.",
+    "Pause invocation to request clarification or context regarding reason_code."
+  ],
+  "safety_notes": [
+    "Required argument reason_code cannot be inferred from available contract or mission evidence.",
+    "Under Rule 4, unresolved required inputs preclude AUTO_REPAIR_SAFE."
+  ]
+}
