@@ -1,0 +1,4 @@
+provider_version=v2
+expected_old_tool=refund_order
+actual_new_tool=issue_refund
+result=CAPABILITY_LOST
