@@ -221,3 +221,5 @@ __marimo__/
 # ADK runtime state
 **/.adk/
 mcp_server/.provider_version
+mcp_server/.deployed_adapter.json
+mcp_server/.refund_records.json
