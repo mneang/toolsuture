@@ -13,6 +13,8 @@ ROOT = Path(__file__).resolve().parent
 VERSION_FILE = ROOT / ".provider_version"
 ADAPTER_FILE = ROOT / ".deployed_adapter.json"
 RECORDS_FILE = ROOT / ".refund_records.json"
+AUDIT_FILE = ROOT / ".adapter_audit.jsonl"
+REPLAY_CONTEXT_FILE = ROOT / ".replay_context.json"
 
 VERSION = (
     VERSION_FILE.read_text().strip()
@@ -35,6 +37,18 @@ def write_record(record: dict) -> None:
     RECORDS_FILE.write_text(
         json.dumps(records, indent=2)
     )
+
+
+def append_adapter_audit(event: dict) -> None:
+    with AUDIT_FILE.open("a") as f:
+        f.write(json.dumps(event) + "\n")
+
+
+def read_replay_context() -> dict:
+    if not REPLAY_CONTEXT_FILE.exists():
+        return {}
+
+    return json.loads(REPLAY_CONTEXT_FILE.read_text())
 
 
 def issue_refund_v2_impl(
@@ -196,6 +210,8 @@ def execute_adapter(
             ),
         }
 
+    replay_context = read_replay_context()
+
     result = issue_refund_v2_impl(
         purchase_ref=new_args[
             "purchase_ref"
@@ -207,6 +223,24 @@ def execute_adapter(
             "reason_code"
         ],
     )
+
+    append_adapter_audit({
+        "recorded_at": datetime.now(
+            timezone.utc
+        ).isoformat(),
+        "replay_id": replay_context.get(
+            "replay_id"
+        ),
+        "scenario": replay_context.get(
+            "scenario"
+        ),
+        "old_tool": "refund_order",
+        "new_tool": "issue_refund",
+        "old_args": old_args,
+        "compiled_v2_args": new_args,
+        "result_status": result.get("status"),
+        "scope": plan.get("scope"),
+    })
 
     if result.get("status") == "refunded":
         result["toolsuture"] = {

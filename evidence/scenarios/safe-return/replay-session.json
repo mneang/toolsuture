@@ -1,0 +1,8 @@
+{
+  "scenario": "safe-return",
+  "replay_id": "333811a6-6dfd-4e64-aec4-5012021bbc2a",
+  "started_at": "2026-08-10T22:02:17.661852+00:00",
+  "provider_version": "v2",
+  "adapter_plan_sha256": "88a226e138fd45181bccd8c9b4d0d358ef3e614394bd8674c77fe6822ba744c4",
+  "victim_integrity": "PASS"
+}

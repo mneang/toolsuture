@@ -223,3 +223,5 @@ __marimo__/
 mcp_server/.provider_version
 mcp_server/.deployed_adapter.json
 mcp_server/.refund_records.json
+mcp_server/.adapter_audit.jsonl
+mcp_server/.replay_context.json
