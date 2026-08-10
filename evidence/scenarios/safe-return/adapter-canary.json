@@ -1,0 +1,23 @@
+{
+  "scenario": "safe-return",
+  "proof_type": "ADAPTER_CANARY_ONLY",
+  "canary_passed": true,
+  "capability_restored": false,
+  "checks": {
+    "old_interface_restored": true,
+    "provider_record_exists": true,
+    "provider_is_v2": true,
+    "purchase_ref_preserved": true,
+    "amount_became_2499": true,
+    "reason_is_return": true
+  },
+  "provider_record": {
+    "status": "refunded",
+    "purchase_ref": "ORD-1002",
+    "amount_minor_units": 2499,
+    "currency": "USD",
+    "reason_code": "RETURN",
+    "provider_version": "v2",
+    "recorded_at": "2026-08-10T03:48:55.544185+00:00"
+  }
+}

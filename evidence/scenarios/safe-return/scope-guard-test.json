@@ -1,0 +1,33 @@
+{
+  "scenario": "safe-return",
+  "test": "INCIDENT_SCOPE_GUARD",
+  "passed": true,
+  "results": [
+    {
+      "case": "wrong_order",
+      "input": {
+        "order_id": "ORD-1002-OUTSIDE-SCOPE",
+        "amount": 24.99
+      },
+      "adapter_response": {
+        "status": "blocked",
+        "message": "Compatibility patch scope mismatch for order_id."
+      },
+      "provider_records_created": 0,
+      "scope_guard_passed": true
+    },
+    {
+      "case": "wrong_amount",
+      "input": {
+        "order_id": "ORD-1002",
+        "amount": 25.99
+      },
+      "adapter_response": {
+        "status": "blocked",
+        "message": "Compatibility patch scope mismatch for amount."
+      },
+      "provider_records_created": 0,
+      "scope_guard_passed": true
+    }
+  ]
+}
