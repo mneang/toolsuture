@@ -220,3 +220,4 @@ __marimo__/
 
 # ADK runtime state
 **/.adk/
+mcp_server/.provider_version

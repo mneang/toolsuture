@@ -1,11 +1,17 @@
-import os
+from pathlib import Path
 
 from mcp.server.fastmcp import FastMCP
 
 
 mcp = FastMCP("Refund Provider")
 
-VERSION = os.getenv("REFUND_API_VERSION", "v1")
+VERSION_FILE = Path(__file__).with_name(".provider_version")
+
+VERSION = (
+    VERSION_FILE.read_text().strip()
+    if VERSION_FILE.exists()
+    else "v1"
+)
 
 
 if VERSION == "v1":
