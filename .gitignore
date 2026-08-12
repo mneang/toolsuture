@@ -229,3 +229,4 @@ mcp_server/.delete_provider_version
 mcp_server/.shipment_provider_version
 mcp_server/.shipment_adapter_audit.jsonl
 mcp_server/.shipment_replay_context.json
+evidence/scenarios/blind-03/orchestration.json
