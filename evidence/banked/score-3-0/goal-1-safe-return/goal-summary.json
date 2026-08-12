@@ -1,0 +1,10 @@
+{
+  "goal": 1,
+  "status": "VERIFIED",
+  "replay_id": "333811a6-6dfd-4e64-aec4-5012021bbc2a",
+  "proof_model": "Replay provenance from action proof; mission completion from legacy mission proof; frozen-agent behavior from successful transcript.",
+  "mission_proof_contains_replay_id": false,
+  "provider_version": "v2",
+  "provider_status": "refunded",
+  "victim_source_unchanged": true
+}

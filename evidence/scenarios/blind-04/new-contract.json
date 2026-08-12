@@ -1,0 +1,50 @@
+{
+  "provider_version": "v2",
+  "tools": [
+    {
+      "name": "get_balance",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "account_id"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "properties": {
+              "money": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number"
+                  },
+                  "currency_code": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "amount",
+                  "currency_code"
+                ]
+              }
+            },
+            "required": [
+              "money"
+            ]
+          }
+        },
+        "required": [
+          "result"
+        ]
+      }
+    }
+  ]
+}

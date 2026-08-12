@@ -1,0 +1,36 @@
+{
+  "old_tool": "create_ticket",
+  "new_tool": "create_ticket",
+  "capability_relationship": "PARTIALLY_EQUIVALENT",
+  "field_mappings": [
+    {
+      "old_field": "title",
+      "new_field": "title",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Pass title directly from old tool input to new tool input.",
+      "confidence": 1.0
+    }
+  ],
+  "unresolved_requirements": [
+    {
+      "field": "priority_code",
+      "why_unresolved": "The new tool schema requires priority_code, which was not present in the old contract. Provider documentation confirms no default priority exists and it cannot be inferred from the old tool call.",
+      "needed_evidence": "User input or context specifying the appropriate priority_code."
+    }
+  ],
+  "risk_level": "HIGH",
+  "decision": "NEEDS_CONTEXT",
+  "evidence_summary": [
+    "Old tool contract required only title.",
+    "New tool contract requires title and priority_code.",
+    "Provider documentation states priority_code is required, has no default, and depends on information not available in the old tool call."
+  ],
+  "proposed_adapter_behavior": [
+    "Pass title parameter directly.",
+    "Request context or user input to supply the required priority_code parameter before calling the new tool."
+  ],
+  "safety_notes": [
+    "Cannot auto-repair because a required field priority_code is missing without a valid fallback or derivation rule.",
+    "Choosing an arbitrary priority code could lead to improper ticket escalation or incorrect SLA processing."
+  ]
+}

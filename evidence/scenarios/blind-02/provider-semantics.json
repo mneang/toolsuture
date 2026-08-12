@@ -1,0 +1,8 @@
+{
+  "source": "Synthetic provider migration documentation",
+  "facts": [
+    "priority_code is now required.",
+    "No default priority exists.",
+    "The correct priority depends on information not present in the old tool call."
+  ]
+}

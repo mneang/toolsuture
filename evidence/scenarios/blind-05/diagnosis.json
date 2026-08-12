@@ -1,0 +1,44 @@
+{
+  "old_tool": "schedule_job",
+  "new_tool": "schedule_job",
+  "capability_relationship": "PARTIALLY_EQUIVALENT",
+  "field_mappings": [
+    {
+      "old_field": "job_id",
+      "new_field": "job_id",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Pass through job_id directly without modification.",
+      "confidence": 1.0
+    },
+    {
+      "old_field": "urgency",
+      "new_field": "priority_code",
+      "mapping_type": "SEMANTIC_DERIVATION",
+      "transformation": "Cannot map HIGH urgency to priority_code (P1 vs P2) without knowing customer SLA tier.",
+      "confidence": 0.0
+    }
+  ],
+  "unresolved_requirements": [
+    {
+      "field": "priority_code",
+      "why_unresolved": "HIGH urgency maps to either P1 or P2 depending on the customer's SLA tier, which is absent from the input payload and mission.",
+      "needed_evidence": "Customer's SLA tier or confirmation whether priority_code should be P1 or P2."
+    }
+  ],
+  "risk_level": "HIGH",
+  "decision": "NEEDS_CONTEXT",
+  "evidence_summary": [
+    "job_id field remains unchanged between v1 and v2.",
+    "priority_code field replaces urgency in v2.",
+    "Documentation specifies HIGH urgency requires SLA tier context to determine if priority_code is P1 or P2.",
+    "Customer SLA tier is unavailable in the mission or input arguments."
+  ],
+  "proposed_adapter_behavior": [
+    "Pass job_id directly to the new tool call.",
+    "Pause execution and ask the user or context provider for the customer's SLA tier to resolve priority_code to P1 or P2."
+  ],
+  "safety_notes": [
+    "Rule 5: Cannot return AUTO_REPAIR_SAFE when a required semantic input is unresolved.",
+    "Rule 1: Do not invent default values (e.g., assuming P1 or P2) without evidence, as incorrect scheduling priority can impact job execution queues."
+  ]
+}

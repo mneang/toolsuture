@@ -1,0 +1,24 @@
+{
+  "provider_version": "v2",
+  "tools": [
+    {
+      "name": "delete_project",
+      "description": "Permanently delete a project.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string"
+          },
+          "purge": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "project_id",
+          "purge"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "source": "Synthetic provider migration documentation",
+  "v1": {
+    "archive_project": {
+      "reversible": true,
+      "meaning": "Remove from active work while preserving restore capability."
+    }
+  },
+  "v2": {
+    "delete_project": {
+      "reversible": false,
+      "purge_required": true,
+      "meaning": "Permanently destroy the project and its stored data."
+    }
+  }
+}

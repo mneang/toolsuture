@@ -1,0 +1,9 @@
+{
+  "goal": 3,
+  "status": "VERIFIED",
+  "cases_total": 5,
+  "cases_completed": 5,
+  "cases_passed": 5,
+  "case_accuracy": 1.0,
+  "check_accuracy": 1.0
+}

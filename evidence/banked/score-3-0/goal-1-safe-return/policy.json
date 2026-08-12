@@ -1,0 +1,19 @@
+{
+  "scenario": "safe-return",
+  "gate": "APPROVED",
+  "auto_repair_allowed": true,
+  "required_v2_fields": [
+    "amount_minor_units",
+    "purchase_ref",
+    "reason_code"
+  ],
+  "mapped_v2_fields": [
+    "amount_minor_units",
+    "purchase_ref",
+    "reason_code"
+  ],
+  "minimum_confidence": 0.9,
+  "block_reasons": [],
+  "source_decision": "AUTO_REPAIR_SAFE",
+  "risk_level": "LOW"
+}

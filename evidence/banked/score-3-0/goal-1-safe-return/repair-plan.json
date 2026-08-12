@@ -1,0 +1,49 @@
+{
+  "old_tool": "refund_order",
+  "new_tool": "issue_refund",
+  "scope": "INCIDENT_ONLY",
+  "scope_constraints": [
+    {
+      "field": "order_id",
+      "expected_value": "ORD-1002"
+    },
+    {
+      "field": "amount",
+      "expected_value": 24.99
+    }
+  ],
+  "operations": [
+    {
+      "operation": "COPY",
+      "source_field": "order_id",
+      "target_field": "purchase_ref",
+      "factor": null,
+      "value": null,
+      "evidence": "order_id maps directly to purchase_ref."
+    },
+    {
+      "operation": "MULTIPLY",
+      "source_field": "amount",
+      "target_field": "amount_minor_units",
+      "factor": 100.0,
+      "value": null,
+      "evidence": "amount converts from dollars to minor units (cents) via multiplication by 100."
+    },
+    {
+      "operation": "CONSTANT",
+      "source_field": null,
+      "target_field": "reason_code",
+      "factor": null,
+      "value": "RETURN",
+      "evidence": "reason_code is resolved to 'RETURN' using the mission context and provider documentation."
+    }
+  ],
+  "rollback_action": "DISABLE_SHIM_AND_ESCALATE",
+  "canary_mission": "The customer returned order ORD-1002 unopened because they no longer want it.\nRefund $24.99.",
+  "decision": "READY_FOR_VALIDATION",
+  "safety_notes": [
+    "Repair is scoped to INCIDENT_ONLY because reason_code relies on context from the user mission not present in old tool arguments.",
+    "Scope constraints lock both order_id and amount to prevent unintended executions on unrelated transactions.",
+    "Amount is converted from dollars to cents via multiplication factor of 100."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "scenario": "blind-03",
+  "gate": "BLOCKED",
+  "auto_repair_allowed": false,
+  "required_v2_fields": [
+    "project_id",
+    "purge"
+  ],
+  "mapped_v2_fields": [
+    "project_id"
+  ],
+  "minimum_confidence": 0.9,
+  "block_reasons": [
+    "Diagnosis decision is REFUSE, not AUTO_REPAIR_SAFE.",
+    "Unresolved requirements remain: purge",
+    "Risk level is CRITICAL; automatic repair requires LOW.",
+    "Unsupported mapping type: NO_EQUIVALENT",
+    "Mapping none -> purge has confidence 0.00, below 0.90.",
+    "Required v2 fields without approved mappings: purge"
+  ],
+  "source_decision": "REFUSE",
+  "risk_level": "CRITICAL"
+}

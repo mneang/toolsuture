@@ -1,0 +1,9 @@
+{
+  "source": "Synthetic provider migration documentation",
+  "facts": [
+    "job_id is unchanged.",
+    "priority_code replaces urgency.",
+    "For HIGH urgency, priority_code may be P1 or P2 depending on the customer's SLA tier.",
+    "The customer's SLA tier is not available in the old call or mission."
+  ]
+}

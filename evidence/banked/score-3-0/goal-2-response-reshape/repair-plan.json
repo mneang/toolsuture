@@ -1,0 +1,62 @@
+{
+  "old_tool": "lookup_shipment",
+  "new_tool": "lookup_shipment",
+  "scope": "GENERAL",
+  "scope_constraints": [],
+  "request_operations": [
+    {
+      "operation": "COPY",
+      "source_field": "tracking_id",
+      "target_field": "tracking_id",
+      "factor": null,
+      "value": null,
+      "evidence": "Input parameter tracking_id is identical between v1 and v2."
+    }
+  ],
+  "response_operations": [
+    {
+      "operation": "ENUM_MAP",
+      "source_field": "result.state",
+      "target_field": "status",
+      "value_map": [
+        {
+          "source_value": "in_transit",
+          "target_value": "shipped"
+        }
+      ],
+      "value": null,
+      "evidence": "Authoritative provider semantics specify semantic equivalence between result.state in_transit and status shipped."
+    },
+    {
+      "operation": "EXTRACT",
+      "source_field": "result.shipment.tracking_id",
+      "target_field": "tracking",
+      "value_map": null,
+      "value": null,
+      "evidence": "Authoritative provider semantics specify semantic equivalence between result.shipment.tracking_id and tracking."
+    },
+    {
+      "operation": "EXTRACT",
+      "source_field": "result.shipment.carrier_name",
+      "target_field": "carrier",
+      "value_map": null,
+      "value": null,
+      "evidence": "Authoritative provider semantics specify semantic equivalence between result.shipment.carrier_name and carrier."
+    },
+    {
+      "operation": "EXTRACT",
+      "source_field": "result.shipment.estimated_delivery",
+      "target_field": "eta_date",
+      "value_map": null,
+      "value": null,
+      "evidence": "Authoritative provider semantics specify semantic equivalence between result.shipment.estimated_delivery and eta_date."
+    }
+  ],
+  "rollback_action": "DISABLE_SHIM_AND_ESCALATE",
+  "canary_mission": "Check shipment TRACK-7001 and tell me whether it has shipped, the carrier, and the estimated delivery date.",
+  "decision": "READY_FOR_VALIDATION",
+  "safety_notes": [
+    "Operation is read-only lookup with no side effects.",
+    "All output fields required by v1 contract are fully constructible from v2 output using authoritative provider semantics."
+  ]
+}

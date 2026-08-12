@@ -1,0 +1,23 @@
+{
+  "provider_version": "v2",
+  "tools": [
+    {
+      "name": "schedule_job",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string"
+          },
+          "priority_code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "priority_code"
+        ]
+      }
+    }
+  ]
+}

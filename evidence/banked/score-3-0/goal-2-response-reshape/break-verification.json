@@ -1,0 +1,18 @@
+{
+  "scenario": "response-reshape",
+  "failure_class": "OUTPUT_CONTRACT_DRIFT",
+  "before": "CAPABILITY_WORKING",
+  "after": "CAPABILITY_LOST",
+  "tool_availability": "UNCHANGED",
+  "input_contract": "UNCHANGED",
+  "output_contract": "CHANGED",
+  "verified": true,
+  "checks": {
+    "v1_tool_called": true,
+    "v1_mission_succeeded": true,
+    "v2_tool_still_called": true,
+    "v2_contract_broke": true,
+    "v2_did_not_succeed": true,
+    "victim_source_unchanged": true
+  }
+}

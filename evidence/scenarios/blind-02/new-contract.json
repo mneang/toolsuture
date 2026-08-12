@@ -1,0 +1,23 @@
+{
+  "provider_version": "v2",
+  "tools": [
+    {
+      "name": "create_ticket",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "priority_code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "priority_code"
+        ]
+      }
+    }
+  ]
+}

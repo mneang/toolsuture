@@ -1,0 +1,29 @@
+{
+  "old_tool": "get_customer",
+  "new_tool": "get_customer",
+  "capability_relationship": "LIKELY_EQUIVALENT",
+  "field_mappings": [
+    {
+      "old_field": "customer_id",
+      "new_field": "account_id",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Pass customer_id value directly to account_id field.",
+      "confidence": 1.0
+    }
+  ],
+  "unresolved_requirements": [],
+  "risk_level": "LOW",
+  "decision": "AUTO_REPAIR_SAFE",
+  "evidence_summary": [
+    "Authoritative documentation states customer_id was renamed to account_id.",
+    "Identifier value and semantic meaning are unchanged.",
+    "get_customer remains a read-only operation."
+  ],
+  "proposed_adapter_behavior": [
+    "Map the input parameter customer_id to account_id when invoking get_customer."
+  ],
+  "safety_notes": [
+    "No side effects or permission scope changes detected.",
+    "The operation is non-destructive and read-only."
+  ]
+}

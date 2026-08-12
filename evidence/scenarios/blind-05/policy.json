@@ -1,0 +1,22 @@
+{
+  "scenario": "blind-05",
+  "gate": "BLOCKED",
+  "auto_repair_allowed": false,
+  "required_v2_fields": [
+    "job_id",
+    "priority_code"
+  ],
+  "mapped_v2_fields": [
+    "job_id",
+    "priority_code"
+  ],
+  "minimum_confidence": 0.9,
+  "block_reasons": [
+    "Diagnosis decision is NEEDS_CONTEXT, not AUTO_REPAIR_SAFE.",
+    "Unresolved requirements remain: priority_code",
+    "Risk level is HIGH; automatic repair requires LOW.",
+    "Mapping urgency -> priority_code has confidence 0.00, below 0.90."
+  ],
+  "source_decision": "NEEDS_CONTEXT",
+  "risk_level": "HIGH"
+}

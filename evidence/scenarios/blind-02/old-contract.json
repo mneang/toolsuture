@@ -1,0 +1,19 @@
+{
+  "provider_version": "v1",
+  "tools": [
+    {
+      "name": "create_ticket",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      }
+    }
+  ]
+}

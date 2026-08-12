@@ -1,0 +1,31 @@
+{
+  "provider_version": "v1",
+  "tools": [
+    {
+      "name": "get_customer",
+      "description": "Read customer information.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "customer_id"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    }
+  ]
+}

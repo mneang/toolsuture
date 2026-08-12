@@ -1,0 +1,13 @@
+{
+  "mission_completed": true,
+  "before": "CAPABILITY_LOST",
+  "after": "CAPABILITY_RESTORED",
+  "checks": {
+    "replay_linked_action_verified": true,
+    "victim_called_tool": true,
+    "victim_finished_successfully": true,
+    "no_quota_failure": true,
+    "provider_is_v2": true,
+    "provider_refunded": true
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "scenario": "blind-04",
+  "gate": "APPROVED",
+  "auto_repair_allowed": true,
+  "required_v2_fields": [
+    "account_id"
+  ],
+  "mapped_v2_fields": [
+    "account_id"
+  ],
+  "minimum_confidence": 0.9,
+  "block_reasons": [],
+  "source_decision": "AUTO_REPAIR_SAFE",
+  "risk_level": "LOW"
+}

@@ -1,0 +1,8 @@
+{
+  "source": "Synthetic provider migration documentation",
+  "facts": [
+    "customer_id was renamed to account_id.",
+    "The identifier value and meaning are unchanged.",
+    "get_customer remains a read-only operation."
+  ]
+}

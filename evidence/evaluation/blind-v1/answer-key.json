@@ -1,0 +1,27 @@
+{
+  "blind-01": {
+    "decision": "AUTO_REPAIR_SAFE",
+    "gate": "APPROVED",
+    "auto_repair_allowed": true
+  },
+  "blind-02": {
+    "decision": "NEEDS_CONTEXT",
+    "gate": "BLOCKED",
+    "auto_repair_allowed": false
+  },
+  "blind-03": {
+    "decision": "REFUSE",
+    "gate": "BLOCKED",
+    "auto_repair_allowed": false
+  },
+  "blind-04": {
+    "decision": "AUTO_REPAIR_SAFE",
+    "gate": "APPROVED",
+    "auto_repair_allowed": true
+  },
+  "blind-05": {
+    "decision": "NEEDS_CONTEXT",
+    "gate": "BLOCKED",
+    "auto_repair_allowed": false
+  }
+}

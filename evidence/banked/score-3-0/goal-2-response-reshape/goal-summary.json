@@ -1,0 +1,11 @@
+{
+  "goal": 2,
+  "status": "VERIFIED",
+  "replay_id": "5fa1a23e-9bdd-4672-997d-a4d1df4fb183",
+  "failure_class": "OUTPUT_CONTRACT_DRIFT",
+  "before": "CAPABILITY_LOST",
+  "after": "CAPABILITY_RESTORED",
+  "victim_source_changed": false,
+  "native_v2_response_observed": true,
+  "v1_response_reconstructed": true
+}

@@ -1,0 +1,59 @@
+{
+  "old_tool": "lookup_shipment",
+  "new_tool": "lookup_shipment",
+  "capability_relationship": "LIKELY_EQUIVALENT",
+  "field_mappings": [
+    {
+      "old_field": "tracking_id",
+      "new_field": "tracking_id",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Pass tracking_id unchanged to new_tool input",
+      "confidence": 1.0
+    },
+    {
+      "old_field": "status",
+      "new_field": "result.state",
+      "mapping_type": "SEMANTIC_DERIVATION",
+      "transformation": "Map result.state values to v1 status (e.g., 'in_transit' maps to 'shipped')",
+      "confidence": 1.0
+    },
+    {
+      "old_field": "tracking",
+      "new_field": "result.shipment.tracking_id",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Map result.shipment.tracking_id to tracking",
+      "confidence": 1.0
+    },
+    {
+      "old_field": "carrier",
+      "new_field": "result.shipment.carrier_name",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Map result.shipment.carrier_name to carrier",
+      "confidence": 1.0
+    },
+    {
+      "old_field": "eta_date",
+      "new_field": "result.shipment.estimated_delivery",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Map result.shipment.estimated_delivery to eta_date",
+      "confidence": 1.0
+    }
+  ],
+  "unresolved_requirements": [],
+  "risk_level": "LOW",
+  "decision": "AUTO_REPAIR_SAFE",
+  "evidence_summary": [
+    "Input parameter tracking_id is identical between v1 and v2.",
+    "Output structure changed from flat object to nested result object.",
+    "Authoritative documentation specifies explicit semantic equivalence for status 'shipped' to state 'in_transit' and field mappings for tracking, carrier, and eta_date."
+  ],
+  "proposed_adapter_behavior": [
+    "Forward input tracking_id directly to the new v2 lookup_shipment tool.",
+    "Unnest response fields from result.shipment (tracking_id, carrier_name, estimated_delivery) to match v1 output structure (tracking, carrier, eta_date).",
+    "Translate result.state value 'in_transit' to status value 'shipped' in the adapter response."
+  ],
+  "safety_notes": [
+    "Operation is read-only lookup and carries no side effects or non-reversible actions.",
+    "All output fields required by v1 contract are fully constructible from v2 output using authoritative semantics."
+  ]
+}

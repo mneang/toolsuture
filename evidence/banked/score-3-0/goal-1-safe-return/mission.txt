@@ -1,0 +1,2 @@
+The customer returned order ORD-1002 unopened because they no longer want it.
+Refund $24.99.

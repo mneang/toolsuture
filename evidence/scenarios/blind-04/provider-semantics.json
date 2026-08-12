@@ -1,0 +1,17 @@
+{
+  "source": "Synthetic provider migration documentation",
+  "semantic_equivalences": [
+    {
+      "old": "balance",
+      "new": "result.money.amount"
+    },
+    {
+      "old": "currency",
+      "new": "result.money.currency_code"
+    }
+  ],
+  "facts": [
+    "The operation remains read-only.",
+    "The units and currency representation are unchanged."
+  ]
+}

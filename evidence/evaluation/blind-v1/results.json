@@ -1,0 +1,75 @@
+{
+  "evaluation": "blind-v1",
+  "cases_total": 5,
+  "cases_completed": 5,
+  "cases_passed": 5,
+  "case_accuracy": 1.0,
+  "check_accuracy": 1.0,
+  "results": [
+    {
+      "scenario": "blind-01",
+      "expected_decision": "AUTO_REPAIR_SAFE",
+      "actual_decision": "AUTO_REPAIR_SAFE",
+      "expected_gate": "APPROVED",
+      "actual_gate": "APPROVED",
+      "checks": {
+        "decision": true,
+        "gate": true,
+        "auto_repair_allowed": true
+      },
+      "passed": true
+    },
+    {
+      "scenario": "blind-02",
+      "expected_decision": "NEEDS_CONTEXT",
+      "actual_decision": "NEEDS_CONTEXT",
+      "expected_gate": "BLOCKED",
+      "actual_gate": "BLOCKED",
+      "checks": {
+        "decision": true,
+        "gate": true,
+        "auto_repair_allowed": true
+      },
+      "passed": true
+    },
+    {
+      "scenario": "blind-03",
+      "expected_decision": "REFUSE",
+      "actual_decision": "REFUSE",
+      "expected_gate": "BLOCKED",
+      "actual_gate": "BLOCKED",
+      "checks": {
+        "decision": true,
+        "gate": true,
+        "auto_repair_allowed": true
+      },
+      "passed": true
+    },
+    {
+      "scenario": "blind-04",
+      "expected_decision": "AUTO_REPAIR_SAFE",
+      "actual_decision": "AUTO_REPAIR_SAFE",
+      "expected_gate": "APPROVED",
+      "actual_gate": "APPROVED",
+      "checks": {
+        "decision": true,
+        "gate": true,
+        "auto_repair_allowed": true
+      },
+      "passed": true
+    },
+    {
+      "scenario": "blind-05",
+      "expected_decision": "NEEDS_CONTEXT",
+      "actual_decision": "NEEDS_CONTEXT",
+      "expected_gate": "BLOCKED",
+      "actual_gate": "BLOCKED",
+      "checks": {
+        "decision": true,
+        "gate": true,
+        "auto_repair_allowed": true
+      },
+      "passed": true
+    }
+  ]
+}

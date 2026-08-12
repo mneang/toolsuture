@@ -1,0 +1,48 @@
+{
+  "scenario": "safe-return",
+  "replay_id": "333811a6-6dfd-4e64-aec4-5012021bbc2a",
+  "proof_level": "REPLAY_LINKED_ACTION_VERIFIED",
+  "action_restored": true,
+  "mission_completed": false,
+  "checks": {
+    "replay_linked_adapter_event_exists": true,
+    "adapter_event_after_replay_start": true,
+    "old_tool_was_refund_order": true,
+    "new_tool_was_issue_refund": true,
+    "old_order_received": true,
+    "compiled_purchase_ref_correct": true,
+    "compiled_amount_correct": true,
+    "compiled_reason_correct": true,
+    "provider_record_exists": true,
+    "provider_is_v2": true,
+    "provider_status_refunded": true,
+    "victim_source_unchanged": true
+  },
+  "adapter_event": {
+    "recorded_at": "2026-08-10T22:03:38.399561+00:00",
+    "replay_id": "333811a6-6dfd-4e64-aec4-5012021bbc2a",
+    "scenario": "safe-return",
+    "old_tool": "refund_order",
+    "new_tool": "issue_refund",
+    "old_args": {
+      "order_id": "ORD-1002",
+      "amount": 24.99
+    },
+    "compiled_v2_args": {
+      "purchase_ref": "ORD-1002",
+      "amount_minor_units": 2499,
+      "reason_code": "RETURN"
+    },
+    "result_status": "refunded",
+    "scope": "INCIDENT_ONLY"
+  },
+  "provider_record": {
+    "status": "refunded",
+    "purchase_ref": "ORD-1002",
+    "amount_minor_units": 2499,
+    "currency": "USD",
+    "reason_code": "RETURN",
+    "provider_version": "v2",
+    "recorded_at": "2026-08-10T22:03:38.399269+00:00"
+  }
+}

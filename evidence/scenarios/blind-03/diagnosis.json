@@ -1,0 +1,41 @@
+{
+  "old_tool": "archive_project",
+  "new_tool": "delete_project",
+  "capability_relationship": "NOT_EQUIVALENT",
+  "field_mappings": [
+    {
+      "old_field": "project_id",
+      "new_field": "project_id",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Pass project_id directly",
+      "confidence": 1.0
+    },
+    {
+      "old_field": "none",
+      "new_field": "purge",
+      "mapping_type": "NO_EQUIVALENT",
+      "transformation": "Cannot safely set purge parameter because operation changes from reversible archive to permanent deletion",
+      "confidence": 0.0
+    }
+  ],
+  "unresolved_requirements": [
+    {
+      "field": "purge",
+      "why_unresolved": "The new tool performs permanent deletion requiring purge=true/false, whereas the old tool performed reversible archiving. Setting purge creates irreversible data destruction.",
+      "needed_evidence": "User authorization to perform permanent project deletion instead of reversible archiving."
+    }
+  ],
+  "risk_level": "CRITICAL",
+  "decision": "REFUSE",
+  "evidence_summary": [
+    "v1 archive_project is reversible and preserves restore capability.",
+    "v2 delete_project is non-reversible and permanently destroys project data.",
+    "Rule 8 forbids classifying migrations with increased destructiveness or irreversibility as AUTO_REPAIR_SAFE."
+  ],
+  "proposed_adapter_behavior": [
+    "Refuse adaptation from archive_project to delete_project due to material increase in destructiveness and loss of restore capability."
+  ],
+  "safety_notes": [
+    "Converting an archiving tool to a permanent deletion tool introduces irreversible side effects and risk of unrecoverable data loss."
+  ]
+}
