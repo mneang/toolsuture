@@ -1,0 +1,25 @@
+{
+  "evaluation": "goal4-live",
+  "git_commit": "2f76a0684ddd56ae59de81eafa62fdddff6138db",
+  "no_code_edits_between_tests": true,
+  "tests": {
+    "fortified_defense": {
+      "mode": "SAFE_HOLD",
+      "passed": true
+    },
+    "request_migration": {
+      "handler": "request-migration-refund",
+      "mode": "RECOVERY_COMPLETE",
+      "mission_completed": true,
+      "passed": true
+    },
+    "response_reconstruction": {
+      "handler": "bidirectional-shipment",
+      "mode": "RECOVERY_COMPLETE",
+      "mission_completed": true,
+      "passed": true
+    }
+  },
+  "victim_agents_modified": false,
+  "goal4_verified": true
+}

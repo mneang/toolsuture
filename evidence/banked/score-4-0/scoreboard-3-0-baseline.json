@@ -1,0 +1,45 @@
+{
+  "score": "3-0",
+  "status": "BANKED_VERIFIED",
+  "goals": [
+    {
+      "goal": 1,
+      "status": "VERIFIED",
+      "replay_id": "333811a6-6dfd-4e64-aec4-5012021bbc2a",
+      "proof_model": "Replay provenance from action proof; mission completion from legacy mission proof; frozen-agent behavior from successful transcript.",
+      "mission_proof_contains_replay_id": false,
+      "provider_version": "v2",
+      "provider_status": "refunded",
+      "victim_source_unchanged": true
+    },
+    {
+      "goal": 2,
+      "status": "VERIFIED",
+      "replay_id": "5fa1a23e-9bdd-4672-997d-a4d1df4fb183",
+      "failure_class": "OUTPUT_CONTRACT_DRIFT",
+      "before": "CAPABILITY_LOST",
+      "after": "CAPABILITY_RESTORED",
+      "victim_source_changed": false,
+      "native_v2_response_observed": true,
+      "v1_response_reconstructed": true
+    },
+    {
+      "goal": 3,
+      "status": "VERIFIED",
+      "cases_total": 5,
+      "cases_completed": 5,
+      "cases_passed": 5,
+      "case_accuracy": 1.0,
+      "check_accuracy": 1.0
+    }
+  ],
+  "goal_4": {
+    "status": "NOT_YET_SCORED",
+    "required_live_test": [
+      "dangerous incident -> SAFE_HOLD",
+      "safe-return -> RECOVERY_COMPLETE",
+      "response-reshape -> RECOVERY_COMPLETE"
+    ],
+    "constraint": "No code edits between the three live tests."
+  }
+}

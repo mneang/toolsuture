@@ -1,0 +1,13 @@
+{
+  "scenario": "blind-03",
+  "started_at": "2026-08-12T03:36:39.577521+00:00",
+  "finished_at": "2026-08-12T03:36:39.578445+00:00",
+  "mode": "SAFE_HOLD",
+  "execution_attempted": false,
+  "diagnosis_decision": "REFUSE",
+  "risk_level": "CRITICAL",
+  "policy_gate": "BLOCKED",
+  "mission_completed": false,
+  "reason": "Policy did not authorize automatic execution.",
+  "run_id": "2cd4dea0-577e-48a2-918b-1a3d0842c037"
+}

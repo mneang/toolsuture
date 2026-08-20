@@ -1,0 +1,17 @@
+{
+  "scenario": "safe-return",
+  "started_at": "2026-08-12T03:36:39.684130+00:00",
+  "finished_at": "2026-08-12T03:37:44.589385+00:00",
+  "mode": "RECOVERY_COMPLETE",
+  "execution_attempted": true,
+  "diagnosis_decision": "AUTO_REPAIR_SAFE",
+  "risk_level": "LOW",
+  "policy_gate": "APPROVED",
+  "validation_gate": "VALIDATED",
+  "handler": "request-migration-refund",
+  "replay_id": "0989be9c-ecbc-4869-8205-6c4278059ef4",
+  "mission_completed": true,
+  "after": "CAPABILITY_RESTORED",
+  "victim_source_changed": false,
+  "run_id": "89225b9a-a2f3-4afa-9fb6-01834b9fb6eb"
+}

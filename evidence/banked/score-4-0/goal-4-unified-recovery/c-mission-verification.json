@@ -1,0 +1,57 @@
+{
+  "scenario": "response-reshape",
+  "replay_id": "04fbc4f5-5ef4-4b1b-8c51-9a05b3b030bb",
+  "mission_completed": true,
+  "failure_class": "OUTPUT_CONTRACT_DRIFT",
+  "before": "CAPABILITY_LOST",
+  "after": "CAPABILITY_RESTORED",
+  "victim_source_changed": false,
+  "checks": {
+    "provider_still_v2": true,
+    "adapter_still_active": true,
+    "adapter_scenario_matches": true,
+    "adapter_plan_sha_matches": true,
+    "replay_linked_audit_exists": true,
+    "audit_created_after_replay": true,
+    "old_tool_preserved": true,
+    "native_v2_response_observed": true,
+    "v1_response_reconstructed": true,
+    "victim_listed_tools": true,
+    "victim_called_tool": true,
+    "victim_reported_success": true,
+    "contract_break_disappeared": true,
+    "no_quota_failure": true,
+    "no_traceback": true,
+    "victim_source_unchanged": true
+  },
+  "audit_event": {
+    "recorded_at": "2026-08-12T03:37:51.794841+00:00",
+    "replay_id": "04fbc4f5-5ef4-4b1b-8c51-9a05b3b030bb",
+    "scenario": "response-reshape",
+    "old_tool": "lookup_shipment",
+    "new_tool": "lookup_shipment",
+    "old_args": {
+      "tracking_id": "TRACK-7001"
+    },
+    "compiled_v2_args": {
+      "tracking_id": "TRACK-7001"
+    },
+    "raw_v2_response": {
+      "result": {
+        "state": "in_transit",
+        "shipment": {
+          "tracking_id": "TRACK-7001",
+          "carrier_name": "Northstar Parcel",
+          "estimated_delivery": "2026-08-14"
+        }
+      }
+    },
+    "reconstructed_v1_response": {
+      "status": "shipped",
+      "tracking": "TRACK-7001",
+      "carrier": "Northstar Parcel",
+      "eta_date": "2026-08-14"
+    },
+    "scope": "GENERAL"
+  }
+}

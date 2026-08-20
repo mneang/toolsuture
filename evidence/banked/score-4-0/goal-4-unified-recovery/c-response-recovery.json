@@ -1,0 +1,17 @@
+{
+  "scenario": "response-reshape",
+  "started_at": "2026-08-12T03:37:44.769285+00:00",
+  "finished_at": "2026-08-12T03:37:53.810771+00:00",
+  "mode": "RECOVERY_COMPLETE",
+  "execution_attempted": true,
+  "diagnosis_decision": "AUTO_REPAIR_SAFE",
+  "risk_level": "LOW",
+  "policy_gate": "APPROVED",
+  "validation_gate": "VALIDATED",
+  "handler": "bidirectional-shipment",
+  "replay_id": "04fbc4f5-5ef4-4b1b-8c51-9a05b3b030bb",
+  "mission_completed": true,
+  "after": "CAPABILITY_RESTORED",
+  "victim_source_changed": false,
+  "run_id": "5dd47e5a-5889-448a-9646-a113b69bf1e6"
+}

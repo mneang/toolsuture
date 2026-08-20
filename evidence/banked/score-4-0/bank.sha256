@@ -1,0 +1,12 @@
+42a8d272b56e5cd27d69ee53003c9feb0bb0f25f75d3e8aada431dbe05a7dbb5  ./goal-4-unified-recovery/a-safe-hold.json
+d9c0cf77f09c80128361a4fa809e22361c05c12b476b91062f95e2f80c23aff4  ./goal-4-unified-recovery/b-action-verification.json
+0a363091acb0c5c918a761f3fe4e9538719094458000544773e71a905a0a3ad0  ./goal-4-unified-recovery/b-mission-verification.json
+511a4e7898e04625d4d68f454e377b5b934da063e9d7dbd3c4634b575ba6b13d  ./goal-4-unified-recovery/b-request-recovery.json
+2b1efa76a34f317bd0b1a9c307d0ec6e53f58fb12cc3d09a732ccd414794b00c  ./goal-4-unified-recovery/c-mission-verification.json
+7f187564be377dd08f76f59ad6da40659e94c1941cf471490b22d986ca6183e7  ./goal-4-unified-recovery/c-response-recovery.json
+fb78443fc9423cc10f0bfdc39e1f7257a52e8313bbfafcdcee8e9c6f98009299  ./goal-4-unified-recovery/manifest.json
+d33cc03b1a367996144db02eda0f8bfe6b0e0f2cf7b1ee42fa3abc308956c989  ./goal-4-unified-recovery/manifest.sha256
+afe6211e3bb74066555020571573dfd98bdf24644c09f383c94d81e2e0487650  ./goal-4-unified-recovery/result.json
+b3d4c7c8cfb69b9e2cd98387bb7ed65c2a564a8e748d6a64a08710ffb3b5b666  ./scoreboard-3-0-baseline.json
+fdb0342979f059132b894be38569a166def0831b149b551d71ef0ef52a54a400  ./shipment_victim.sha256
+a37c2af44e32ec51e3db70f4b4be9508ea7955c79811d39f497b65e71895b98d  ./victim_agent.sha256
