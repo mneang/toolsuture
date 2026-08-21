@@ -375,12 +375,164 @@ def demo_safe_recovery():
             ).hexdigest()
         )
 
+        # ------------------------------------------------
+        # Fresh semantic pipeline.
+        #
+        # We deliberately run these stages here instead of
+        # asking recover_case to generate them so the Cloud
+        # boundary can normalize the freshly generated typed
+        # plan before handing execution to the frozen engine.
+        # ------------------------------------------------
+
+        preparation_steps = [
+            [
+                sys.executable,
+                "-m",
+                "toolsuture.diagnose_case",
+                "--scenario",
+                "safe-return",
+            ],
+            [
+                sys.executable,
+                "-m",
+                "toolsuture.policy_case",
+                "--scenario",
+                "safe-return",
+            ],
+            [
+                sys.executable,
+                "-m",
+                "toolsuture.plan_case",
+                "--scenario",
+                "safe-return",
+            ],
+            [
+                sys.executable,
+                "-m",
+                "toolsuture.validate_plan",
+                "--scenario",
+                "safe-return",
+            ],
+        ]
+
+        preparation_output = []
+
+        try:
+            for step in preparation_steps:
+                step_result = subprocess.run(
+                    step,
+                    cwd=ROOT,
+                    capture_output=True,
+                    text=True,
+                    timeout=60,
+                )
+
+                preparation_output.append(
+                    "$ "
+                    + " ".join(step)
+                    + "\n"
+                    + step_result.stdout
+                    + "\n"
+                    + step_result.stderr
+                )
+
+                if step_result.returncode != 0:
+                    raise HTTPException(
+                        status_code=500,
+                        detail={
+                            "message":
+                                "Fresh recovery preparation failed.",
+                            "command":
+                                step,
+                            "returncode":
+                                step_result.returncode,
+                            "stdout_tail":
+                                step_result.stdout[-1800:],
+                            "stderr_tail":
+                                step_result.stderr[-1800:],
+                        },
+                    )
+
+        except subprocess.TimeoutExpired:
+            raise HTTPException(
+                status_code=504,
+                detail=(
+                    "Fresh recovery preparation timed out."
+                ),
+            )
+
+        # ------------------------------------------------
+        # Boundary compatibility normalization.
+        #
+        # The current typed planner emits
+        # `request_operations`.
+        #
+        # The frozen refund execution path predates that
+        # bidirectional schema and consumes `operations`.
+        #
+        # Preserve the typed field and add a deterministic
+        # compatibility alias. No semantic content changes.
+        # ------------------------------------------------
+
+        plan_path = (
+            SAFE_RETURN_SCENARIO
+            / "repair-plan.json"
+        )
+
+        plan = json.loads(
+            plan_path.read_text()
+        )
+
+        request_ops = plan.get(
+            "request_operations"
+        )
+
+        if request_ops is None:
+            raise HTTPException(
+                status_code=500,
+                detail=(
+                    "Fresh repair plan is missing "
+                    "request_operations."
+                ),
+            )
+
+        if "operations" in plan:
+            if plan["operations"] != request_ops:
+                raise HTTPException(
+                    status_code=500,
+                    detail=(
+                        "Conflicting operation schemas; "
+                        "refusing execution."
+                    ),
+                )
+        else:
+            plan["operations"] = request_ops
+
+        plan_path.write_text(
+            json.dumps(
+                plan,
+                indent=2,
+            )
+        )
+
+        preparation_output.append(
+            "CLOUD BOUNDARY NORMALIZATION\n"
+            "request_operations -> operations\n"
+            "semantic_changes: 0"
+        )
+
+        # ------------------------------------------------
+        # Frozen orchestrator now consumes those freshly
+        # generated and validated artifacts.
+        # ------------------------------------------------
+
         command = [
             sys.executable,
             "-m",
             "toolsuture.recover_case",
             "--scenario",
             "safe-return",
+            "--resume",
             "--execute",
         ]
 
@@ -400,6 +552,12 @@ def demo_safe_recovery():
                     "Safe recovery timed out."
                 ),
             )
+
+        proc.stdout = (
+            "\n\n".join(preparation_output)
+            + "\n\n"
+            + proc.stdout
+        )
 
         print(
             "=== CLOUD SAFE RECOVERY EXECUTION ===",
