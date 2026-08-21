@@ -2033,6 +2033,67 @@ body.run-active
     >
     </div>
 
+    <div
+      class="zero-explainer"
+      id="zeroExplainer"
+    >
+      Frozen deployed agent source remained identical.
+    </div>
+
+
+    <div
+      class="mission-outcome"
+      id="missionOutcome"
+      style="display:none"
+    >
+
+      <div class="mission-outcome-top">
+
+        <div>
+          <div class="mission-kicker">
+            ORIGINAL MISSION RESTORED
+          </div>
+
+          <div class="mission-title">
+            Shipment lookup completed
+          </div>
+        </div>
+
+        <div class="mission-status">
+          SHIPPED
+        </div>
+
+      </div>
+
+
+      <div class="mission-facts">
+
+        <div class="mission-fact">
+          <span>TRACKING</span>
+          <strong id="missionTracking">
+            —
+          </strong>
+        </div>
+
+        <div class="mission-fact">
+          <span>CARRIER</span>
+          <strong id="missionCarrier">
+            —
+          </strong>
+        </div>
+
+        <div class="mission-fact">
+          <span>ESTIMATED DELIVERY</span>
+          <strong id="missionEta">
+            —
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+
     <div class="meta">
 
       <div class="meta-item">
@@ -2170,11 +2231,20 @@ body.run-active
     </div>
 
 
-    <div
-      class="transform"
-      id="transform"
-      style="display:none"
+    <details
+      class="contract-details"
+      id="contractDetails"
     >
+
+      <summary>
+        View contract transformation details
+      </summary>
+
+      <div
+        class="transform"
+        id="transform"
+        style="display:none"
+      >
 
       <div>
         <div class="role">
@@ -2190,7 +2260,9 @@ body.run-active
         <pre id="reconstructedV1"></pre>
       </div>
 
-    </div>
+      </div>
+
+    </details>
 
 
     <details id="proofDetails">
@@ -4440,6 +4512,302 @@ window.showSafe =
     enhanceVerifiedResult(
       data
     );
+  };
+
+</script>
+
+
+
+
+<style id="TOOLSUTURE_RESULT_V8">
+
+.zero-explainer {
+  margin-top:8px;
+
+  color:#9cafc2;
+
+  font-size:14px;
+  font-weight:650;
+}
+
+
+/* ----------------------------------------------------------
+   CONCRETE USER MISSION OUTCOME
+---------------------------------------------------------- */
+
+.mission-outcome {
+  margin-top:28px;
+
+  padding:
+    22px 24px;
+
+  border:
+    1px solid rgba(53,214,138,.20);
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      130deg,
+      rgba(53,214,138,.065),
+      rgba(53,214,138,.018)
+    );
+}
+
+
+.mission-outcome-top {
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:20px;
+}
+
+
+.mission-kicker {
+  color:#67dda6;
+
+  font-size:9px;
+  font-weight:900;
+
+  letter-spacing:.15em;
+}
+
+
+.mission-title {
+  margin-top:5px;
+
+  color:#f2f7fb;
+
+  font-size:
+    clamp(21px,2vw,29px);
+
+  font-weight:900;
+
+  letter-spacing:-.035em;
+}
+
+
+.mission-status {
+  padding:
+    8px 12px;
+
+  border:
+    1px solid rgba(53,214,138,.28);
+
+  border-radius:999px;
+
+  color:var(--good);
+
+  background:
+    rgba(53,214,138,.075);
+
+  font-size:10px;
+  font-weight:950;
+
+  letter-spacing:.08em;
+}
+
+
+.mission-facts {
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:10px;
+
+  margin-top:18px;
+}
+
+
+.mission-fact {
+  padding:
+    12px 14px;
+
+  border-top:
+    1px solid rgba(145,175,210,.11);
+}
+
+
+.mission-fact span {
+  display:block;
+
+  color:#71869c;
+
+  font-size:8px;
+  font-weight:900;
+
+  letter-spacing:.14em;
+}
+
+
+.mission-fact strong {
+  display:block;
+
+  margin-top:6px;
+
+  color:#e8f0f8;
+
+  font-size:13px;
+}
+
+
+/* ----------------------------------------------------------
+   STRONGER CONTRACT STORY
+---------------------------------------------------------- */
+
+.contract-story {
+  margin-top:24px !important;
+}
+
+
+.contract-bridge::after {
+  content:"4 RESPONSE REPAIRS";
+
+  position:absolute;
+
+  top:7px;
+
+  color:#75b3f5;
+
+  font-size:8px;
+  font-weight:900;
+
+  letter-spacing:.11em;
+}
+
+
+/* ----------------------------------------------------------
+   RAW JSON BECOMES OPTIONAL
+---------------------------------------------------------- */
+
+.contract-details {
+  margin-top:13px !important;
+
+  padding:0 !important;
+
+  overflow:hidden;
+
+  border:
+    1px solid rgba(145,175,210,.13) !important;
+
+  border-radius:12px;
+
+  background:
+    rgba(2,9,15,.12);
+}
+
+
+.contract-details summary {
+  min-height:45px;
+
+  display:flex;
+  align-items:center;
+
+  padding:
+    0 15px;
+
+  cursor:pointer;
+
+  color:#aebdcd;
+
+  font-size:11px;
+  font-weight:850;
+}
+
+
+.contract-details[open]
+summary {
+  border-bottom:
+    1px solid rgba(145,175,210,.10);
+}
+
+
+.contract-details .transform {
+  padding:13px;
+
+  margin:0 !important;
+}
+
+
+/* evidence drawers should feel secondary */
+
+#proofDetails {
+  background:
+    rgba(2,9,15,.11) !important;
+}
+
+
+@media(max-width:760px) {
+
+  .mission-outcome-top {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .mission-facts {
+    grid-template-columns:1fr;
+  }
+}
+
+</style>
+
+
+
+
+<script id="TOOLSUTURE_RESULT_V8_JS">
+
+const originalEnhanceVerifiedResultV8 =
+  window.enhanceVerifiedResult;
+
+
+window.enhanceVerifiedResult =
+  function(data) {
+
+    originalEnhanceVerifiedResultV8(
+      data
+    );
+
+
+    const repair =
+      data.response_repair || {};
+
+    const reconstructed =
+      repair.reconstructed_v1_response
+      || {};
+
+
+    $("missionTracking").textContent =
+      reconstructed.tracking
+      || "—";
+
+    $("missionCarrier").textContent =
+      reconstructed.carrier
+      || "—";
+
+    $("missionEta").textContent =
+      reconstructed.eta_date
+      || "—";
+
+
+    $("missionOutcome").style.display =
+      "block";
+
+
+    const details =
+      $("contractDetails");
+
+    if (details) {
+      details.open = false;
+    }
+
+
+    // showSafe normally reveals transform.
+    // It now lives inside the collapsed details element.
+    $("transform").style.display =
+      "grid";
   };
 
 </script>
