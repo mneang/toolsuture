@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -612,6 +613,9 @@ def shipment_recovery_event_stream(
         result = {
             "cloud_execution":
                 True,
+
+            "cloud_revision":
+                os.getenv("K_REVISION"),
 
             "scenario":
                 "response-reshape",

@@ -2068,6 +2068,108 @@ body.run-active
     </div>
 
 
+
+    <div
+      class="verified-strip"
+      id="verifiedStrip"
+      style="display:none"
+    >
+
+      <div class="verified-stat">
+        <div
+          class="verified-number"
+          id="proofCount"
+        >
+          —
+        </div>
+
+        <div class="verified-label">
+          INDEPENDENT CHECKS
+        </div>
+      </div>
+
+      <div class="verified-stat">
+        <div
+          class="verified-number"
+          id="providerProof"
+        >
+          —
+        </div>
+
+        <div class="verified-label">
+          PROVIDER OBSERVED
+        </div>
+      </div>
+
+      <div class="verified-stat">
+        <div
+          class="verified-number"
+          id="replayProof"
+        >
+          —
+        </div>
+
+        <div class="verified-label">
+          REPLAY-LINKED PROOF
+        </div>
+      </div>
+
+    </div>
+
+
+    <div
+      class="contract-story"
+      id="contractStory"
+      style="display:none"
+    >
+
+      <div class="contract-side">
+
+        <div class="contract-kicker">
+          PROVIDER V2
+        </div>
+
+        <div class="contract-name">
+          Native response
+        </div>
+
+        <div class="contract-chip">
+          nested contract
+        </div>
+
+      </div>
+
+
+      <div class="contract-bridge">
+
+        <div class="bridge-line"></div>
+
+        <div class="bridge-badge">
+          compatibility restored
+        </div>
+
+      </div>
+
+
+      <div class="contract-side">
+
+        <div class="contract-kicker">
+          AGENT EXPECTATION
+        </div>
+
+        <div class="contract-name">
+          V1 reconstructed
+        </div>
+
+        <div class="contract-chip good-chip">
+          unchanged agent
+        </div>
+
+      </div>
+
+    </div>
+
+
     <div
       class="transform"
       id="transform"
@@ -3750,6 +3852,598 @@ window.runScenario =
 }
 
 </style>
+
+
+
+<style id="TOOLSUTURE_CHAMPIONSHIP_RESULT_V7">
+
+/* ==========================================================
+   V7 — CHAMPIONSHIP RESULT
+========================================================== */
+
+.result.visible {
+  min-height:0 !important;
+
+  background:
+    radial-gradient(
+      800px 360px at 14% 0%,
+      rgba(53,214,138,.10),
+      transparent 68%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(14,31,46,.98),
+      rgba(7,19,31,.98)
+    ) !important;
+}
+
+
+/* verified recovery eyebrow */
+
+.result > .section-tag {
+  color:
+    rgba(53,214,138,.92) !important;
+
+  font-size:10px !important;
+}
+
+
+/* huge headline, but controlled */
+
+.result-title {
+  max-width:1200px;
+
+  line-height:.95 !important;
+
+  text-wrap:balance;
+}
+
+
+/* capability transition gets more whitespace */
+
+.transition {
+  margin:
+    28px 0 0 !important;
+}
+
+.transition-box {
+  min-height:43px;
+
+  display:flex;
+  align-items:center;
+
+  padding:
+    0 16px !important;
+
+  border-radius:11px !important;
+
+  font-size:11px !important;
+}
+
+
+/* 0 BYTES is the hero statistic */
+
+.zero {
+  margin:
+    30px 0 0 !important;
+
+  color:var(--good);
+
+  font-size:
+    clamp(62px,6.6vw,98px) !important;
+
+  line-height:.87 !important;
+
+  letter-spacing:-.065em !important;
+}
+
+
+/* ----------------------------------------------------------
+   VERIFIED SUMMARY STRIP
+---------------------------------------------------------- */
+
+.verified-strip {
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:10px;
+
+  margin-top:28px;
+}
+
+
+.verified-stat {
+  min-height:96px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+
+  padding:
+    17px 20px;
+
+  border:
+    1px solid rgba(53,214,138,.15);
+
+  border-radius:14px;
+
+  background:
+    rgba(53,214,138,.035);
+}
+
+
+.verified-number {
+  color:var(--good);
+
+  font-size:25px;
+  line-height:1;
+
+  font-weight:950;
+
+  letter-spacing:-.04em;
+}
+
+
+.verified-label {
+  margin-top:8px;
+
+  color:#8195aa;
+
+  font-size:9px;
+  font-weight:900;
+
+  letter-spacing:.12em;
+}
+
+
+/* ----------------------------------------------------------
+   CONTRACT STORY
+---------------------------------------------------------- */
+
+.contract-story {
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    minmax(180px,.45fr)
+    minmax(0,1fr);
+
+  align-items:center;
+
+  gap:18px;
+
+  margin-top:26px;
+
+  padding:
+    22px 24px;
+
+  border:
+    1px solid rgba(145,175,210,.14);
+
+  border-radius:16px;
+
+  background:
+    rgba(2,10,17,.25);
+}
+
+
+.contract-side {
+  min-width:0;
+}
+
+
+.contract-side:last-child {
+  text-align:right;
+}
+
+
+.contract-kicker {
+  color:#6f849b;
+
+  font-size:9px;
+  font-weight:900;
+
+  letter-spacing:.15em;
+}
+
+
+.contract-name {
+  margin-top:5px;
+
+  color:#eaf1f8;
+
+  font-size:
+    clamp(18px,1.8vw,25px);
+
+  font-weight:900;
+
+  letter-spacing:-.035em;
+}
+
+
+.contract-chip {
+  display:inline-flex;
+
+  margin-top:9px;
+
+  padding:
+    6px 9px;
+
+  border:
+    1px solid rgba(145,175,210,.16);
+
+  border-radius:999px;
+
+  color:#9badbf;
+
+  font-size:9px;
+  font-weight:800;
+}
+
+
+.good-chip {
+  color:var(--good);
+
+  border-color:
+    rgba(53,214,138,.26);
+
+  background:
+    rgba(53,214,138,.055);
+}
+
+
+/* animated bridge is decoration only:
+   it never communicates stage completion */
+
+.contract-bridge {
+  position:relative;
+
+  min-height:70px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+
+.bridge-line {
+  width:100%;
+  height:2px;
+
+  overflow:hidden;
+
+  border-radius:999px;
+
+  background:
+    rgba(117,151,191,.16);
+}
+
+
+.bridge-line::after {
+  content:"";
+
+  display:block;
+
+  width:42%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #79b8ff,
+      #38d790,
+      transparent
+    );
+
+  animation:
+    contractFlow
+    2.4s ease-in-out infinite;
+}
+
+
+.bridge-badge {
+  position:absolute;
+
+  padding:
+    6px 9px;
+
+  border:
+    1px solid rgba(53,214,138,.22);
+
+  border-radius:999px;
+
+  background:#0b1926;
+
+  color:#55dca0;
+
+  font-size:8px;
+  font-weight:900;
+
+  letter-spacing:.055em;
+
+  white-space:nowrap;
+}
+
+
+@keyframes contractFlow {
+
+  from {
+    transform:
+      translateX(-110%);
+  }
+
+  to {
+    transform:
+      translateX(280%);
+  }
+}
+
+
+/* ----------------------------------------------------------
+   RAW CONTRACTS ARE SUPPORTING DETAIL
+---------------------------------------------------------- */
+
+.transform {
+  margin-top:13px !important;
+
+  opacity:.88;
+}
+
+
+.transform pre {
+  max-height:230px !important;
+
+  font-size:11px !important;
+}
+
+
+/* ----------------------------------------------------------
+   METADATA IS EVIDENCE, NOT HERO CONTENT
+---------------------------------------------------------- */
+
+.meta {
+  margin-top:22px !important;
+}
+
+
+.meta-item {
+  background:
+    rgba(2,10,17,.18) !important;
+}
+
+
+/* ----------------------------------------------------------
+   VERIFICATION DRAWER
+---------------------------------------------------------- */
+
+#proofDetails {
+  margin-top:16px !important;
+}
+
+
+#proofDetails summary {
+  min-height:42px;
+
+  display:flex;
+  align-items:center;
+
+  color:#cdd9e6;
+
+  font-size:12px !important;
+}
+
+
+.checklist {
+  grid-template-columns:
+    repeat(4,minmax(0,1fr)) !important;
+
+  gap:
+    4px
+    17px !important;
+}
+
+
+/* ----------------------------------------------------------
+   RESULT APPEARANCE
+---------------------------------------------------------- */
+
+.result.visible
+.result-title,
+
+.result.visible
+.zero,
+
+.result.visible
+.verified-strip,
+
+.result.visible
+.contract-story {
+
+  animation:
+    resultRise
+    .38s ease both;
+}
+
+
+.result.visible
+.zero {
+  animation-delay:.06s;
+}
+
+
+.result.visible
+.verified-strip {
+  animation-delay:.11s;
+}
+
+
+.result.visible
+.contract-story {
+  animation-delay:.16s;
+}
+
+
+@keyframes resultRise {
+
+  from {
+    opacity:0;
+    transform:
+      translateY(12px);
+  }
+
+  to {
+    opacity:1;
+    transform:none;
+  }
+}
+
+
+@media(max-width:800px) {
+
+  .verified-strip {
+    grid-template-columns:1fr;
+  }
+
+  .contract-story {
+    grid-template-columns:1fr;
+
+    text-align:left;
+  }
+
+  .contract-side:last-child {
+    text-align:left;
+  }
+
+  .contract-bridge {
+    min-height:45px;
+
+    transform:
+      rotate(90deg);
+  }
+
+  .checklist {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+
+@media(prefers-reduced-motion:reduce) {
+
+  .bridge-line::after {
+    animation:none !important;
+  }
+
+  .result.visible
+  .result-title,
+
+  .result.visible
+  .zero,
+
+  .result.visible
+  .verified-strip,
+
+  .result.visible
+  .contract-story {
+    animation:none !important;
+  }
+}
+
+</style>
+
+
+
+
+<script id="TOOLSUTURE_CHAMPIONSHIP_RESULT_V7_JS">
+
+function enhanceVerifiedResult(
+  data
+) {
+
+  const checks =
+    data.verification_checks
+    || {};
+
+  const values =
+    Object.values(
+      checks
+    );
+
+  const passed =
+    values.filter(
+      Boolean
+    ).length;
+
+  const total =
+    values.length;
+
+
+  $("proofCount").textContent =
+    `${passed} / ${total}`;
+
+  $("providerProof").textContent =
+    (
+      checks.native_v2_response_observed
+      === true
+    )
+      ? "OBSERVED"
+      : "UNVERIFIED";
+
+  $("replayProof").textContent =
+    (
+      checks.replay_linked_audit_exists
+      === true
+      &&
+      checks.audit_created_after_replay
+      === true
+    )
+      ? "LINKED"
+      : "UNVERIFIED";
+
+
+  $("verifiedStrip").style.display =
+    "grid";
+
+  $("contractStory").style.display =
+    "grid";
+
+
+  // Keep raw verification available,
+  // but collapsed on every new success.
+  const proof =
+    $("proofDetails");
+
+  if (proof) {
+    proof.open = false;
+  }
+}
+
+
+/*
+  Extend existing safe-result renderer.
+  Preserve original behavior first.
+*/
+
+const originalShowSafeV7 =
+  window.showSafe;
+
+window.showSafe =
+  function(data) {
+
+    originalShowSafeV7(
+      data
+    );
+
+    enhanceVerifiedResult(
+      data
+    );
+  };
+
+</script>
+
 
 </body>
 </html>
