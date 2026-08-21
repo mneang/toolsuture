@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 import subprocess
 import sys
 import threading
@@ -56,6 +57,15 @@ def healthz():
     return {
         "status": "ok",
         "service": "toolsuture",
+    }
+
+
+@app.get("/ready")
+def ready():
+    return {
+        "status": "ready",
+        "service": "toolsuture",
+        "cloud_revision": os.getenv("K_REVISION"),
     }
 
 
@@ -119,7 +129,6 @@ def demo_safe_hold():
             "toolsuture.recover_case",
             "--scenario",
             "blind-03",
-            "--resume",
             "--execute",
         ]
 
@@ -137,6 +146,19 @@ def demo_safe_hold():
                 status_code=504,
                 detail="Recovery evaluation timed out.",
             )
+
+        print(
+            "=== CLOUD FRESH RECOVERY EXECUTION ===",
+            flush=True,
+        )
+        print(proc.stdout, flush=True)
+
+        if proc.stderr:
+            print(
+                "=== CLOUD RECOVERY STDERR ===",
+                flush=True,
+            )
+            print(proc.stderr, flush=True)
 
         orchestration_path = (
             SAFE_HOLD_SCENARIO
@@ -182,9 +204,26 @@ def demo_safe_hold():
             == "BLOCKED"
         )
 
+        diagnosis_path = (
+            SAFE_HOLD_SCENARIO
+            / "diagnosis.json"
+        )
+
+        diagnosis_sha256 = None
+
+        if diagnosis_path.exists():
+            diagnosis_sha256 = hashlib.sha256(
+                diagnosis_path.read_bytes()
+            ).hexdigest()
+
         return {
             "cloud_execution": True,
+            "cloud_revision": os.getenv("K_REVISION"),
             "scenario": "blind-03",
+            "fresh_semantic_diagnosis": True,
+            "resume_used": False,
+            "diagnosis_sha256": diagnosis_sha256,
+            "run_id": result.get("run_id"),
             "passed": passed,
             "mode": result.get("mode"),
             "diagnosis_decision":

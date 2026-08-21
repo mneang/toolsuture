@@ -26,3 +26,12 @@ evidence/scenarios/*/orchestration.json
 evidence/scenarios/*/orchestrated-terminal.txt
 
 #!include:.gitignore
+
+# Runtime-only orchestration residue
+evidence/scenarios/*/runs
+evidence/scenarios/*/runs/**
+evidence/scenarios/*/effect-probe.json
+evidence/scenarios/*/orchestrated-terminal.txt
+evidence/scenarios/*/orchestrated-verification.json
+evidence/scenarios/*/orchestration.json
+evidence/scenarios/*/pre-*.json
