@@ -245,3 +245,417 @@ def demo_safe_hold():
             "victim_agent_modified":
                 False,
         }
+
+
+# ============================================================
+# GRAND PRIZE SAFE RECOVERY DEMO
+# ============================================================
+
+SAFE_RETURN_SCENARIO = (
+    ROOT
+    / "evidence"
+    / "scenarios"
+    / "safe-return"
+)
+
+REFUND_PROVIDER_DIR = (
+    ROOT
+    / "mcp_server"
+)
+
+
+def _load_json_if_present(path: Path) -> dict:
+    if not path.exists():
+        return {}
+
+    return json.loads(
+        path.read_text()
+    )
+
+
+@app.post("/demo/safe-recovery")
+def demo_safe_recovery():
+    """
+    Grand Prize attacking demonstration.
+
+    A provider contract has migrated from v1
+    refund_order to v2 issue_refund.
+
+    This route:
+      1. resets stale demo-provider state
+      2. forces provider v2
+      3. performs fresh Gemini diagnosis
+      4. applies deterministic policy/validation
+      5. deploys the bounded compatibility repair
+      6. replays the unchanged victim agent
+      7. independently verifies provider-side effect
+
+    This operates only against ToolSuture's
+    local simulated refund provider.
+    """
+
+    with LOCK:
+
+        # ----------------------------------------
+        # Prevent stale state from creating a
+        # false-positive recovery result.
+        # ----------------------------------------
+
+        runtime_paths = [
+            REFUND_PROVIDER_DIR
+            / ".deployed_adapter.json",
+
+            REFUND_PROVIDER_DIR
+            / ".refund_records.json",
+
+            REFUND_PROVIDER_DIR
+            / ".adapter_audit.jsonl",
+
+            REFUND_PROVIDER_DIR
+            / ".replay_context.json",
+        ]
+
+        for path in runtime_paths:
+            path.unlink(
+                missing_ok=True
+            )
+
+        # Simulate the external provider having
+        # migrated from contract v1 to contract v2.
+        (
+            REFUND_PROVIDER_DIR
+            / ".provider_version"
+        ).write_text("v2")
+
+        victim_path = (
+            ROOT
+            / "victim_agent"
+            / "agent.py"
+        )
+
+        victim_hash_before = (
+            hashlib.sha256(
+                victim_path.read_bytes()
+            ).hexdigest()
+        )
+
+        command = [
+            sys.executable,
+            "-m",
+            "toolsuture.recover_case",
+            "--scenario",
+            "safe-return",
+            "--execute",
+        ]
+
+        try:
+            proc = subprocess.run(
+                command,
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                timeout=105,
+            )
+
+        except subprocess.TimeoutExpired:
+            raise HTTPException(
+                status_code=504,
+                detail=(
+                    "Safe recovery timed out."
+                ),
+            )
+
+        print(
+            "=== CLOUD SAFE RECOVERY EXECUTION ===",
+            flush=True,
+        )
+
+        print(
+            proc.stdout,
+            flush=True,
+        )
+
+        if proc.stderr:
+            print(
+                "=== CLOUD SAFE RECOVERY STDERR ===",
+                flush=True,
+            )
+
+            print(
+                proc.stderr,
+                flush=True,
+            )
+
+        victim_hash_after = (
+            hashlib.sha256(
+                victim_path.read_bytes()
+            ).hexdigest()
+        )
+
+        orchestration = _load_json_if_present(
+            SAFE_RETURN_SCENARIO
+            / "orchestration.json"
+        )
+
+        diagnosis = _load_json_if_present(
+            SAFE_RETURN_SCENARIO
+            / "diagnosis.json"
+        )
+
+        action_verification = (
+            _load_json_if_present(
+                SAFE_RETURN_SCENARIO
+                / "action-recovery-verification.json"
+            )
+        )
+
+        mission_verification = (
+            _load_json_if_present(
+                SAFE_RETURN_SCENARIO
+                / "mission-verification.json"
+            )
+        )
+
+        provider_records = (
+            _load_json_if_present(
+                REFUND_PROVIDER_DIR
+                / ".refund_records.json"
+            )
+        )
+
+        provider_record = (
+            provider_records.get(
+                "ORD-1002",
+                {},
+            )
+        )
+
+        if (
+            proc.returncode != 0
+            or not orchestration
+        ):
+            raise HTTPException(
+                status_code=500,
+                detail={
+                    "message":
+                        "Safe Cloud recovery failed.",
+
+                    "returncode":
+                        proc.returncode,
+
+                    "stdout_tail":
+                        proc.stdout[-1800:],
+
+                    "stderr_tail":
+                        proc.stderr[-1800:],
+                },
+            )
+
+        adapter_event = (
+            action_verification.get(
+                "adapter_event",
+                {},
+            )
+        )
+
+        passed = all([
+            orchestration.get("mode")
+            == "RECOVERY_COMPLETE",
+
+            orchestration.get(
+                "execution_attempted"
+            )
+            is True,
+
+            orchestration.get(
+                "mission_completed"
+            )
+            is True,
+
+            diagnosis.get("decision")
+            == "AUTO_REPAIR_SAFE",
+
+            action_verification.get(
+                "action_restored"
+            )
+            is True,
+
+            action_verification.get(
+                "proof_level"
+            )
+            == "REPLAY_LINKED_ACTION_VERIFIED",
+
+            mission_verification.get(
+                "mission_completed"
+            )
+            is True,
+
+            provider_record.get(
+                "status"
+            )
+            == "refunded",
+
+            provider_record.get(
+                "provider_version"
+            )
+            == "v2",
+
+            victim_hash_before
+            == victim_hash_after,
+        ])
+
+        diagnosis_path = (
+            SAFE_RETURN_SCENARIO
+            / "diagnosis.json"
+        )
+
+        diagnosis_sha256 = (
+            hashlib.sha256(
+                diagnosis_path.read_bytes()
+            ).hexdigest()
+            if diagnosis_path.exists()
+            else None
+        )
+
+        return {
+            "cloud_execution":
+                True,
+
+            "cloud_revision":
+                os.getenv("K_REVISION"),
+
+            "scenario":
+                "safe-return",
+
+            "fresh_semantic_diagnosis":
+                True,
+
+            "resume_used":
+                False,
+
+            "passed":
+                passed,
+
+            "run_id":
+                orchestration.get(
+                    "run_id"
+                ),
+
+            "diagnosis_sha256":
+                diagnosis_sha256,
+
+            "diagnosis_decision":
+                diagnosis.get(
+                    "decision"
+                ),
+
+            "risk_level":
+                diagnosis.get(
+                    "risk_level"
+                ),
+
+            "policy_gate":
+                orchestration.get(
+                    "policy_gate"
+                ),
+
+            "validation_gate":
+                orchestration.get(
+                    "validation_gate"
+                ),
+
+            "recovery_handler":
+                orchestration.get(
+                    "recovery_handler"
+                ),
+
+            "mode":
+                orchestration.get(
+                    "mode"
+                ),
+
+            "execution_attempted":
+                orchestration.get(
+                    "execution_attempted"
+                ),
+
+            "mission_completed":
+                orchestration.get(
+                    "mission_completed"
+                ),
+
+            "mission_transition": {
+                "before":
+                    mission_verification.get(
+                        "before"
+                    ),
+
+                "after":
+                    mission_verification.get(
+                        "after"
+                    ),
+            },
+
+            "provider_effect": {
+                "proof_level":
+                    action_verification.get(
+                        "proof_level"
+                    ),
+
+                "action_restored":
+                    action_verification.get(
+                        "action_restored"
+                    ),
+
+                "old_tool":
+                    adapter_event.get(
+                        "old_tool"
+                    ),
+
+                "new_tool":
+                    adapter_event.get(
+                        "new_tool"
+                    ),
+
+                "old_args":
+                    adapter_event.get(
+                        "old_args"
+                    ),
+
+                "compiled_v2_args":
+                    adapter_event.get(
+                        "compiled_v2_args"
+                    ),
+
+                "provider_record":
+                    provider_record,
+            },
+
+            "victim_integrity": {
+                "sha256_before":
+                    victim_hash_before,
+
+                "sha256_after":
+                    victim_hash_after,
+
+                "modified":
+                    victim_hash_before
+                    != victim_hash_after,
+
+                "bytes_changed":
+                    0
+                    if victim_hash_before
+                    == victim_hash_after
+                    else None,
+            },
+
+            "mission_checks":
+                mission_verification.get(
+                    "checks"
+                ),
+
+            "action_checks":
+                action_verification.get(
+                    "checks"
+                ),
+        }
