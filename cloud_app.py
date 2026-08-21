@@ -313,6 +313,42 @@ def demo_safe_recovery():
 
             REFUND_PROVIDER_DIR
             / ".replay_context.json",
+
+            # Remove every generated artifact whose stale
+            # contents could otherwise masquerade as proof
+            # from the current Cloud execution.
+            SAFE_RETURN_SCENARIO
+            / "diagnosis.json",
+
+            SAFE_RETURN_SCENARIO
+            / "policy.json",
+
+            SAFE_RETURN_SCENARIO
+            / "repair-plan.json",
+
+            SAFE_RETURN_SCENARIO
+            / "plan-validation.json",
+
+            SAFE_RETURN_SCENARIO
+            / "replay-session.json",
+
+            SAFE_RETURN_SCENARIO
+            / "action-recovery-verification.json",
+
+            SAFE_RETURN_SCENARIO
+            / "mission-verification.json",
+
+            SAFE_RETURN_SCENARIO
+            / "effect-probe.json",
+
+            SAFE_RETURN_SCENARIO
+            / "orchestration.json",
+
+            SAFE_RETURN_SCENARIO
+            / "orchestrated-verification.json",
+
+            SAFE_RETURN_SCENARIO
+            / "orchestrated-terminal.txt",
         ]
 
         for path in runtime_paths:
