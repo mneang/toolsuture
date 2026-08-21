@@ -1,0 +1,26 @@
+{
+  "cloud_revision": "toolsuture-c92343d",
+  "replay_id": "e2d63ca8-7b67-4f2c-bcc6-26d981245cab",
+  "event_count": 16,
+  "stage_event_count": 14,
+  "checks": {
+    "real_stream_events_received": true,
+    "observe_completed": true,
+    "diagnose_completed": true,
+    "policy_completed": true,
+    "plan_completed": true,
+    "validate_completed": true,
+    "replay_completed": true,
+    "verify_completed": true,
+    "auto_repair_safe": true,
+    "risk_low": true,
+    "policy_approved": true,
+    "validation_validated": true,
+    "recovery_complete": true,
+    "capability_restored": true,
+    "mission_completed": true,
+    "zero_victim_bytes_changed": true,
+    "overall_pass": true
+  },
+  "all_checks_pass": true
+}

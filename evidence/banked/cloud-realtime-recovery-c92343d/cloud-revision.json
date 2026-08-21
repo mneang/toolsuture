@@ -1,0 +1,123 @@
+{
+  "apiVersion": "serving.knative.dev/v1",
+  "kind": "Revision",
+  "metadata": {
+    "annotations": {
+      "autoscaling.knative.dev/maxScale": "1",
+      "run.googleapis.com/build-source-location": "{\"toolsuture-1\":\"gs://run-sources-toolsuture-us-west2/services/toolsuture/1787290348.798825-9f79ffe12e454f2bbdf68a2a957f996c.zip#1787290349311911\"}",
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "580.0.0",
+      "run.googleapis.com/operation-id": "d26ea7cd-620f-4195-ad1d-ce44565df45e",
+      "run.googleapis.com/startup-cpu-boost": "true",
+      "serving.knative.dev/creator": "mikeyneang11@gmail.com"
+    },
+    "creationTimestamp": "2026-08-21T05:33:13.342519Z",
+    "generation": 1,
+    "labels": {
+      "cloud.googleapis.com/location": "us-west2",
+      "run.googleapis.com/startupProbeType": "Default",
+      "serving.knative.dev/configuration": "toolsuture",
+      "serving.knative.dev/configurationGeneration": "9",
+      "serving.knative.dev/route": "toolsuture",
+      "serving.knative.dev/service": "toolsuture",
+      "serving.knative.dev/serviceUid": "2eea17a8-6a6e-4c6c-a4db-616117279383"
+    },
+    "name": "toolsuture-c92343d",
+    "namespace": "1016855437388",
+    "ownerReferences": [
+      {
+        "apiVersion": "serving.knative.dev/v1",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "kind": "Configuration",
+        "name": "toolsuture",
+        "uid": "e58580a8-0a26-4954-b8d4-8a8f615c9263"
+      }
+    ],
+    "resourceVersion": "AAZZh/mRX60",
+    "selfLink": "/apis/serving.knative.dev/v1/namespaces/1016855437388/revisions/toolsuture-c92343d",
+    "uid": "710fc428-a08c-4b5f-a3a2-06e1c5d2acec"
+  },
+  "spec": {
+    "containerConcurrency": 1,
+    "containers": [
+      {
+        "env": [
+          {
+            "name": "GOOGLE_GENAI_USE_VERTEXAI",
+            "value": "true"
+          },
+          {
+            "name": "GOOGLE_CLOUD_PROJECT",
+            "value": "toolsuture"
+          },
+          {
+            "name": "GOOGLE_CLOUD_LOCATION",
+            "value": "global"
+          }
+        ],
+        "image": "us-west2-docker.pkg.dev/toolsuture/cloud-run-source-deploy/toolsuture@sha256:72b3daa96a8d075dd5991a7ab7d81af71fe113544ecf41286e34190fdabdf900",
+        "name": "toolsuture-1",
+        "ports": [
+          {
+            "containerPort": 8080,
+            "name": "http1"
+          }
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "1",
+            "memory": "512Mi"
+          }
+        },
+        "startupProbe": {
+          "failureThreshold": 1,
+          "periodSeconds": 240,
+          "tcpSocket": {
+            "port": 8080
+          },
+          "timeoutSeconds": 240
+        }
+      }
+    ],
+    "serviceAccountName": "toolsuture-run@toolsuture.iam.gserviceaccount.com",
+    "timeoutSeconds": 180
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-08-21T05:33:21.525427Z",
+        "message": "Deploying revision succeeded in 8.18s.",
+        "status": "True",
+        "type": "Ready"
+      },
+      {
+        "lastTransitionTime": "2026-08-21T05:33:21.594732Z",
+        "severity": "Info",
+        "status": "True",
+        "type": "Active"
+      },
+      {
+        "lastTransitionTime": "2026-08-21T05:33:21.482487Z",
+        "message": "Containers became healthy in 2.08s.",
+        "status": "True",
+        "type": "ContainerHealthy"
+      },
+      {
+        "lastTransitionTime": "2026-08-21T05:33:17.333189Z",
+        "message": "Container image import completed in 3.5s.",
+        "status": "True",
+        "type": "ContainerReady"
+      },
+      {
+        "lastTransitionTime": "2026-08-21T05:33:19.168427Z",
+        "message": "Provisioning imported containers completed in 1.83s. Checking container health. This will wait for up to 4m for the configured startup probe, including an initial delay of 0s.",
+        "status": "True",
+        "type": "ResourcesAvailable"
+      }
+    ],
+    "imageDigest": "us-west2-docker.pkg.dev/toolsuture/cloud-run-source-deploy/toolsuture@sha256:72b3daa96a8d075dd5991a7ab7d81af71fe113544ecf41286e34190fdabdf900",
+    "logUrl": "https://console.cloud.google.com/logs/viewer?project=toolsuture&resource=cloud_run_revision/service_name/toolsuture/revision_name/toolsuture-c92343d&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22toolsuture%22%0Aresource.labels.revision_name%3D%22toolsuture-c92343d%22",
+    "observedGeneration": 1
+  }
+}
