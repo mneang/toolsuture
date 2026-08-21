@@ -1,0 +1,40 @@
+{
+  "production_revision": "toolsuture-0568c25",
+  "runs": [
+    {
+      "run": 1,
+      "valid_json": true,
+      "replay_id": "73825da7-d5c9-417d-9b47-b5355a58c32c",
+      "decision": "AUTO_REPAIR_SAFE",
+      "risk": "LOW",
+      "mode": "RECOVERY_COMPLETE",
+      "mission_completed": true,
+      "bytes_changed": 0,
+      "pass": true
+    },
+    {
+      "run": 2,
+      "valid_json": true,
+      "replay_id": "64921dae-de23-484a-af4d-5cc0709cb2c0",
+      "decision": "AUTO_REPAIR_SAFE",
+      "risk": "LOW",
+      "mode": "RECOVERY_COMPLETE",
+      "mission_completed": true,
+      "bytes_changed": 0,
+      "pass": true
+    },
+    {
+      "run": 3,
+      "valid_json": true,
+      "replay_id": "38760f90-ec2c-4036-ae6d-25a2784c787d",
+      "decision": "AUTO_REPAIR_SAFE",
+      "risk": "LOW",
+      "mode": "RECOVERY_COMPLETE",
+      "mission_completed": true,
+      "bytes_changed": 0,
+      "pass": true
+    }
+  ],
+  "unique_replay_ids": true,
+  "three_for_three": true
+}
