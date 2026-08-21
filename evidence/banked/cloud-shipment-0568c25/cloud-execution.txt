@@ -1,0 +1,220 @@
+Starting new instance. Reason: DEPLOYMENT_ROLLOUT - Instance started due to traffic shifting between revisions due to deployment, traffic split adjustment, or deployment health check.
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+Default STARTUP TCP probe succeeded after 1 attempt for container "toolsuture-1" on port 8080.
+
+
+=== CLOUD SHIPMENT DIAGNOSE ===
+$ /usr/local/bin/python3.12 -m toolsuture.diagnose_case --scenario response-reshape
+{
+  "old_tool": "lookup_shipment",
+  "new_tool": "lookup_shipment",
+  "capability_relationship": "LIKELY_EQUIVALENT",
+  "field_mappings": [
+    {
+      "old_field": "tracking_id",
+      "new_field": "tracking_id",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Pass tracking_id directly to new tool tracking_id argument.",
+      "confidence": 1.0
+    },
+    {
+      "old_field": "status",
+      "new_field": "result.state",
+      "mapping_type": "SEMANTIC_DERIVATION",
+      "transformation": "Map response result.state value 'in_transit' to old status 'shipped'.",
+      "confidence": 1.0
+    },
+    {
+      "old_field": "tracking",
+      "new_field": "result.shipment.tracking_id",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Extract result.shipment.tracking_id to output tracking field.",
+      "confidence": 1.0
+    },
+    {
+      "old_field": "carrier",
+      "new_field": "result.shipment.carrier_name",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Extract result.shipment.carrier_name to output carrier field.",
+      "confidence": 1.0
+    },
+    {
+      "old_field": "eta_date",
+      "new_field": "result.shipment.estimated_delivery",
+      "mapping_type": "DIRECT_RENAME",
+      "transformation": "Extract result.shipment.estimated_delivery to output eta_date field.",
+      "confidence": 1.0
+    }
+  ],
+  "unresolved_requirements": [],
+  "risk_level": "LOW",
+  "decision": "AUTO_REPAIR_SAFE",
+  "evidence_summary": [
+    "Authoritative documentation specifies explicit semantic equivalence between v1 lookup_shipment and v2 lookup_shipment.",
+    "Input tracking_id parameter remains identical in both versions.",
+    "Nested v2 output fields map directly to v1 output fields, including state mapping from 'in_transit' to 'shipped'."
+  ],
+  "proposed_adapter_behavior": [
+    "Forward client tracking_id input argument directly to v2 lookup_shipment.",
+    "Unnest response structure from result.shipment into flat v1 ShipmentV1 fields.",
+    "Convert result.state value 'in_transit' to status value 'shipped'."
+  ],
+  "safety_notes": [
+    "The operation is read-only with no side effects or risk of data destruction.",
+    "All output fields expected by the caller can be fully derived from the v2 response without missing values."
+  ]
+}
+Saved -> evidence/scenarios/response-reshape/diagnosis.json
+=== CLOUD SHIPMENT POLICY ===
+$ /usr/local/bin/python3.12 -m toolsuture.policy_case --scenario response-reshape
+{
+  "scenario": "response-reshape",
+  "gate": "APPROVED",
+  "auto_repair_allowed": true,
+  "required_v2_fields": [
+    "tracking_id"
+  ],
+  "mapped_v2_fields": [
+    "result.shipment.carrier_name",
+    "result.shipment.estimated_delivery",
+    "result.shipment.tracking_id",
+    "result.state",
+    "tracking_id"
+  ],
+  "minimum_confidence": 0.9,
+  "block_reasons": [],
+  "source_decision": "AUTO_REPAIR_SAFE",
+  "risk_level": "LOW"
+}
+Saved -> evidence/scenarios/response-reshape/policy.json
+=== CLOUD SHIPMENT PLAN ===
+$ /usr/local/bin/python3.12 -m toolsuture.plan_case --scenario response-reshape
+{
+  "old_tool": "lookup_shipment",
+  "new_tool": "lookup_shipment",
+  "scope": "GENERAL",
+  "scope_constraints": [],
+  "request_operations": [
+    {
+      "operation": "COPY",
+      "source_field": "tracking_id",
+      "target_field": "tracking_id",
+      "factor": null,
+      "value": null,
+      "evidence": "Pass tracking_id directly to new tool tracking_id argument."
+    }
+  ],
+  "response_operations": [
+    {
+      "operation": "ENUM_MAP",
+      "source_field": "result.state",
+      "target_field": "status",
+      "value_map": [
+        {
+          "source_value": "in_transit",
+          "target_value": "shipped"
+        }
+      ],
+      "value": null,
+      "evidence": "Map response result.state value 'in_transit' to old status 'shipped'."
+    },
+    {
+      "operation": "EXTRACT",
+      "source_field": "result.shipment.tracking_id",
+      "target_field": "tracking",
+      "value_map": null,
+      "value": null,
+      "evidence": "Extract result.shipment.tracking_id to output tracking field."
+    },
+    {
+      "operation": "EXTRACT",
+      "source_field": "result.shipment.carrier_name",
+      "target_field": "carrier",
+      "value_map": null,
+      "value": null,
+      "evidence": "Extract result.shipment.carrier_name to output carrier field."
+    },
+    {
+      "operation": "EXTRACT",
+      "source_field": "result.shipment.estimated_delivery",
+      "target_field": "eta_date",
+      "value_map": null,
+      "value": null,
+      "evidence": "Extract result.shipment.estimated_delivery to output eta_date field."
+    }
+  ],
+  "rollback_action": "DISABLE_SHIM_AND_ESCALATE",
+  "canary_mission": "Check shipment TRACK-7001 and tell me whether it has shipped, the carrier, and the estimated delivery date.",
+  "decision": "READY_FOR_VALIDATION",
+  "safety_notes": [
+    "The operation is read-only with no side effects or risk of data destruction.",
+    "All output fields expected by the caller can be fully derived from the v2 response without missing values."
+  ]
+}
+Saved -> evidence/scenarios/response-reshape/repair-plan.json
+=== CLOUD SHIPMENT VALIDATE ===
+$ /usr/local/bin/python3.12 -m toolsuture.validate_plan --scenario response-reshape
+{
+  "scenario": "response-reshape",
+  "gate": "VALIDATED",
+  "execution_allowed": true,
+  "old_required_input_fields": [
+    "tracking_id"
+  ],
+  "new_required_input_fields": [
+    "tracking_id"
+  ],
+  "request_operation_targets": [
+    "tracking_id"
+  ],
+  "old_required_response_fields": [
+    "carrier",
+    "eta_date",
+    "status",
+    "tracking"
+  ],
+  "new_response_paths": [
+    "result.shipment.carrier_name",
+    "result.shipment.estimated_delivery",
+    "result.shipment.tracking_id",
+    "result.state"
+  ],
+  "response_operation_targets": [
+    "carrier",
+    "eta_date",
+    "status",
+    "tracking"
+  ],
+  "output_contract_changed": true,
+  "scope_fields": [],
+  "reasons": []
+}
+Saved -> evidence/scenarios/response-reshape/plan-validation.json
+=== CLOUD SHIPMENT RECOVERY ===
+$ /usr/local/bin/python3.12 -m toolsuture.recover_case --scenario response-reshape --resume --execute
+Saved -> evidence/scenarios/response-reshape/orchestration.json
+========================================
+TOOLSUTURE RECOVERY ORCHESTRATOR
+========================================
+scenario: response-reshape
+resume: True
+execute: True
+OBSERVE
+  ✓ mission
+  ✓ old contract
+  ✓ new contract
+  ✓ provider semantics
+DIAGNOSE
+  decision: AUTO_REPAIR_SAFE
+    "victim_reported_success": true,
+    "contract_break_disappeared": true,
+    "no_quota_failure": true,
+    "no_traceback": true,
+    "victim_source_unchanged": true
+  },
+  "audit_event": {
+    "recorded_at": "2026-08-21T03:53:18.134010+00:00",
+    "replay_id": "73825da7-d5c9-417d-9b47-b5355a58c32c",
