@@ -1,0 +1,15 @@
+?? evidence/banked/cloud-shipment-0568c25/
+?? evidence/evaluation/goal4-live/runs/
+?? evidence/scenarios/blind-03/runs/
+?? evidence/scenarios/response-reshape/effect-probe.json
+?? evidence/scenarios/response-reshape/orchestrated-terminal.txt
+?? evidence/scenarios/response-reshape/orchestrated-verification.json
+?? evidence/scenarios/response-reshape/orchestration.json
+?? evidence/scenarios/response-reshape/pre-orchestration-verified-proof.json
+?? evidence/scenarios/response-reshape/runs/
+?? evidence/scenarios/safe-return/effect-probe.json
+?? evidence/scenarios/safe-return/orchestrated-terminal.txt
+?? evidence/scenarios/safe-return/orchestrated-verification.json
+?? evidence/scenarios/safe-return/orchestration.json
+?? evidence/scenarios/safe-return/pre-registry-verified-proof.json
+?? evidence/scenarios/safe-return/runs/

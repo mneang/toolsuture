@@ -1,0 +1,26 @@
+{
+  "banked_at_utc": "2026-08-21T03:55:21.092920+00:00",
+  "cloud_revision": "toolsuture-0568c25",
+  "replay_id": "73825da7-d5c9-417d-9b47-b5355a58c32c",
+  "scenario": "response-reshape",
+  "checks": {
+    "cloud_execution": true,
+    "fresh_semantic_diagnosis": true,
+    "auto_repair_safe": true,
+    "risk_low": true,
+    "policy_approved": true,
+    "plan_validated": true,
+    "recovery_complete": true,
+    "mission_completed": true,
+    "capability_restored": true,
+    "replay_linked_audit": true,
+    "fresh_audit": true,
+    "v2_observed": true,
+    "v1_reconstructed": true,
+    "victim_succeeded": true,
+    "victim_unchanged": true,
+    "zero_bytes_changed": true,
+    "overall_pass": true
+  },
+  "all_checks_pass": true
+}

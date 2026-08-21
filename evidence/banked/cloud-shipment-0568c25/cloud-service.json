@@ -1,0 +1,131 @@
+{
+  "apiVersion": "serving.knative.dev/v1",
+  "kind": "Service",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/build-enable-automatic-updates": "false",
+      "run.googleapis.com/build-id": "6d3eda2a-bc56-47c0-ac81-d3525b8b5728",
+      "run.googleapis.com/build-image-uri": "us-west2-docker.pkg.dev/toolsuture/cloud-run-source-deploy/toolsuture",
+      "run.googleapis.com/build-name": "projects/1016855437388/locations/us-west2/builds/6d3eda2a-bc56-47c0-ac81-d3525b8b5728",
+      "run.googleapis.com/build-source-location": "gs://run-sources-toolsuture-us-west2/services/toolsuture/1787284296.601629-7f7a2b09a8834f01b73ec02e8fc0c300.zip#1787284297034306",
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "580.0.0",
+      "run.googleapis.com/ingress": "all",
+      "run.googleapis.com/ingress-status": "all",
+      "run.googleapis.com/maxScale": "20",
+      "run.googleapis.com/operation-id": "d2b6ee40-3c19-4e71-b83f-19665ed59420",
+      "run.googleapis.com/urls": "[\"https://toolsuture-1016855437388.us-west2.run.app\",\"https://toolsuture-fx7bbo3mpq-wl.a.run.app\"]",
+      "serving.knative.dev/creator": "mikeyneang11@gmail.com",
+      "serving.knative.dev/lastModifier": "mikeyneang11@gmail.com"
+    },
+    "creationTimestamp": "2026-08-20T04:56:10.165820Z",
+    "generation": 7,
+    "labels": {
+      "cloud.googleapis.com/location": "us-west2"
+    },
+    "name": "toolsuture",
+    "namespace": "1016855437388",
+    "resourceVersion": "AAZZhpDhN64",
+    "selfLink": "/apis/serving.knative.dev/v1/namespaces/1016855437388/services/toolsuture",
+    "uid": "2eea17a8-6a6e-4c6c-a4db-616117279383"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "autoscaling.knative.dev/maxScale": "1",
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "580.0.0",
+          "run.googleapis.com/startup-cpu-boost": "true"
+        },
+        "labels": {
+          "run.googleapis.com/startupProbeType": "Default"
+        },
+        "name": "toolsuture-0568c25"
+      },
+      "spec": {
+        "containerConcurrency": 1,
+        "containers": [
+          {
+            "env": [
+              {
+                "name": "GOOGLE_GENAI_USE_VERTEXAI",
+                "value": "true"
+              },
+              {
+                "name": "GOOGLE_CLOUD_PROJECT",
+                "value": "toolsuture"
+              },
+              {
+                "name": "GOOGLE_CLOUD_LOCATION",
+                "value": "global"
+              }
+            ],
+            "image": "us-west2-docker.pkg.dev/toolsuture/cloud-run-source-deploy/toolsuture@sha256:8173f3cc7b0da9f870d5f872452d2c55fbe7cd908728c3b336d547a221a3e439",
+            "ports": [
+              {
+                "containerPort": 8080,
+                "name": "http1"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "1",
+                "memory": "512Mi"
+              }
+            },
+            "startupProbe": {
+              "failureThreshold": 1,
+              "periodSeconds": 240,
+              "tcpSocket": {
+                "port": 8080
+              },
+              "timeoutSeconds": 240
+            }
+          }
+        ],
+        "serviceAccountName": "toolsuture-run@toolsuture.iam.gserviceaccount.com",
+        "timeoutSeconds": 180
+      }
+    },
+    "traffic": [
+      {
+        "latestRevision": true,
+        "percent": 100
+      }
+    ]
+  },
+  "status": {
+    "address": {
+      "url": "https://toolsuture-fx7bbo3mpq-wl.a.run.app"
+    },
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-08-21T03:52:31.432622Z",
+        "status": "True",
+        "type": "Ready"
+      },
+      {
+        "lastTransitionTime": "2026-08-21T03:52:29.044289Z",
+        "status": "True",
+        "type": "ConfigurationsReady"
+      },
+      {
+        "lastTransitionTime": "2026-08-21T03:52:31.403940Z",
+        "status": "True",
+        "type": "RoutesReady"
+      }
+    ],
+    "latestCreatedRevisionName": "toolsuture-0568c25",
+    "latestReadyRevisionName": "toolsuture-0568c25",
+    "observedGeneration": 7,
+    "traffic": [
+      {
+        "latestRevision": true,
+        "percent": 100,
+        "revisionName": "toolsuture-0568c25"
+      }
+    ],
+    "url": "https://toolsuture-fx7bbo3mpq-wl.a.run.app"
+  }
+}
