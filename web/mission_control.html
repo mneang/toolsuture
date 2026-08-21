@@ -2094,6 +2094,67 @@ body.run-active
     </div>
 
 
+
+    <div
+      class="safety-outcome"
+      id="safetyOutcome"
+      style="display:none"
+    >
+
+      <div class="safety-outcome-top">
+
+        <div>
+          <div class="safety-kicker">
+            UNSAFE MIGRATION REFUSED
+          </div>
+
+          <div class="safety-title">
+            ToolSuture stopped before execution
+          </div>
+        </div>
+
+        <div class="safety-status">
+          SAFE HOLD
+        </div>
+
+      </div>
+
+
+      <div class="safety-facts">
+
+        <div class="safety-fact">
+          <span>SEMANTIC DECISION</span>
+          <strong id="safetyDecision">
+            REFUSE
+          </strong>
+        </div>
+
+        <div class="safety-fact">
+          <span>POLICY GATE</span>
+          <strong id="safetyPolicy">
+            BLOCKED
+          </strong>
+        </div>
+
+        <div class="safety-fact">
+          <span>EXECUTION ATTEMPTS</span>
+          <strong id="safetyExecutions">
+            0
+          </strong>
+        </div>
+
+        <div class="safety-fact">
+          <span>AGENT MODIFICATION</span>
+          <strong id="safetyVictim">
+            0 BYTES
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+
     <div class="meta">
 
       <div class="meta-item">
@@ -4808,6 +4869,408 @@ window.enhanceVerifiedResult =
     // It now lives inside the collapsed details element.
     $("transform").style.display =
       "grid";
+  };
+
+</script>
+
+
+
+
+<style id="TOOLSUTURE_SAFE_HOLD_V9">
+
+/* ==========================================================
+   V9 — SELECTIVE AUTONOMY / SAFE HOLD
+========================================================== */
+
+.result.blocked {
+  background:
+    radial-gradient(
+      760px 340px at 13% 0%,
+      rgba(255,102,122,.10),
+      transparent 68%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(30,22,33,.98),
+      rgba(10,18,29,.98)
+    ) !important;
+
+  border-color:
+    rgba(255,102,122,.30) !important;
+}
+
+
+.result.blocked
+.result-title {
+  max-width:1180px;
+
+  color:#fff5f6;
+}
+
+
+.result.blocked
+.zero {
+  color:var(--bad) !important;
+}
+
+
+.result.blocked
+.zero-explainer {
+  color:#b99ca3;
+}
+
+
+/* ----------------------------------------------------------
+   SAFE-HOLD OUTCOME
+---------------------------------------------------------- */
+
+.safety-outcome {
+  margin-top:28px;
+
+  padding:
+    24px 25px;
+
+  border:
+    1px solid rgba(255,102,122,.24);
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      130deg,
+      rgba(255,102,122,.07),
+      rgba(255,102,122,.018)
+    );
+}
+
+
+.safety-outcome-top {
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:20px;
+}
+
+
+.safety-kicker {
+  color:#ff8292;
+
+  font-size:9px;
+  font-weight:900;
+
+  letter-spacing:.15em;
+}
+
+
+.safety-title {
+  margin-top:5px;
+
+  color:#f7eef0;
+
+  font-size:
+    clamp(22px,2vw,30px);
+
+  font-weight:900;
+
+  letter-spacing:-.035em;
+}
+
+
+.safety-status {
+  padding:
+    9px 13px;
+
+  border:
+    1px solid rgba(255,102,122,.34);
+
+  border-radius:999px;
+
+  color:#ff8796;
+
+  background:
+    rgba(255,102,122,.08);
+
+  font-size:10px;
+  font-weight:950;
+
+  letter-spacing:.08em;
+}
+
+
+.safety-facts {
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+
+  gap:10px;
+
+  margin-top:20px;
+}
+
+
+.safety-fact {
+  padding:
+    13px 14px;
+
+  border-top:
+    1px solid rgba(255,135,150,.13);
+}
+
+
+.safety-fact span {
+  display:block;
+
+  color:#8f777f;
+
+  font-size:8px;
+  font-weight:900;
+
+  letter-spacing:.13em;
+}
+
+
+.safety-fact strong {
+  display:block;
+
+  margin-top:7px;
+
+  color:#ffe7ea;
+
+  font-size:14px;
+}
+
+
+.result.blocked
+.meta-item {
+  border-color:
+    rgba(255,102,122,.13);
+}
+
+
+.result.blocked
+.verified-stat {
+  border-color:
+    rgba(255,102,122,.16);
+
+  background:
+    rgba(255,102,122,.025);
+}
+
+
+@media(max-width:850px) {
+
+  .safety-outcome-top {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .safety-facts {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+}
+
+
+@media(max-width:520px) {
+
+  .safety-facts {
+    grid-template-columns:1fr;
+  }
+}
+
+</style>
+
+
+
+
+<script id="TOOLSUTURE_SAFE_HOLD_V9_JS">
+
+const originalShowDangerV9 =
+  window.showDanger;
+
+
+window.showDanger =
+  function(data) {
+
+    originalShowDangerV9(
+      data
+    );
+
+
+    /*
+      Remove success-only recovery content.
+      Nothing here changes the backend decision.
+    */
+
+    const mission =
+      $("missionOutcome");
+
+    if (mission) {
+      mission.style.display =
+        "none";
+    }
+
+
+    const verified =
+      $("verifiedStrip");
+
+    if (verified) {
+      verified.style.display =
+        "none";
+    }
+
+
+    const story =
+      $("contractStory");
+
+    if (story) {
+      story.style.display =
+        "none";
+    }
+
+
+    const contract =
+      $("contractDetails");
+
+    if (contract) {
+      contract.style.display =
+        "none";
+    }
+
+
+    /*
+      Judge-first safety headline.
+    */
+
+    $("resultTitle").textContent =
+      "🛑 UNSAFE MIGRATION REFUSED";
+
+    $("transition").innerHTML = `
+      <div class="transition-box">
+        CRITICAL SEMANTIC DRIFT
+      </div>
+
+      <div>→</div>
+
+      <div
+        class="transition-box"
+        style="color:var(--bad)"
+      >
+        SAFE_HOLD
+      </div>
+    `;
+
+
+    $("zeroBytes").textContent =
+      "0 EXECUTION ATTEMPTS";
+
+    $("zeroBytes").style.color =
+      "var(--bad)";
+
+
+    const explainer =
+      $("zeroExplainer");
+
+    if (explainer) {
+      explainer.textContent =
+        "ToolSuture refused the unsafe repair before any external action occurred.";
+    }
+
+
+    /*
+      Real backend fields.
+    */
+
+    $("safetyDecision").textContent =
+      data.diagnosis_decision
+      || "REFUSE";
+
+    $("safetyPolicy").textContent =
+      data.policy_gate
+      || "BLOCKED";
+
+    $("safetyExecutions").textContent =
+      data.execution_attempted
+      === false
+        ? "0"
+        : "UNEXPECTED";
+
+    $("safetyVictim").textContent =
+      data.victim_agent_modified
+      === false
+        ? "0 BYTES"
+        : "MODIFIED";
+
+
+    $("safetyOutcome").style.display =
+      "block";
+
+
+    /*
+      Correct metadata for the refusal run.
+    */
+
+    $("revision").textContent =
+      data.cloud_revision
+      || "unknown";
+
+    $("runId").textContent =
+      data.run_id
+      || "unknown";
+
+    $("mode").textContent =
+      data.mode
+      || "SAFE_HOLD";
+
+
+    /*
+      Keep verification available,
+      collapsed by default.
+    */
+
+    const proof =
+      $("proofDetails");
+
+    if (proof) {
+      proof.open = false;
+    }
+  };
+
+
+/*
+  A successful run must hide any prior
+  safety-refusal panel.
+*/
+
+const originalShowSafeV9 =
+  window.showSafe;
+
+
+window.showSafe =
+  function(data) {
+
+    const safety =
+      $("safetyOutcome");
+
+    if (safety) {
+      safety.style.display =
+        "none";
+    }
+
+    const contract =
+      $("contractDetails");
+
+    if (contract) {
+      contract.style.display =
+        "";
+    }
+
+    originalShowSafeV9(
+      data
+    );
   };
 
 </script>
