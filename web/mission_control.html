@@ -3171,6 +3171,586 @@ body.run-active
 </style>
 
 
+
+
+<script id="TOOLSUTURE_REALTIME_UI_V1">
+
+/*
+  Real execution visualization.
+
+  No timer marks a stage complete.
+  A stage becomes complete only after Cloud sends
+  the corresponding event.
+*/
+
+
+const postRunScenario =
+  window.runScenario.bind(window);
+
+
+function realtimeFlowNode(name) {
+
+  const aliases = {
+    plan: "repair",
+    validate: "repair"
+  };
+
+  return document.querySelector(
+    `[data-flow="${aliases[name] || name}"]`
+  );
+}
+
+
+function realtimeMarkFlow(
+  name,
+  state
+) {
+
+  const node =
+    realtimeFlowNode(name);
+
+  if (!node) return;
+
+  node.classList.remove(
+    "active",
+    "done",
+    "stopped",
+    "muted"
+  );
+
+  if (state) {
+    node.classList.add(state);
+  }
+}
+
+
+function realtimeSetStep(
+  name,
+  state,
+  value
+) {
+
+  const el =
+    document.querySelector(
+      `[data-step="${name}"]`
+    );
+
+  if (!el) return;
+
+  el.classList.remove(
+    "running",
+    "pass",
+    "stop"
+  );
+
+  const icon =
+    el.querySelector(
+      ".step-icon"
+    );
+
+  const output =
+    el.querySelector(
+      ".step-value"
+    );
+
+  if (state === "running") {
+
+    el.classList.add(
+      "running"
+    );
+
+    icon.textContent =
+      "●";
+
+  } else if (
+    state === "complete"
+  ) {
+
+    el.classList.add(
+      "pass"
+    );
+
+    icon.textContent =
+      "✓";
+
+  } else if (
+    state === "blocked"
+  ) {
+
+    el.classList.add(
+      "stop"
+    );
+
+    icon.textContent =
+      "×";
+  }
+
+  output.textContent =
+    value || state;
+}
+
+
+function realtimeStageEvent(
+  event
+) {
+
+  const {
+    stage,
+    status,
+    value
+  } = event;
+
+
+  // ------------------------------------------
+  // Detailed execution trace
+  // ------------------------------------------
+
+  realtimeSetStep(
+    stage,
+    status === "started"
+      ? "running"
+      : (
+          status === "complete"
+            ? "complete"
+            : "blocked"
+        ),
+    value
+  );
+
+
+  // ------------------------------------------
+  // Main horizontal recovery path
+  // ------------------------------------------
+
+  if (status === "started") {
+
+    realtimeMarkFlow(
+      stage,
+      "active"
+    );
+
+    $("flowState").textContent =
+      `${stage.toUpperCase()} · in progress`;
+
+  }
+
+  if (status === "complete") {
+
+    realtimeMarkFlow(
+      stage,
+      "done"
+    );
+
+    $("flowState").textContent =
+      `${stage.toUpperCase()} · complete`;
+
+  }
+
+  if (status === "blocked") {
+
+    realtimeMarkFlow(
+      stage,
+      "stopped"
+    );
+
+    $("flowState").textContent =
+      `${stage.toUpperCase()} · blocked`;
+
+  }
+
+
+  // ------------------------------------------
+  // Semantic diagnosis becomes visible
+  // immediately when Gemini actually returns.
+  // ------------------------------------------
+
+  if (
+    stage === "diagnose"
+    && status === "complete"
+  ) {
+
+    $("diagnosis").textContent =
+      event.decision
+      || "DIAGNOSIS COMPLETE";
+
+    $("diagnosis").className =
+      (
+        event.decision
+        === "AUTO_REPAIR_SAFE"
+      )
+        ? "diagnosis-big good"
+        : "diagnosis-big bad";
+
+    $("diagnosisBadges").innerHTML = `
+      <span class="badge ${
+        event.risk_level === "LOW"
+          ? "good-badge"
+          : "bad-badge"
+      }">
+        ${event.risk_level || "UNKNOWN"} RISK
+      </span>
+    `;
+
+    $("diagnosisDetail").textContent =
+      "Fresh Gemini semantic diagnosis returned " +
+      "from the current Cloud execution.";
+  }
+
+
+  // ------------------------------------------
+  // Policy appears as soon as policy actually
+  // returns.
+  // ------------------------------------------
+
+  if (
+    stage === "policy"
+    && (
+      status === "complete"
+      || status === "blocked"
+    )
+  ) {
+
+    const className =
+      status === "complete"
+        ? "good-badge"
+        : "bad-badge";
+
+    $("diagnosisBadges")
+      .insertAdjacentHTML(
+        "beforeend",
+        `
+        <span class="badge ${className}">
+          ${value}
+        </span>
+        `
+      );
+  }
+}
+
+
+async function runSafeRealtime() {
+
+  resetPipeline();
+  resetFlowRail();
+
+  $("result").className =
+    "result";
+
+  $("diagnosis").textContent =
+    "CONNECTING";
+
+  $("diagnosis").className =
+    "diagnosis-big";
+
+  $("diagnosisBadges").innerHTML = `
+    <span class="badge">
+      current Cloud execution
+    </span>
+  `;
+
+  $("diagnosisDetail").textContent =
+    "Connecting to the live recovery stream. " +
+    "No stage will be marked complete until " +
+    "Cloud returns evidence for it.";
+
+  setBusy(true);
+
+  document.body.classList.add(
+    "run-active"
+  );
+
+  $("flowRail").classList.add(
+    "is-running"
+  );
+
+  $("flowState").textContent =
+    "Connecting to Cloud Run";
+
+
+  let finished = false;
+
+  const source =
+    new EventSource(
+      "/demo/shipment-recovery-stream"
+    );
+
+
+  source.onmessage = (
+    message
+  ) => {
+
+    let event;
+
+    try {
+
+      event =
+        JSON.parse(
+          message.data
+        );
+
+    } catch (_) {
+
+      return;
+    }
+
+
+    if (
+      event.type === "stream"
+    ) {
+
+      $("flowState").textContent =
+        "Cloud execution connected";
+
+      return;
+    }
+
+
+    if (
+      event.type === "stage"
+    ) {
+
+      realtimeStageEvent(
+        event
+      );
+
+      return;
+    }
+
+
+    if (
+      event.type === "result"
+    ) {
+
+      finished = true;
+
+      source.close();
+
+      $("flowRail")
+        .classList.remove(
+          "is-running"
+        );
+
+      document.body
+        .classList.remove(
+          "run-active"
+        );
+
+      setBusy(false);
+
+      const data =
+        event.data || {};
+
+      if (
+        data.passed === true
+      ) {
+
+        resolveFlowSafe(
+          data
+        );
+
+        showSafe(
+          data
+        );
+
+      } else {
+
+        $("flowState").textContent =
+          "Recovery did not pass verification";
+
+        $("diagnosisDetail")
+          .textContent =
+          "The current Cloud run did not " +
+          "produce a verified recovery. " +
+          "No success claim was rendered.";
+      }
+
+      return;
+    }
+
+
+    if (
+      event.type === "error"
+    ) {
+
+      finished = true;
+
+      source.close();
+
+      $("flowRail")
+        .classList.remove(
+          "is-running"
+        );
+
+      document.body
+        .classList.remove(
+          "run-active"
+        );
+
+      setBusy(false);
+
+      resolveFlowError();
+
+      $("diagnosis").textContent =
+        "EXECUTION ERROR";
+
+      $("diagnosis").className =
+        "diagnosis-big bad";
+
+      $("diagnosisDetail").textContent =
+        event.message
+        || "Cloud execution failed.";
+
+      return;
+    }
+  };
+
+
+  source.onerror = () => {
+
+    if (finished) {
+      return;
+    }
+
+    finished = true;
+
+    source.close();
+
+    $("flowRail")
+      .classList.remove(
+        "is-running"
+      );
+
+    document.body
+      .classList.remove(
+        "run-active"
+      );
+
+    setBusy(false);
+
+    resolveFlowError();
+
+    $("diagnosis").textContent =
+      "STREAM DISCONNECTED";
+
+    $("diagnosis").className =
+      "diagnosis-big bad";
+
+    $("diagnosisDetail").textContent =
+      "The live Cloud stream disconnected. " +
+      "ToolSuture will not render a success claim.";
+  };
+}
+
+
+/*
+  Preserve the existing dangerous-drift behavior.
+  Only the safe recovery switches to the new real-time path.
+*/
+
+window.runScenario =
+  async function(kind) {
+
+    if (
+      kind === "safe"
+    ) {
+
+      return runSafeRealtime();
+    }
+
+    return postRunScenario(
+      kind
+    );
+  };
+
+</script>
+
+
+<style id="TOOLSUTURE_REALTIME_UI_STYLES">
+
+/* A genuinely running backend stage. */
+
+.step.running {
+  border-color:
+    rgba(108,169,255,.42) !important;
+
+  background:
+    rgba(108,169,255,.055) !important;
+
+  box-shadow:
+    inset 3px 0 0
+    rgba(108,169,255,.60);
+}
+
+
+.step.running
+.step-icon {
+  color:#84b9ff !important;
+
+  border-color:
+    rgba(108,169,255,.60) !important;
+
+  animation:
+    realtimePulse
+    1.05s ease-in-out infinite;
+}
+
+
+.flow-node.active {
+  color:#dce9f7 !important;
+
+  transform:
+    translateY(-2px);
+}
+
+
+.flow-node.active
+.flow-dot {
+  border-color:
+    rgba(108,169,255,.75) !important;
+
+  background:
+    rgba(108,169,255,.25) !important;
+
+  box-shadow:
+    0 0 0 4px #0d1a29,
+    0 0 22px rgba(108,169,255,.40) !important;
+
+  animation:
+    realtimePulse
+    1.05s ease-in-out infinite;
+}
+
+
+@keyframes realtimePulse {
+
+  0%,
+  100% {
+    transform:scale(.92);
+    opacity:.58;
+  }
+
+  50% {
+    transform:scale(1.09);
+    opacity:1;
+  }
+}
+
+
+@media(
+  prefers-reduced-motion:reduce
+) {
+
+  .step.running
+  .step-icon,
+
+  .flow-node.active
+  .flow-dot {
+    animation:none !important;
+  }
+}
+
+</style>
+
 </body>
 </html>
 

@@ -1451,3 +1451,27 @@ def evidence_summary():
                 ),
         },
     }
+
+
+# TOOLSUTURE_REALTIME_RECOVERY_V1
+
+@app.get("/demo/shipment-recovery-stream")
+def shipment_recovery_stream():
+
+    from fastapi.responses import StreamingResponse
+
+    from toolsuture.cloud_stream import (
+        shipment_recovery_event_stream,
+    )
+
+    return StreamingResponse(
+        shipment_recovery_event_stream(ROOT),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control":
+                "no-cache, no-transform",
+
+            "X-Accel-Buffering":
+                "no",
+        },
+    )
