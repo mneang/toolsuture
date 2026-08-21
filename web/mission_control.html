@@ -5,28 +5,49 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ToolSuture Mission Control</title>
 
+
 <style>
 :root {
-  --bg:#07111d;
-  --panel:#0d1a29;
-  --panel2:#101f31;
-  --line:#24364b;
-  --text:#f4f7fb;
-  --muted:#91a2b7;
-  --good:#31d07c;
-  --warn:#ffcf5c;
-  --bad:#ff6276;
-  --accent:#65a7ff;
-  --accent2:#b48cff;
+  --bg:#06101b;
+  --bg2:#091421;
+  --surface:#0d1927;
+  --surface2:#111f30;
+  --surface3:#152437;
+
+  --line:rgba(145,175,210,.16);
+  --line-strong:rgba(145,175,210,.26);
+
+  --text:#f7f9fc;
+  --muted:#91a3b9;
+  --muted2:#6f8299;
+
+  --good:#35d68a;
+  --warn:#ffc95c;
+  --bad:#ff667a;
+
+  --blue:#6ca9ff;
+  --violet:#ae87ff;
+
+  --shadow:
+    0 22px 60px rgba(0,0,0,.22);
+
+  --radius-xl:24px;
+  --radius-lg:18px;
+  --radius-md:13px;
 }
 
 * {
   box-sizing:border-box;
 }
 
+html {
+  scroll-behavior:smooth;
+}
+
 body {
   margin:0;
   min-height:100vh;
+
   font-family:
     Inter,
     ui-sans-serif,
@@ -35,19 +56,54 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+
+  color:var(--text);
+
   background:
     radial-gradient(
-      circle at 75% 0%,
-      rgba(80,104,255,.18),
-      transparent 35%
+      900px 540px at 82% -80px,
+      rgba(88,103,255,.17),
+      transparent 62%
     ),
     radial-gradient(
-      circle at 10% 30%,
-      rgba(32,190,145,.10),
-      transparent 30%
+      700px 520px at -100px 30%,
+      rgba(31,194,148,.08),
+      transparent 65%
     ),
-    var(--bg);
-  color:var(--text);
+    linear-gradient(
+      180deg,
+      #06101b 0%,
+      #07121e 55%,
+      #050c15 100%
+    );
+
+  letter-spacing:-.01em;
+}
+
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.012) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.012) 1px,
+      transparent 1px
+    );
+
+  background-size:56px 56px;
+  mask-image:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.5),
+      transparent 70%
+    );
 }
 
 button {
@@ -55,139 +111,420 @@ button {
 }
 
 .shell {
-  max-width:1440px;
-  margin:auto;
-  padding:34px 28px 64px;
+  width:min(100% - 44px, 1420px);
+  margin:0 auto;
+  padding:22px 0 60px;
 }
 
+
+/* ---------------------------------------------------------
+   TOP BAR
+--------------------------------------------------------- */
+
 .topbar {
+  min-height:44px;
+
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:20px;
-  margin-bottom:30px;
+
+  margin-bottom:18px;
 }
 
 .brand {
   display:flex;
   align-items:center;
-  gap:12px;
-  font-weight:800;
-  letter-spacing:.08em;
+  gap:11px;
+
+  font-size:15px;
+  font-weight:900;
+  letter-spacing:.075em;
 }
 
 .logo {
-  width:34px;
-  height:34px;
+  width:36px;
+  height:36px;
+
   display:grid;
   place-items:center;
-  border-radius:10px;
+
+  border-radius:11px;
+
   background:
     linear-gradient(
       145deg,
-      var(--accent),
-      var(--accent2)
+      var(--blue),
+      var(--violet)
     );
+
   box-shadow:
-    0 0 35px rgba(100,150,255,.25);
+    0 10px 28px rgba(105,130,255,.27);
+
+  font-size:13px;
+  letter-spacing:.08em;
 }
 
 .live {
   display:flex;
   align-items:center;
   gap:8px;
-  padding:8px 12px;
+
+  padding:8px 13px;
+
   border:1px solid var(--line);
   border-radius:999px;
+
+  background:
+    rgba(8,18,29,.62);
+
+  backdrop-filter:blur(12px);
+
   color:var(--muted);
-  font-size:13px;
+  font-size:12px;
+  letter-spacing:.025em;
 }
 
 .dot {
-  width:9px;
-  height:9px;
+  width:8px;
+  height:8px;
+
   border-radius:50%;
+
   background:var(--good);
+
   box-shadow:
-    0 0 14px rgba(49,208,124,.9);
+    0 0 16px rgba(53,214,138,.82);
 }
+
+
+/* ---------------------------------------------------------
+   HERO — YAMAL PINS THE WIDTH
+--------------------------------------------------------- */
 
 .hero {
   display:grid;
-  grid-template-columns:
-    minmax(0,1.4fr)
-    minmax(360px,.8fr);
-  gap:24px;
-  align-items:stretch;
-  margin-bottom:24px;
-}
+  grid-template-columns:1fr;
+  gap:13px;
 
-.hero-main,
-.hero-stats,
-.card,
-.result {
-  border:1px solid var(--line);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.025),
-      rgba(255,255,255,.006)
-    ),
-    var(--panel);
-  border-radius:20px;
+  margin-bottom:18px;
 }
 
 .hero-main {
-  padding:34px;
+  position:relative;
+  overflow:hidden;
+
+  min-height:300px;
+
+  padding:
+    clamp(27px,3vw,42px)
+    clamp(30px,4vw,58px);
+
+  border:1px solid var(--line);
+  border-radius:var(--radius-xl);
+
+  background:
+    radial-gradient(
+      650px 340px at 88% 12%,
+      rgba(109,120,255,.12),
+      transparent 64%
+    ),
+    linear-gradient(
+      125deg,
+      rgba(17,32,49,.96),
+      rgba(10,23,37,.96)
+    );
+
+  box-shadow:var(--shadow);
+}
+
+.hero-main::after {
+  content:"";
+
+  position:absolute;
+
+  width:360px;
+  height:360px;
+
+  right:-130px;
+  bottom:-220px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(111,159,255,.18),
+      transparent 68%
+    );
+
+  pointer-events:none;
 }
 
 .eyebrow {
-  color:var(--accent);
-  font-size:12px;
-  letter-spacing:.14em;
-  font-weight:800;
-  margin-bottom:14px;
+  position:relative;
+  z-index:1;
+
+  margin-bottom:15px;
+
+  color:#79b6ff;
+
+  font-size:11px;
+  font-weight:900;
+
+  letter-spacing:.18em;
 }
 
 h1 {
+  position:relative;
+  z-index:1;
+
+  max-width:1120px;
+
+  margin:0 0 17px;
+
   font-size:
-    clamp(38px,5vw,68px);
+    clamp(44px,4.2vw,68px);
+
   line-height:.98;
-  margin:0 0 18px;
-  max-width:900px;
-  letter-spacing:-.045em;
+
+  letter-spacing:-.052em;
+  font-weight:900;
 }
 
 .subtitle {
+  position:relative;
+  z-index:1;
+
+  max-width:900px;
+
   color:var(--muted);
-  font-size:18px;
+
+  font-size:
+    clamp(15px,1.25vw,18px);
+
   line-height:1.55;
-  max-width:800px;
 }
 
+
+/* ---------------------------------------------------------
+   ACTIONS — EXECUTION STARTS THE RUN
+--------------------------------------------------------- */
+
+.actions {
+  position:relative;
+  z-index:1;
+
+  display:flex;
+  align-items:center;
+  gap:11px;
+
+  flex-wrap:wrap;
+
+  margin-top:23px;
+}
+
+.btn {
+  position:relative;
+  overflow:hidden;
+
+  min-height:48px;
+
+  border:0;
+
+  cursor:pointer;
+
+  padding:0 19px;
+
+  border-radius:12px;
+
+  font-size:14px;
+  font-weight:850;
+
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease,
+    border-color .16s ease,
+    background .16s ease;
+}
+
+.btn:hover {
+  transform:translateY(-2px);
+}
+
+.btn:active {
+  transform:translateY(0);
+}
+
+.btn:disabled {
+  opacity:.48;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.primary {
+  color:white;
+
+  background:
+    linear-gradient(
+      130deg,
+      #66aaff,
+      #9d7cff
+    );
+
+  box-shadow:
+    0 12px 30px rgba(105,130,255,.18);
+}
+
+.primary:hover {
+  box-shadow:
+    0 15px 35px rgba(105,130,255,.28);
+}
+
+.danger {
+  color:#ffe8ec;
+
+  border:1px solid rgba(255,102,122,.38);
+
+  background:
+    rgba(255,102,122,.085);
+}
+
+.danger:hover {
+  background:
+    rgba(255,102,122,.13);
+
+  border-color:
+    rgba(255,102,122,.58);
+}
+
+
+/* ---------------------------------------------------------
+   CLOUD RUN STATUS
+--------------------------------------------------------- */
+
+.status-banner {
+  display:none;
+
+  position:relative;
+  z-index:1;
+
+  width:max-content;
+  max-width:100%;
+
+  margin-top:16px;
+
+  padding:10px 13px;
+
+  border:1px solid var(--line);
+  border-radius:10px;
+
+  background:
+    rgba(5,13,22,.44);
+
+  color:var(--muted);
+
+  font-size:12px;
+}
+
+.status-banner.running {
+  display:block;
+}
+
+.pulse {
+  display:inline-block;
+
+  width:8px;
+  height:8px;
+
+  margin-right:8px;
+
+  border-radius:50%;
+
+  background:var(--blue);
+
+  animation:pulse 1.1s infinite;
+}
+
+@keyframes pulse {
+  0%,100% {
+    opacity:.25;
+    transform:scale(.85);
+  }
+
+  50% {
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   PROOF STRIP — THREE PLAYERS, ONE LINE
+--------------------------------------------------------- */
+
 .hero-stats {
-  padding:24px;
   display:grid;
-  gap:12px;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:11px;
+
+  padding:0;
+
+  border:0;
+  background:transparent;
 }
 
 .stat {
-  padding:18px;
+  min-height:100px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+
+  padding:18px 22px;
+
   border:1px solid var(--line);
-  border-radius:15px;
-  background:rgba(255,255,255,.018);
+  border-radius:var(--radius-lg);
+
+  background:
+    linear-gradient(
+      150deg,
+      rgba(19,34,51,.92),
+      rgba(12,25,39,.92)
+    );
+
+  transition:
+    transform .16s ease,
+    border-color .16s ease;
+}
+
+.stat:hover {
+  transform:translateY(-2px);
+  border-color:var(--line-strong);
 }
 
 .stat-value {
-  font-size:29px;
-  font-weight:850;
-  letter-spacing:-.03em;
+  font-size:28px;
+
+  line-height:1;
+
+  font-weight:900;
+
+  letter-spacing:-.04em;
 }
 
 .stat-label {
-  margin-top:4px;
+  margin-top:7px;
+
   color:var(--muted);
-  font-size:13px;
+
+  font-size:10px;
+  font-weight:800;
+
+  letter-spacing:.075em;
 }
 
 .good {
@@ -198,88 +535,44 @@ h1 {
   color:var(--bad);
 }
 
-.actions {
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:28px;
-}
 
-.btn {
-  border:0;
-  cursor:pointer;
-  padding:14px 20px;
-  border-radius:12px;
-  font-weight:800;
-  transition:
-    transform .15s ease,
-    opacity .15s ease;
-}
-
-.btn:hover {
-  transform:translateY(-1px);
-}
-
-.btn:disabled {
-  opacity:.5;
-  cursor:not-allowed;
-  transform:none;
-}
-
-.primary {
-  background:
-    linear-gradient(
-      135deg,
-      var(--accent),
-      var(--accent2)
-    );
-  color:white;
-}
-
-.danger {
-  color:#ffdce1;
-  background:rgba(255,98,118,.12);
-  border:1px solid rgba(255,98,118,.35);
-}
-
-.status-banner {
-  display:none;
-  margin-top:18px;
-  padding:13px 15px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  color:var(--muted);
-}
-
-.status-banner.running {
-  display:block;
-}
-
-.pulse {
-  display:inline-block;
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  margin-right:8px;
-  background:var(--accent);
-  animation:pulse 1.1s infinite;
-}
-
-@keyframes pulse {
-  0%,100% { opacity:.25; }
-  50% { opacity:1; }
-}
+/* ---------------------------------------------------------
+   MIDFIELD / FINAL THIRD
+--------------------------------------------------------- */
 
 .grid {
   display:grid;
+
   grid-template-columns:
-    minmax(280px,.82fr)
-    minmax(320px,1fr)
-    minmax(330px,1fr);
-  gap:18px;
+    minmax(300px,.9fr)
+    minmax(290px,.8fr)
+    minmax(410px,1.3fr);
+
+  gap:14px;
+
+  align-items:start;
+}
+
+.card,
+.result {
+  border:1px solid var(--line);
+
+  background:
+    linear-gradient(
+      150deg,
+      rgba(17,31,47,.92),
+      rgba(10,23,36,.94)
+    );
+
+  border-radius:var(--radius-lg);
+
+  box-shadow:
+    0 14px 42px rgba(0,0,0,.10);
 }
 
 .card {
+  min-height:100%;
+
   padding:22px;
 }
 
@@ -287,49 +580,83 @@ h1 {
   display:flex;
   justify-content:space-between;
   align-items:center;
+
   gap:12px;
-  margin-bottom:18px;
+
+  margin-bottom:15px;
 }
 
 .card-title h2 {
   margin:0;
-  font-size:16px;
+
+  font-size:15px;
+  font-weight:850;
+
+  letter-spacing:-.018em;
 }
 
 .role {
-  color:var(--muted);
-  font-size:11px;
-  letter-spacing:.12em;
-  font-weight:800;
+  color:var(--muted2);
+
+  font-size:9px;
+  line-height:1;
+
+  letter-spacing:.18em;
+  font-weight:900;
 }
 
 .small {
   color:var(--muted);
-  font-size:13px;
+
+  font-size:12px;
   line-height:1.55;
 }
 
+
+/* ---------------------------------------------------------
+   GROUNDING — CONTEXT
+--------------------------------------------------------- */
+
 .evidence-block {
-  padding:13px;
-  border:1px solid var(--line);
-  border-radius:12px;
+  padding:12px;
+
+  border:1px solid rgba(145,175,210,.13);
+
+  border-radius:11px;
+
   margin-top:11px;
-  background:rgba(0,0,0,.13);
+
+  background:
+    rgba(3,10,17,.22);
 }
 
 .evidence-block b {
-  font-size:12px;
+  display:block;
+
+  margin-bottom:5px;
+
+  font-size:10px;
+  letter-spacing:.035em;
 }
 
 .mapping {
   display:grid;
+
   grid-template-columns:
     1fr auto 1fr;
+
   gap:8px;
+
   align-items:center;
-  padding:9px 0;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  font-size:12px;
+
+  padding:8px 0;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.045);
+
+  color:#b9c7d8;
+
+  font-size:10.5px;
 }
 
 .mapping:last-child {
@@ -337,102 +664,295 @@ h1 {
 }
 
 .arrow {
-  color:var(--accent);
+  color:var(--blue);
 }
 
+
+/* ---------------------------------------------------------
+   REASONING — SEMANTIC POCKET
+--------------------------------------------------------- */
+
 .diagnosis-big {
-  font-size:25px;
-  font-weight:850;
-  margin:9px 0;
+  margin:16px 0 7px;
+
+  font-size:29px;
+  line-height:1;
+
+  font-weight:900;
+
+  letter-spacing:-.04em;
 }
 
 .badge {
   display:inline-flex;
-  padding:7px 10px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:800;
+
+  align-items:center;
+
+  min-height:27px;
+
+  padding:0 9px;
+
+  margin:
+    3px
+    3px
+    3px
+    0;
+
   border:1px solid var(--line);
-  margin:3px 4px 3px 0;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.02);
+
+  color:#bac7d6;
+
+  font-size:9.5px;
+  font-weight:850;
+
+  letter-spacing:.035em;
 }
 
 .badge.good-badge {
-  border-color:rgba(49,208,124,.35);
+  border-color:
+    rgba(53,214,138,.29);
+
   color:var(--good);
-  background:rgba(49,208,124,.08);
+
+  background:
+    rgba(53,214,138,.065);
 }
 
 .badge.bad-badge {
-  border-color:rgba(255,98,118,.35);
+  border-color:
+    rgba(255,102,122,.30);
+
   color:var(--bad);
-  background:rgba(255,98,118,.08);
+
+  background:
+    rgba(255,102,122,.065);
 }
 
+
+/* ---------------------------------------------------------
+   EXECUTION — PROGRESSIVE RUN
+--------------------------------------------------------- */
+
 .pipeline {
+  position:relative;
+
   display:grid;
-  gap:8px;
+
+  gap:7px;
+}
+
+.pipeline::before {
+  content:"";
+
+  position:absolute;
+
+  top:18px;
+  bottom:18px;
+
+  left:18px;
+
+  width:1px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgba(118,157,204,.20) 12%,
+      rgba(118,157,204,.20) 88%,
+      transparent
+    );
 }
 
 .step {
+  position:relative;
+
+  min-height:46px;
+
   display:grid;
-  grid-template-columns:25px 85px 1fr;
+
+  grid-template-columns:
+    28px
+    84px
+    minmax(0,1fr);
+
   gap:9px;
+
   align-items:center;
-  padding:10px;
-  border:1px solid var(--line);
-  border-radius:11px;
+
+  padding:7px 11px;
+
+  border:1px solid rgba(145,175,210,.13);
+
+  border-radius:10px;
+
+  background:
+    rgba(4,12,20,.18);
+
   color:var(--muted);
-  font-size:12px;
+
+  font-size:10.5px;
+
+  transition:
+    border-color .18s ease,
+    background .18s ease,
+    transform .18s ease;
+}
+
+.step:hover {
+  transform:translateX(2px);
+  border-color:var(--line-strong);
 }
 
 .step-icon {
-  width:20px;
-  height:20px;
-  border-radius:50%;
+  position:relative;
+  z-index:2;
+
+  width:21px;
+  height:21px;
+
   display:grid;
   place-items:center;
+
   border:1px solid var(--line);
+  border-radius:50%;
+
+  background:var(--surface);
+
+  font-size:10px;
 }
 
 .step.pass {
   color:var(--text);
-  border-color:rgba(49,208,124,.28);
+
+  border-color:
+    rgba(53,214,138,.23);
+
+  background:
+    rgba(53,214,138,.035);
 }
 
 .step.pass .step-icon {
   color:var(--good);
-  border-color:rgba(49,208,124,.5);
-  background:rgba(49,208,124,.1);
+
+  border-color:
+    rgba(53,214,138,.48);
+
+  background:
+    rgba(53,214,138,.09);
 }
 
 .step.stop {
   color:var(--text);
-  border-color:rgba(255,98,118,.28);
+
+  border-color:
+    rgba(255,102,122,.25);
+
+  background:
+    rgba(255,102,122,.035);
 }
 
 .step.stop .step-icon {
   color:var(--bad);
-  border-color:rgba(255,98,118,.5);
-  background:rgba(255,98,118,.1);
+
+  border-color:
+    rgba(255,102,122,.48);
+
+  background:
+    rgba(255,102,122,.09);
 }
 
 .step-name {
-  font-weight:800;
+  font-weight:900;
+  letter-spacing:.025em;
 }
 
 .step-value {
+  min-width:0;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
   text-align:right;
+
+  color:#a5b5c8;
 }
 
+
+/* ---------------------------------------------------------
+   OYARZABAL FINISH + UNAI VAR
+--------------------------------------------------------- */
+
 .result {
-  margin-top:22px;
-  padding:28px;
+  position:relative;
+  overflow:hidden;
+
   display:none;
+
+  margin-top:16px;
+
+  padding:
+    clamp(23px,3vw,34px);
+
+  box-shadow:var(--shadow);
+}
+
+.result::after {
+  content:"";
+
+  position:absolute;
+
+  width:440px;
+  height:440px;
+
+  right:-200px;
+  top:-250px;
+
+  border-radius:50%;
+
+  pointer-events:none;
+
+  opacity:.55;
 }
 
 .result.visible {
   display:block;
-  animation:reveal .22s ease;
+
+  animation:
+    reveal .25s ease;
+}
+
+.result.success {
+  border-color:
+    rgba(53,214,138,.30);
+}
+
+.result.success::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(53,214,138,.17),
+      transparent 66%
+    );
+}
+
+.result.blocked {
+  border-color:
+    rgba(255,102,122,.30);
+}
+
+.result.blocked::after {
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,102,122,.16),
+      transparent 66%
+    );
 }
 
 @keyframes reveal {
@@ -440,159 +960,703 @@ h1 {
     transform:translateY(8px);
     opacity:0;
   }
+
   to {
     transform:none;
     opacity:1;
   }
 }
 
-.result.success {
-  border-color:rgba(49,208,124,.38);
-}
-
-.result.blocked {
-  border-color:rgba(255,98,118,.38);
-}
-
 .result-title {
-  font-size:30px;
-  font-weight:900;
-  letter-spacing:-.025em;
-}
+  position:relative;
+  z-index:1;
 
-.transition {
-  margin-top:18px;
-  display:flex;
-  gap:12px;
-  align-items:center;
-  flex-wrap:wrap;
-}
+  margin-top:8px;
 
-.transition-box {
-  padding:10px 13px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  font-weight:800;
-  font-size:12px;
-}
-
-.zero {
-  margin-top:22px;
   font-size:
-    clamp(30px,4vw,52px);
-  font-weight:900;
+    clamp(27px,3vw,40px);
+
+  font-weight:950;
+
   letter-spacing:-.045em;
 }
 
+.transition {
+  position:relative;
+  z-index:1;
+
+  display:flex;
+
+  align-items:center;
+  gap:10px;
+
+  flex-wrap:wrap;
+
+  margin-top:17px;
+}
+
+.transition-box {
+  padding:9px 12px;
+
+  border:1px solid var(--line);
+
+  border-radius:9px;
+
+  background:
+    rgba(0,0,0,.14);
+
+  font-size:10px;
+  font-weight:900;
+
+  letter-spacing:.035em;
+}
+
+.zero {
+  position:relative;
+  z-index:1;
+
+  margin-top:19px;
+
+  font-size:
+    clamp(31px,4vw,55px);
+
+  font-weight:950;
+
+  line-height:.95;
+
+  letter-spacing:-.055em;
+}
+
 .meta {
-  margin-top:18px;
+  position:relative;
+  z-index:1;
+
   display:grid;
+
   grid-template-columns:
     repeat(3,minmax(0,1fr));
-  gap:10px;
+
+  gap:9px;
+
+  margin-top:20px;
 }
 
 .meta-item {
+  min-width:0;
+
+  padding:10px;
+
   border:1px solid var(--line);
-  border-radius:10px;
-  padding:11px;
-  overflow:hidden;
+  border-radius:9px;
+
+  background:
+    rgba(0,0,0,.12);
 }
 
 .meta-key {
-  font-size:10px;
-  color:var(--muted);
-  letter-spacing:.09em;
+  color:var(--muted2);
+
+  font-size:8.5px;
+  font-weight:900;
+
+  letter-spacing:.13em;
 }
 
 .meta-value {
   margin-top:5px;
-  font-size:11px;
-  word-break:break-all;
+
+  overflow-wrap:anywhere;
+
+  color:#c4d0dd;
+
+  font-size:10px;
 }
 
 .transform {
+  position:relative;
+  z-index:1;
+
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
-  margin-top:20px;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:11px;
+
+  margin-top:18px;
 }
 
 pre {
-  margin:8px 0 0;
-  padding:14px;
-  border-radius:11px;
-  background:#050b12;
-  border:1px solid var(--line);
+  max-height:240px;
+
+  margin:7px 0 0;
+
+  padding:12px;
+
   overflow:auto;
-  font-size:11px;
-  line-height:1.55;
-  max-height:300px;
+
+  border:1px solid rgba(145,175,210,.13);
+
+  border-radius:10px;
+
+  background:
+    rgba(2,8,14,.58);
+
+  color:#cbd7e5;
+
+  font-size:10px;
+  line-height:1.5;
 }
 
 details {
-  margin-top:18px;
+  position:relative;
+  z-index:1;
+
+  margin-top:15px;
+
+  padding:12px;
+
   border:1px solid var(--line);
-  border-radius:12px;
-  padding:13px;
+  border-radius:10px;
+
+  background:
+    rgba(0,0,0,.10);
 }
 
 summary {
   cursor:pointer;
-  font-weight:800;
+
+  font-size:11px;
+  font-weight:850;
 }
 
 .checklist {
   display:grid;
+
   grid-template-columns:
-    repeat(2,minmax(0,1fr));
-  gap:7px;
-  margin-top:12px;
+    repeat(3,minmax(0,1fr));
+
+  gap:4px 13px;
+
+  margin-top:9px;
 }
 
 .check {
+  padding:6px 0;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.035);
+
   color:var(--muted);
-  font-size:11px;
-  border-bottom:1px solid rgba(255,255,255,.05);
-  padding:7px 0;
+
+  font-size:9.5px;
 }
+
+
+/* ---------------------------------------------------------
+   FOOTER
+--------------------------------------------------------- */
 
 .footer {
-  margin-top:24px;
-  color:var(--muted);
-  font-size:11px;
+  margin-top:19px;
+
+  color:var(--muted2);
+
   text-align:center;
+
+  font-size:9.5px;
+  letter-spacing:.025em;
 }
 
-@media(max-width:1050px) {
-  .hero,
+
+/* ---------------------------------------------------------
+   RESPONSIVE SHAPE
+--------------------------------------------------------- */
+
+@media(max-width:1150px) {
+
+  .grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+  .grid .card:last-child {
+    grid-column:1 / -1;
+  }
+}
+
+
+@media(max-width:780px) {
+
+  .shell {
+    width:min(100% - 24px, 1420px);
+    padding-top:14px;
+  }
+
+  .hero-main {
+    min-height:auto;
+    padding:27px 23px;
+  }
+
+  h1 {
+    font-size:43px;
+  }
+
+  .hero-stats {
+    grid-template-columns:1fr;
+  }
+
+  .stat {
+    min-height:82px;
+  }
+
   .grid {
     grid-template-columns:1fr;
   }
 
-  .hero-stats {
-    grid-template-columns:
-      repeat(3,1fr);
-  }
-}
-
-@media(max-width:680px) {
-  .shell {
-    padding:20px 14px 40px;
+  .grid .card:last-child {
+    grid-column:auto;
   }
 
-  .hero-stats,
-  .meta,
   .transform,
+  .meta,
   .checklist {
     grid-template-columns:1fr;
   }
 
-  h1 {
-    font-size:42px;
+  .step {
+    grid-template-columns:
+      27px
+      76px
+      minmax(0,1fr);
   }
 }
+
+
+@media(prefers-reduced-motion:reduce) {
+
+  * {
+    scroll-behavior:auto !important;
+    animation:none !important;
+    transition:none !important;
+  }
+}
+
+
+/* ==========================================================
+   LIVE FLOW — judge-facing product language
+========================================================== */
+
+.section-tag {
+  color:var(--muted2);
+  font-size:9px;
+  line-height:1;
+  letter-spacing:.16em;
+  font-weight:900;
+}
+
+
+/* Stop forcing every midfield card to equal height. */
+.card {
+  min-height:0 !important;
+  align-self:start;
+}
+
+
+/* Give semantic reasoning less dead space. */
+.grid {
+  align-items:start;
+}
+
+
+/* ----------------------------------------------------------
+   CONNECTED WORKFLOW RAIL
+---------------------------------------------------------- */
+
+.flow-rail {
+  position:relative;
+  overflow:hidden;
+
+  margin-bottom:14px;
+  padding:18px 22px 20px;
+
+  border:
+    1px solid rgba(145,175,210,.15);
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      110deg,
+      rgba(13,27,42,.94),
+      rgba(8,20,33,.92)
+    );
+}
+
+
+.flow-head {
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+
+  margin-bottom:18px;
+}
+
+
+.flow-eyebrow {
+  margin-bottom:4px;
+
+  color:#73afff;
+
+  font-size:8.5px;
+  font-weight:900;
+  letter-spacing:.17em;
+}
+
+
+.flow-title {
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:-.015em;
+}
+
+
+.flow-state {
+  padding:6px 10px;
+
+  border:
+    1px solid rgba(145,175,210,.16);
+
+  border-radius:999px;
+
+  color:var(--muted);
+
+  background:
+    rgba(0,0,0,.12);
+
+  font-size:9.5px;
+  font-weight:800;
+  letter-spacing:.03em;
+}
+
+
+.flow-track {
+  position:relative;
+
+  display:grid;
+  grid-template-columns:
+    repeat(6,minmax(0,1fr));
+
+  gap:0;
+}
+
+
+/* quiet structural line */
+.flow-track::before {
+  content:"";
+
+  position:absolute;
+
+  left:6%;
+  right:6%;
+  top:9px;
+
+  height:1px;
+
+  background:
+    rgba(129,158,194,.19);
+}
+
+
+/*
+  During execution this is only a generic activity tracer.
+  It does NOT claim that a particular phase completed.
+*/
+.flow-progress {
+  position:absolute;
+
+  left:6%;
+  top:8px;
+
+  width:14%;
+  height:3px;
+
+  border-radius:999px;
+
+  opacity:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #78b4ff,
+      #aa87ff,
+      transparent
+    );
+
+  filter:
+    drop-shadow(
+      0 0 8px rgba(115,169,255,.45)
+    );
+}
+
+
+.flow-rail.is-running
+.flow-progress {
+  opacity:1;
+
+  animation:
+    liveSweep 1.65s ease-in-out infinite;
+}
+
+
+@keyframes liveSweep {
+
+  0% {
+    left:4%;
+    opacity:.15;
+  }
+
+  18% {
+    opacity:1;
+  }
+
+  82% {
+    opacity:1;
+  }
+
+  100% {
+    left:82%;
+    opacity:.15;
+  }
+}
+
+
+.flow-node {
+  position:relative;
+  z-index:2;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+
+  color:#74879d;
+
+  text-align:center;
+
+  font-size:9.5px;
+  font-weight:800;
+
+  transition:
+    color .22s ease,
+    transform .22s ease;
+}
+
+
+.flow-dot {
+  width:19px;
+  height:19px;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(132,164,201,.30);
+
+  background:
+    #0b1827;
+
+  box-shadow:
+    0 0 0 4px #0d1a29;
+
+  transition:
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease,
+    transform .22s ease;
+}
+
+
+.flow-node.done {
+  color:#d8e4ef;
+}
+
+
+.flow-node.done
+.flow-dot {
+  border-color:
+    rgba(53,214,138,.72);
+
+  background:var(--good);
+
+  box-shadow:
+    0 0 0 4px #0d1a29,
+    0 0 17px rgba(53,214,138,.26);
+}
+
+
+.flow-node.done
+.flow-dot::after {
+  content:"✓";
+
+  display:grid;
+  place-items:center;
+
+  width:100%;
+  height:100%;
+
+  color:#04140d;
+
+  font-size:10px;
+  font-weight:950;
+}
+
+
+.flow-node.stopped {
+  color:#ffc2cb;
+}
+
+
+.flow-node.stopped
+.flow-dot {
+  border-color:
+    rgba(255,102,122,.75);
+
+  background:rgba(255,102,122,.92);
+
+  box-shadow:
+    0 0 0 4px #0d1a29,
+    0 0 17px rgba(255,102,122,.24);
+}
+
+
+.flow-node.stopped
+.flow-dot::after {
+  content:"×";
+
+  display:grid;
+  place-items:center;
+
+  width:100%;
+  height:100%;
+
+  color:#26060b;
+
+  font-size:12px;
+  font-weight:950;
+}
+
+
+.flow-node.muted {
+  opacity:.36;
+}
+
+
+/* ----------------------------------------------------------
+   MAKE THE THREE CORE PANELS FEEL CONNECTED, NOT BOX-EQUAL
+---------------------------------------------------------- */
+
+.grid {
+  grid-template-columns:
+    minmax(330px,.92fr)
+    minmax(280px,.72fr)
+    minmax(450px,1.36fr);
+
+  gap:13px;
+}
+
+
+.grid .card {
+  transition:
+    transform .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+
+body.run-active
+.grid .card {
+  border-color:
+    rgba(115,169,255,.20);
+}
+
+
+body.run-active
+.grid .card:nth-child(2) {
+  transform:translateY(-3px);
+
+  border-color:
+    rgba(115,169,255,.32);
+
+  box-shadow:
+    0 18px 44px rgba(66,102,168,.09);
+}
+
+
+body.run-active
+.grid .card:nth-child(3) {
+  border-color:
+    rgba(157,126,255,.28);
+}
+
+
+/* Make idle pipeline quieter. */
+.step:not(.pass):not(.stop) {
+  background:
+    rgba(2,9,16,.10);
+
+  border-color:
+    rgba(145,175,210,.105);
+}
+
+
+.step:not(.pass):not(.stop)
+.step-value {
+  opacity:.67;
+}
+
+
+/* More air between result and workflow */
+.result {
+  margin-top:20px;
+}
+
+
+/* ----------------------------------------------------------
+   MOBILE
+---------------------------------------------------------- */
+
+@media(max-width:900px) {
+
+  .flow-track {
+    grid-template-columns:
+      repeat(3,minmax(0,1fr));
+
+    row-gap:18px;
+  }
+
+  .flow-track::before,
+  .flow-progress {
+    display:none;
+  }
+
+  .grid {
+    grid-template-columns:1fr;
+  }
+}
+
+
+@media(prefers-reduced-motion:reduce) {
+
+  .flow-progress {
+    animation:none !important;
+  }
+
+}
+
 </style>
+
 </head>
 
 <body>
@@ -701,14 +1765,102 @@ summary {
   </section>
 
 
+  
+  <section
+    class="flow-rail"
+    id="flowRail"
+  >
+
+    <div class="flow-head">
+
+      <div>
+        <div class="flow-eyebrow">
+          LIVE RECOVERY PATH
+        </div>
+
+        <div class="flow-title">
+          One mission. One compatibility recovery.
+        </div>
+      </div>
+
+      <div
+        class="flow-state"
+        id="flowState"
+      >
+        Ready
+      </div>
+
+    </div>
+
+
+    <div class="flow-track">
+
+      <div
+        class="flow-progress"
+        id="flowProgress"
+      ></div>
+
+      <div
+        class="flow-node"
+        data-flow="observe"
+      >
+        <span class="flow-dot"></span>
+        <span>Observe</span>
+      </div>
+
+      <div
+        class="flow-node"
+        data-flow="diagnose"
+      >
+        <span class="flow-dot"></span>
+        <span>Diagnose</span>
+      </div>
+
+      <div
+        class="flow-node"
+        data-flow="policy"
+      >
+        <span class="flow-dot"></span>
+        <span>Policy</span>
+      </div>
+
+      <div
+        class="flow-node"
+        data-flow="repair"
+      >
+        <span class="flow-dot"></span>
+        <span>Repair</span>
+      </div>
+
+      <div
+        class="flow-node"
+        data-flow="replay"
+      >
+        <span class="flow-dot"></span>
+        <span>Replay</span>
+      </div>
+
+      <div
+        class="flow-node"
+        data-flow="verify"
+      >
+        <span class="flow-dot"></span>
+        <span>Verify</span>
+      </div>
+
+    </div>
+
+  </section>
+
+
   <section class="grid">
 
-    <!-- BAENA -->
+    <!-- GROUNDED EVIDENCE -->
     <article class="card">
 
       <div class="card-title">
         <h2>Evidence & Context</h2>
-        <span class="role">BAENA</span>
+        <span class="section-tag">GROUNDED INPUT</span>
       </div>
 
       <div class="small">
@@ -756,12 +1908,12 @@ summary {
     </article>
 
 
-    <!-- OLMO -->
+    <!-- SEMANTIC REASONING -->
     <article class="card">
 
       <div class="card-title">
         <h2>Semantic Diagnosis</h2>
-        <span class="role">OLMO</span>
+        <span class="section-tag">SEMANTIC REASONING</span>
       </div>
 
       <div class="small">
@@ -795,12 +1947,12 @@ summary {
     </article>
 
 
-    <!-- PORRO -->
+    <!-- LIVE RECOVERY -->
     <article class="card">
 
       <div class="card-title">
-        <h2>Recovery Pipeline</h2>
-        <span class="role">PORRO</span>
+        <h2>Execution Trace</h2>
+        <span class="section-tag">EXECUTION DETAIL</span>
       </div>
 
       <div class="pipeline">
@@ -853,14 +2005,14 @@ summary {
   </section>
 
 
-  <!-- OYARZABAL + UNAI -->
+  <!-- VERIFIED RESULT -->
   <section
     class="result"
     id="result"
   >
 
-    <div class="role">
-      OYARZABAL FINISH · UNAI SIMÓN VAR
+    <div class="section-tag">
+      INDEPENDENT VERIFICATION
     </div>
 
     <div
@@ -970,6 +2122,150 @@ const $ = (id) =>
   document.getElementById(id);
 
 
+
+
+function resetFlowRail() {
+
+  $("flowRail").classList.remove(
+    "is-running"
+  );
+
+  document.body.classList.remove(
+    "run-active"
+  );
+
+  $("flowState").textContent =
+    "Ready";
+
+  document
+    .querySelectorAll(".flow-node")
+    .forEach((node) => {
+      node.classList.remove(
+        "done",
+        "stopped",
+        "muted"
+      );
+    });
+}
+
+
+function setFlowRunning(value) {
+
+  $("flowRail").classList.toggle(
+    "is-running",
+    value
+  );
+
+  document.body.classList.toggle(
+    "run-active",
+    value
+  );
+
+  if (value) {
+    $("flowState").textContent =
+      "Cloud execution in progress · proof pending";
+  }
+}
+
+
+function flowNode(name) {
+  return document.querySelector(
+    `[data-flow="${name}"]`
+  );
+}
+
+
+function markFlow(name, state) {
+
+  const node = flowNode(name);
+
+  if (!node) return;
+
+  node.classList.remove(
+    "done",
+    "stopped",
+    "muted"
+  );
+
+  if (state) {
+    node.classList.add(state);
+  }
+}
+
+
+function resolveFlowSafe(data) {
+
+  [
+    "observe",
+    "diagnose",
+    "policy",
+    "repair",
+    "replay",
+    "verify"
+  ].forEach(
+    (name) => markFlow(name,"done")
+  );
+
+  $("flowState").textContent =
+    data.passed
+      ? "RECOVERY_COMPLETE · independently verified"
+      : "Verification failed";
+}
+
+
+function resolveFlowDanger(data) {
+
+  markFlow(
+    "observe",
+    "done"
+  );
+
+  markFlow(
+    "diagnose",
+    "stopped"
+  );
+
+  markFlow(
+    "policy",
+    "stopped"
+  );
+
+  markFlow(
+    "repair",
+    "muted"
+  );
+
+  markFlow(
+    "replay",
+    "muted"
+  );
+
+  markFlow(
+    "verify",
+    "done"
+  );
+
+  $("flowState").textContent =
+    data.passed
+      ? "SAFE_HOLD · no execution"
+      : "Safety verification failed";
+}
+
+
+function resolveFlowError() {
+
+  document
+    .querySelectorAll(".flow-node")
+    .forEach(
+      (node) =>
+        node.classList.add("muted")
+    );
+
+  $("flowState").textContent =
+    "Execution error · no success claim";
+}
+
+
 function resetPipeline() {
   document.querySelectorAll(".step").forEach(
     (el) => {
@@ -1044,6 +2340,8 @@ function renderChecklist(checks) {
 
 
 function showSafe(data) {
+
+  resolveFlowSafe(data);
 
   const shape =
     data.plan_shape || {};
@@ -1193,6 +2491,8 @@ function showSafe(data) {
 
 function showDanger(data) {
 
+  resolveFlowDanger(data);
+
   $("diagnosis").textContent =
     data.diagnosis_decision || "REFUSE";
 
@@ -1332,6 +2632,8 @@ function showDanger(data) {
 async function runScenario(kind) {
 
   resetPipeline();
+  resetFlowRail();
+  setFlowRunning(true);
 
   $("result").className =
     "result";
@@ -1399,9 +2701,15 @@ async function runScenario(kind) {
       "NO SUCCESS CLAIM"
     );
 
+    resolveFlowError();
+
   } finally {
 
     setBusy(false);
+    setFlowRunning(false);
+    document.body.classList.remove(
+      "run-active"
+    );
 
   }
 }
@@ -1447,5 +2755,1194 @@ async function loadEvidenceSummary() {
 loadEvidenceSummary();
 
 </script>
+
+
+<style id="TOOLSUTURE_UX_V5">
+
+/* ==========================================================
+   V5 — ONE SCROLL, ONE STORY
+========================================================== */
+
+
+/* ----------------------------------------------------------
+   COMPRESS THE OPENING WITHOUT LOSING IMPACT
+---------------------------------------------------------- */
+
+.shell {
+  width:min(95vw, 1500px) !important;
+  padding-top:15px !important;
+}
+
+.topbar {
+  min-height:36px !important;
+  margin-bottom:13px !important;
+}
+
+.hero {
+  gap:10px !important;
+  margin-bottom:11px !important;
+}
+
+.hero-main {
+  min-height:218px !important;
+
+  padding:
+    28px
+    clamp(32px,4.5vw,64px) !important;
+}
+
+.eyebrow {
+  margin-bottom:11px !important;
+}
+
+h1 {
+  max-width:1200px !important;
+
+  margin-bottom:12px !important;
+
+  font-size:
+    clamp(45px,4.1vw,65px) !important;
+
+  line-height:.94 !important;
+}
+
+.subtitle {
+  max-width:920px !important;
+
+  font-size:
+    clamp(13px,1.05vw,16px) !important;
+
+  line-height:1.48 !important;
+}
+
+.actions {
+  margin-top:18px !important;
+}
+
+
+/* ----------------------------------------------------------
+   METRICS = SCOREBOARD, NOT THREE CARDS
+---------------------------------------------------------- */
+
+.hero-stats {
+  min-height:72px !important;
+}
+
+.stat {
+  min-height:72px !important;
+
+  padding:
+    12px 21px !important;
+}
+
+.stat-value {
+  font-size:25px !important;
+}
+
+.stat-label {
+  margin-top:5px !important;
+
+  font-size:9px !important;
+}
+
+
+/* ----------------------------------------------------------
+   LIVE RECOVERY PATH STAYS WITH THE JUDGE
+---------------------------------------------------------- */
+
+.flow-rail {
+  position:sticky !important;
+  top:8px !important;
+  z-index:20 !important;
+
+  margin:
+    10px 0 13px !important;
+
+  padding:
+    14px 22px 17px !important;
+
+  background:
+    rgba(9,21,34,.94) !important;
+
+  backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 12px 34px rgba(0,0,0,.18);
+}
+
+.flow-head {
+  margin-bottom:14px !important;
+}
+
+.flow-title {
+  font-size:14px !important;
+}
+
+.flow-node {
+  font-size:8.5px !important;
+}
+
+.flow-dot {
+  width:17px !important;
+  height:17px !important;
+}
+
+
+/* ----------------------------------------------------------
+   CONTENT = SUPPORT + MAIN ATTACK
+---------------------------------------------------------- */
+
+.grid {
+  grid-template-columns:
+    minmax(275px,.64fr)
+    minmax(0,1.72fr) !important;
+
+  grid-template-areas:
+    "evidence diagnosis"
+    "evidence pipeline";
+
+  gap:12px !important;
+}
+
+.grid > .card:nth-child(1) {
+  grid-area:evidence;
+
+  padding:18px !important;
+}
+
+.grid > .card:nth-child(2) {
+  grid-area:diagnosis;
+
+  min-height:142px !important;
+
+  padding:
+    18px 22px !important;
+}
+
+.grid > .card:nth-child(3) {
+  grid-area:pipeline;
+
+  min-height:0 !important;
+
+  padding:
+    17px 22px !important;
+}
+
+
+/* ----------------------------------------------------------
+   EVIDENCE BECOMES QUIET SUPPORT
+---------------------------------------------------------- */
+
+.grid > .card:nth-child(1)
+.small {
+  font-size:10.5px !important;
+}
+
+.evidence-block {
+  padding:10px !important;
+
+  margin-top:9px !important;
+}
+
+.evidence-block b {
+  font-size:9px !important;
+}
+
+.mapping {
+  padding:7px 0 !important;
+
+  font-size:9.5px !important;
+}
+
+
+/* ----------------------------------------------------------
+   SEMANTIC DECISION = CLEAR, COMPACT, CENTRAL
+---------------------------------------------------------- */
+
+.grid > .card:nth-child(2)
+.card-title {
+  margin-bottom:8px !important;
+}
+
+.grid > .card:nth-child(2)
+.small {
+  max-width:920px;
+}
+
+.diagnosis-big {
+  margin:
+    9px 0 6px !important;
+
+  font-size:30px !important;
+}
+
+
+/* ----------------------------------------------------------
+   EXECUTION TRACE — NO DUPLICATE GIANT PIPELINE
+---------------------------------------------------------- */
+
+.grid > .card:nth-child(3)
+.card-title {
+  margin-bottom:7px !important;
+}
+
+.pipeline {
+  display:grid !important;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr)) !important;
+
+  gap:7px !important;
+
+  border-top:0 !important;
+}
+
+.pipeline::before {
+  display:none !important;
+}
+
+.step {
+  min-height:59px !important;
+
+  display:grid !important;
+
+  grid-template-columns:
+    21px
+    minmax(0,1fr) !important;
+
+  grid-template-rows:
+    auto auto;
+
+  gap:
+    2px
+    8px !important;
+
+  padding:
+    9px 10px !important;
+
+  border:
+    1px solid rgba(145,175,210,.105) !important;
+
+  border-radius:
+    10px !important;
+
+  background:
+    rgba(3,10,17,.13) !important;
+}
+
+.step-icon {
+  grid-row:
+    1 / span 2;
+
+  align-self:center;
+}
+
+.step-name {
+  align-self:end;
+
+  font-size:9px !important;
+}
+
+.step-value {
+  align-self:start;
+
+  text-align:left !important;
+
+  white-space:normal !important;
+
+  font-size:8.5px !important;
+
+  line-height:1.25 !important;
+}
+
+
+/* 7 items:
+   final VERIFY card spans two columns to give finish emphasis.
+*/
+
+.step:last-child {
+  grid-column:
+    span 2;
+}
+
+
+/* ----------------------------------------------------------
+   SUCCESS / SAFE HOLD = THE BIG FINISH
+---------------------------------------------------------- */
+
+.result {
+  margin-top:14px !important;
+
+  padding:
+    29px
+    clamp(28px,4.5vw,58px) !important;
+}
+
+.result-title {
+  font-size:
+    clamp(32px,3.5vw,48px) !important;
+}
+
+.zero {
+  margin-top:15px !important;
+
+  font-size:
+    clamp(40px,4.5vw,64px) !important;
+}
+
+.meta {
+  margin-top:16px !important;
+}
+
+.transform {
+  margin-top:14px !important;
+}
+
+
+/* ----------------------------------------------------------
+   RUNNING STATE — MOTION WITHOUT LYING
+---------------------------------------------------------- */
+
+body.run-active
+.flow-rail {
+  border-color:
+    rgba(108,169,255,.42) !important;
+
+  box-shadow:
+    0 12px 42px
+    rgba(66,102,180,.15);
+}
+
+body.run-active
+.grid > .card:nth-child(2) {
+  transform:
+    translateY(-2px);
+}
+
+body.run-active
+.grid > .card:nth-child(3) {
+  box-shadow:
+    0 16px 42px
+    rgba(105,126,255,.08);
+}
+
+
+/* ----------------------------------------------------------
+   MOBILE / SMALL WINDOWS
+---------------------------------------------------------- */
+
+@media(max-width:980px) {
+
+  .flow-rail {
+    position:relative !important;
+    top:auto !important;
+  }
+
+  .grid {
+    grid-template-columns:
+      1fr !important;
+
+    grid-template-areas:
+      "diagnosis"
+      "pipeline"
+      "evidence";
+  }
+
+  .pipeline {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+
+@media(max-width:600px) {
+
+  .pipeline {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .step:last-child {
+    grid-column:auto;
+  }
+}
+
+</style>
+
+
 </body>
 </html>
+
+<style id="TOOLSUTURE_UX_V4">
+
+/* ==========================================================
+   UX V4 — MORE SPACE, FEWER BOXES, CLEARER MOVEMENT
+========================================================== */
+
+.shell {
+  width:min(94vw, 1500px) !important;
+}
+
+
+/* ----------------------------------------------------------
+   HERO GETS LOWER AND WIDER
+---------------------------------------------------------- */
+
+.hero-main {
+  min-height:250px !important;
+
+  padding:
+    34px
+    clamp(36px,5vw,72px) !important;
+}
+
+h1 {
+  max-width:1200px !important;
+
+  font-size:
+    clamp(48px,4.6vw,74px) !important;
+
+  line-height:.94 !important;
+}
+
+.subtitle {
+  max-width:820px !important;
+}
+
+
+/* ----------------------------------------------------------
+   METRICS BECOME ONE CLEAN SCOREBOARD STRIP
+---------------------------------------------------------- */
+
+.hero-stats {
+  display:grid !important;
+
+  grid-template-columns:
+    repeat(3,1fr) !important;
+
+  gap:1px !important;
+
+  overflow:hidden;
+
+  border:
+    1px solid rgba(145,175,210,.14);
+
+  border-radius:17px;
+
+  background:
+    rgba(145,175,210,.12);
+}
+
+.stat {
+  min-height:86px !important;
+
+  border:0 !important;
+  border-radius:0 !important;
+
+  padding:
+    16px 22px !important;
+
+  background:
+    #0e1a29 !important;
+}
+
+.stat-value {
+  font-size:26px !important;
+}
+
+
+/* ----------------------------------------------------------
+   LIVE FLOW BECOMES THE CENTRAL SPINE
+---------------------------------------------------------- */
+
+.flow-rail {
+  padding:
+    21px 28px 24px !important;
+
+  margin:
+    17px 0 18px !important;
+
+  background:
+    linear-gradient(
+      115deg,
+      rgba(14,28,43,.96),
+      rgba(8,18,30,.96)
+    ) !important;
+}
+
+.flow-head {
+  margin-bottom:22px !important;
+}
+
+.flow-title {
+  font-size:17px !important;
+}
+
+.flow-track {
+  padding:
+    0 25px !important;
+}
+
+.flow-track::before {
+  left:8% !important;
+  right:8% !important;
+}
+
+
+/* ----------------------------------------------------------
+   STOP MAKING THREE EQUAL DASHBOARD CARDS
+---------------------------------------------------------- */
+
+.grid {
+  grid-template-columns:
+    minmax(290px,.72fr)
+    minmax(0,1.55fr) !important;
+
+  grid-template-areas:
+    "evidence diagnosis"
+    "evidence pipeline";
+
+  gap:15px !important;
+}
+
+.grid > .card:nth-child(1) {
+  grid-area:evidence;
+}
+
+.grid > .card:nth-child(2) {
+  grid-area:diagnosis;
+}
+
+.grid > .card:nth-child(3) {
+  grid-area:pipeline;
+}
+
+
+/* Evidence becomes supporting flank rather than equal main panel. */
+
+.grid > .card:nth-child(1) {
+  opacity:.92;
+
+  padding:21px !important;
+}
+
+
+/* Semantic diagnosis becomes a compact horizontal decision strip. */
+
+.grid > .card:nth-child(2) {
+  min-height:170px !important;
+
+  padding:
+    22px 26px !important;
+}
+
+
+/* Pipeline becomes the biggest active space. */
+
+.grid > .card:nth-child(3) {
+  min-height:390px !important;
+
+  padding:
+    22px 26px !important;
+}
+
+
+/* ----------------------------------------------------------
+   DIAGNOSIS — LESS EMPTY SPACE
+---------------------------------------------------------- */
+
+.grid > .card:nth-child(2)
+.diagnosis-big {
+  margin:
+    11px 0 8px !important;
+
+  font-size:31px !important;
+}
+
+
+/* ----------------------------------------------------------
+   PIPELINE — LESS LIKE SEVEN FORM INPUTS
+---------------------------------------------------------- */
+
+.pipeline {
+  gap:0 !important;
+
+  border-top:
+    1px solid rgba(145,175,210,.10);
+}
+
+.step {
+  min-height:48px !important;
+
+  border:0 !important;
+
+  border-bottom:
+    1px solid rgba(145,175,210,.10) !important;
+
+  border-radius:0 !important;
+
+  padding:
+    9px 5px !important;
+
+  background:
+    transparent !important;
+}
+
+.step:hover {
+  transform:none !important;
+
+  background:
+    rgba(255,255,255,.018) !important;
+}
+
+.step-icon {
+  width:22px !important;
+  height:22px !important;
+}
+
+
+/* ----------------------------------------------------------
+   EVIDENCE — REDUCE VISUAL NOISE
+---------------------------------------------------------- */
+
+.evidence-block {
+  background:
+    rgba(4,11,18,.16) !important;
+
+  border-color:
+    rgba(145,175,210,.10) !important;
+}
+
+.mapping {
+  padding:
+    9px 0 !important;
+}
+
+
+/* ----------------------------------------------------------
+   RESULT SHOULD FEEL LIKE THE DECISIVE MOMENT
+---------------------------------------------------------- */
+
+.result {
+  margin-top:21px !important;
+
+  padding:
+    35px
+    clamp(30px,5vw,65px) !important;
+}
+
+.result-title {
+  font-size:
+    clamp(34px,4vw,54px) !important;
+}
+
+.zero {
+  font-size:
+    clamp(43px,5vw,70px) !important;
+}
+
+
+/* ----------------------------------------------------------
+   IDLE STATE IS QUIET; ACTIVE STATE COMES ALIVE
+---------------------------------------------------------- */
+
+body:not(.run-active)
+.pipeline {
+  opacity:.78;
+}
+
+body.run-active
+.flow-rail {
+  border-color:
+    rgba(110,164,255,.34);
+
+  box-shadow:
+    0 14px 50px
+    rgba(48,92,167,.12);
+}
+
+body.run-active
+.grid > .card:nth-child(2) {
+  border-color:
+    rgba(112,174,255,.32);
+}
+
+body.run-active
+.grid > .card:nth-child(3) {
+  border-color:
+    rgba(166,131,255,.30);
+}
+
+
+/* ----------------------------------------------------------
+   RESPONSIVE
+---------------------------------------------------------- */
+
+@media(max-width:950px) {
+
+  .grid {
+    grid-template-columns:1fr !important;
+
+    grid-template-areas:
+      "diagnosis"
+      "pipeline"
+      "evidence";
+  }
+}
+
+</style>
+
+<style id="TOOLSUTURE_UX_V6">
+
+/* ==========================================================
+   V6 — BROADCAST SCALE
+   Designed to remain legible in a 1080p judge/demo recording.
+========================================================== */
+
+
+/* ----------------------------------------------------------
+   PAGE WIDTH — CONTROLLED, NOT TINY
+---------------------------------------------------------- */
+
+.shell {
+  width:min(92vw, 1450px) !important;
+  padding-top:18px !important;
+}
+
+
+/* ----------------------------------------------------------
+   HERO — YAMAL GETS HIS WIDTH BACK
+---------------------------------------------------------- */
+
+.hero-main {
+  min-height:290px !important;
+
+  padding:
+    38px
+    clamp(42px,5vw,72px) !important;
+}
+
+.eyebrow {
+  margin-bottom:14px !important;
+
+  font-size:11px !important;
+}
+
+h1 {
+  max-width:1250px !important;
+
+  margin-bottom:17px !important;
+
+  font-size:
+    clamp(56px,5vw,78px) !important;
+
+  line-height:.96 !important;
+}
+
+.subtitle {
+  max-width:920px !important;
+
+  font-size:
+    clamp(16px,1.25vw,19px) !important;
+
+  line-height:1.55 !important;
+}
+
+.actions {
+  margin-top:24px !important;
+}
+
+.btn {
+  min-height:52px !important;
+
+  padding:
+    0 22px !important;
+
+  font-size:14px !important;
+}
+
+
+/* ----------------------------------------------------------
+   METRIC STRIP — MAKE THE DIFFERENTIATORS HIT
+---------------------------------------------------------- */
+
+.hero-stats {
+  min-height:100px !important;
+}
+
+.stat {
+  min-height:100px !important;
+
+  padding:
+    18px 28px !important;
+}
+
+.stat-value {
+  font-size:32px !important;
+}
+
+.stat-label {
+  margin-top:8px !important;
+
+  font-size:10.5px !important;
+
+  letter-spacing:.075em !important;
+}
+
+
+/* ----------------------------------------------------------
+   LIVE RECOVERY PATH — CENTRAL TACTICAL SHAPE
+---------------------------------------------------------- */
+
+.flow-rail {
+  padding:
+    21px 30px 24px !important;
+
+  margin:
+    16px 0 18px !important;
+
+  border-radius:20px !important;
+}
+
+.flow-head {
+  margin-bottom:20px !important;
+}
+
+.flow-eyebrow {
+  font-size:10px !important;
+}
+
+.flow-title {
+  font-size:18px !important;
+}
+
+.flow-state {
+  padding:
+    8px 13px !important;
+
+  font-size:11px !important;
+}
+
+.flow-track {
+  padding:
+    0 22px !important;
+}
+
+.flow-node {
+  gap:9px !important;
+
+  font-size:11px !important;
+}
+
+.flow-dot {
+  width:21px !important;
+  height:21px !important;
+}
+
+
+/* ----------------------------------------------------------
+   SECOND VIEWPORT — REAL WORK
+---------------------------------------------------------- */
+
+.grid {
+  grid-template-columns:
+    minmax(330px,.78fr)
+    minmax(0,1.72fr) !important;
+
+  gap:18px !important;
+}
+
+
+/* Evidence support lane */
+.grid > .card:nth-child(1) {
+  padding:25px !important;
+}
+
+
+/* Semantic decision */
+.grid > .card:nth-child(2) {
+  min-height:190px !important;
+
+  padding:
+    26px 30px !important;
+}
+
+
+/* Execution */
+.grid > .card:nth-child(3) {
+  padding:
+    25px 30px !important;
+}
+
+
+/* ----------------------------------------------------------
+   CARD TYPOGRAPHY — JUDGE-READABLE
+---------------------------------------------------------- */
+
+.card-title {
+  margin-bottom:17px !important;
+}
+
+.card-title h2 {
+  font-size:18px !important;
+}
+
+.section-tag {
+  font-size:10px !important;
+}
+
+.small {
+  font-size:14px !important;
+
+  line-height:1.55 !important;
+}
+
+
+/* ----------------------------------------------------------
+   EVIDENCE — NO MICROSCOPIC CONTRACT TEXT
+---------------------------------------------------------- */
+
+.evidence-block {
+  margin-top:14px !important;
+
+  padding:15px !important;
+}
+
+.evidence-block b {
+  margin-bottom:7px !important;
+
+  font-size:11px !important;
+}
+
+.mapping {
+  padding:
+    11px 0 !important;
+
+  font-size:12px !important;
+}
+
+
+/* ----------------------------------------------------------
+   SEMANTIC DECISION — THIS SHOULD FEEL IMPORTANT
+---------------------------------------------------------- */
+
+.diagnosis-big {
+  margin:
+    15px 0 10px !important;
+
+  font-size:42px !important;
+}
+
+.badge {
+  min-height:31px !important;
+
+  padding:
+    0 11px !important;
+
+  font-size:11px !important;
+}
+
+
+/* ----------------------------------------------------------
+   EXECUTION TRACE — LARGE ENOUGH TO READ IN VIDEO
+---------------------------------------------------------- */
+
+.pipeline {
+  grid-template-columns:
+    repeat(4,minmax(0,1fr)) !important;
+
+  gap:10px !important;
+}
+
+.step {
+  min-height:78px !important;
+
+  grid-template-columns:
+    28px
+    minmax(0,1fr) !important;
+
+  gap:
+    3px
+    10px !important;
+
+  padding:
+    14px 14px !important;
+
+  border-radius:
+    12px !important;
+}
+
+.step-icon {
+  width:25px !important;
+  height:25px !important;
+}
+
+.step-name {
+  font-size:11.5px !important;
+}
+
+.step-value {
+  font-size:10.5px !important;
+
+  line-height:1.35 !important;
+}
+
+
+/* ----------------------------------------------------------
+   VERIFIED FINISH — OYARZABAL GETS THE CAMERA
+---------------------------------------------------------- */
+
+.result {
+  margin-top:22px !important;
+
+  padding:
+    42px
+    clamp(38px,5vw,78px) !important;
+}
+
+.result-title {
+  margin-top:10px !important;
+
+  font-size:
+    clamp(42px,4.5vw,65px) !important;
+}
+
+.transition {
+  margin-top:23px !important;
+}
+
+.transition-box {
+  padding:
+    12px 16px !important;
+
+  font-size:12px !important;
+}
+
+.zero {
+  margin-top:24px !important;
+
+  font-size:
+    clamp(50px,5.5vw,80px) !important;
+}
+
+.meta {
+  margin-top:24px !important;
+
+  gap:13px !important;
+}
+
+.meta-item {
+  padding:14px !important;
+}
+
+.meta-key {
+  font-size:10px !important;
+}
+
+.meta-value {
+  font-size:12px !important;
+}
+
+pre {
+  font-size:12px !important;
+
+  max-height:310px !important;
+}
+
+summary {
+  font-size:13px !important;
+}
+
+.check {
+  font-size:11px !important;
+
+  padding:
+    8px 0 !important;
+}
+
+
+/* ----------------------------------------------------------
+   SUBTLE MOTION — SYSTEM FEELS ALIVE
+---------------------------------------------------------- */
+
+.flow-node,
+.stat,
+.card {
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease !important;
+}
+
+.stat:hover {
+  transform:
+    translateY(-3px) !important;
+}
+
+.grid > .card:hover {
+  border-color:
+    rgba(145,175,210,.28) !important;
+}
+
+
+/* ----------------------------------------------------------
+   LARGE DESKTOP — USE THE SPACE
+---------------------------------------------------------- */
+
+@media(min-width:1400px) {
+
+  .hero-main {
+    min-height:310px !important;
+  }
+
+  .grid {
+    grid-template-columns:
+      minmax(360px,.78fr)
+      minmax(0,1.72fr) !important;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   SMALLER VIEWPORTS
+---------------------------------------------------------- */
+
+@media(max-width:980px) {
+
+  h1 {
+    font-size:
+      clamp(46px,8vw,65px) !important;
+  }
+
+  .grid {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .pipeline {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+
+@media(max-width:600px) {
+
+  .hero-main {
+    padding:
+      28px 22px !important;
+  }
+
+  .pipeline {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .hero-stats {
+    grid-template-columns:
+      1fr !important;
+  }
+}
+
+</style>
