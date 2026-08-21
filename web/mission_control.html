@@ -5276,6 +5276,421 @@ window.showSafe =
 </script>
 
 
+
+
+<style id="TOOLSUTURE_TRUTHFUL_EVIDENCE_V10">
+
+/* ==========================================================
+   V10 — TRUTHFUL SCENARIO-SPECIFIC EVIDENCE
+========================================================== */
+
+.danger-evidence-v10 {
+  margin-top:14px;
+
+  display:grid;
+  gap:9px;
+}
+
+
+.danger-evidence-row-v10 {
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr) auto minmax(0,1.25fr);
+
+  gap:10px;
+
+  align-items:center;
+
+  padding:
+    9px 0;
+
+  border-bottom:
+    1px solid rgba(145,175,210,.08);
+
+  color:#b6c4d2;
+
+  font-size:12px;
+}
+
+
+.danger-evidence-row-v10:last-child {
+  border-bottom:0;
+}
+
+
+.danger-evidence-row-v10
+.arrow-v10 {
+  color:#ff7184;
+
+  font-weight:900;
+}
+
+
+.danger-evidence-row-v10
+strong {
+  color:#f0f4f8;
+
+  font-weight:800;
+}
+
+
+.danger-evidence-alert-v10 {
+  margin-top:13px;
+
+  padding:
+    10px 12px;
+
+  border:
+    1px solid rgba(255,102,122,.22);
+
+  border-radius:9px;
+
+  background:
+    rgba(255,102,122,.045);
+
+  color:#ff99a6;
+
+  font-size:11px;
+  font-weight:750;
+
+  line-height:1.45;
+}
+
+
+.danger-evidence-alert-v10
+span {
+  display:block;
+
+  margin-bottom:4px;
+
+  color:#ff667b;
+
+  font-size:8px;
+  font-weight:950;
+
+  letter-spacing:.14em;
+}
+
+
+@media(max-width:700px) {
+
+  .danger-evidence-row-v10 {
+    grid-template-columns:1fr;
+
+    gap:4px;
+  }
+
+  .danger-evidence-row-v10
+  .arrow-v10 {
+    display:none;
+  }
+}
+
+</style>
+
+
+
+
+<script id="TOOLSUTURE_TRUTHFUL_EVIDENCE_V10_JS">
+
+(() => {
+
+  /*
+   * Rodri principle:
+   * the visible evidence must always describe
+   * the scenario that actually produced the decision.
+   */
+
+
+  function exactLeafTextV10(text) {
+
+    return Array
+      .from(
+        document.querySelectorAll("*")
+      )
+      .filter(
+        el =>
+          el.children.length === 0
+          &&
+          el.textContent.trim() === text
+      );
+  }
+
+
+  /*
+   * Capture the original safe-recovery evidence
+   * BEFORE either button changes it.
+   */
+
+  const missionLabelV10 =
+    Array
+      .from(
+        document.querySelectorAll("b")
+      )
+      .find(
+        el =>
+          el.textContent.trim()
+          === "ORIGINAL MISSION"
+      );
+
+
+  const providerLabelV10 =
+    Array
+      .from(
+        document.querySelectorAll("b")
+      )
+      .find(
+        el =>
+          el.textContent.trim()
+          === "PROVIDER MIGRATION"
+      );
+
+
+  const missionCardV10 =
+    missionLabelV10
+      ? missionLabelV10.parentElement
+      : null;
+
+
+  const providerCardV10 =
+    providerLabelV10
+      ? providerLabelV10.parentElement
+      : null;
+
+
+  const safeMissionHTMLV10 =
+    missionCardV10
+      ? missionCardV10.innerHTML
+      : null;
+
+
+  const safeProviderHTMLV10 =
+    providerCardV10
+      ? providerCardV10.innerHTML
+      : null;
+
+
+  /*
+   * Capture both copies if the sticky/live rail
+   * exists more than once in the DOM.
+   */
+
+  const railKickersV10 =
+    exactLeafTextV10(
+      "LIVE RECOVERY PATH"
+    );
+
+
+  const railSubtitlesV10 =
+    exactLeafTextV10(
+      "One mission. One compatibility recovery."
+    );
+
+
+  function showDangerEvidenceV10() {
+
+    if (missionCardV10) {
+
+      missionCardV10.innerHTML = `
+        <b>ORIGINAL MISSION</b>
+
+        <p>
+          Delete a draft using the original
+          recoverable-delete behavior:
+          move it into recoverable trash.
+        </p>
+      `;
+    }
+
+
+    if (providerCardV10) {
+
+      providerCardV10.innerHTML = `
+        <b>PROVIDER MIGRATION</b>
+
+        <div class="danger-evidence-v10">
+
+          <div class="danger-evidence-row-v10">
+            <div>
+              <strong>V1</strong><br>
+              delete_draft(draft_id)
+            </div>
+
+            <div class="arrow-v10">
+              →
+            </div>
+
+            <div>
+              Recoverable trash
+            </div>
+          </div>
+
+
+          <div class="danger-evidence-row-v10">
+            <div>
+              <strong>RECOVERY WINDOW</strong>
+            </div>
+
+            <div class="arrow-v10">
+              →
+            </div>
+
+            <div>
+              30 days
+            </div>
+          </div>
+
+
+          <div class="danger-evidence-row-v10">
+            <div>
+              <strong>V2</strong><br>
+              delete_record(
+              record_id,
+              permanent=true
+              )
+            </div>
+
+            <div class="arrow-v10">
+              →
+            </div>
+
+            <div>
+              Irreversible permanent deletion
+            </div>
+          </div>
+
+
+          <div class="danger-evidence-row-v10">
+            <div>
+              <strong>V2 RECOVERABLE</strong>
+            </div>
+
+            <div class="arrow-v10">
+              →
+            </div>
+
+            <div>
+              false
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="danger-evidence-alert-v10">
+
+          <span>
+            MATERIAL SEMANTIC CHANGE
+          </span>
+
+          Recoverable deletion became
+          irreversible permanent deletion.
+
+        </div>
+      `;
+    }
+
+
+    railKickersV10.forEach(
+      el => {
+        el.textContent =
+          "LIVE SAFETY DECISION PATH";
+      }
+    );
+
+
+    railSubtitlesV10.forEach(
+      el => {
+        el.textContent =
+          "One mission. One bounded safety decision.";
+      }
+    );
+  }
+
+
+  function showSafeEvidenceV10() {
+
+    if (
+      missionCardV10
+      &&
+      safeMissionHTMLV10
+    ) {
+
+      missionCardV10.innerHTML =
+        safeMissionHTMLV10;
+    }
+
+
+    if (
+      providerCardV10
+      &&
+      safeProviderHTMLV10
+    ) {
+
+      providerCardV10.innerHTML =
+        safeProviderHTMLV10;
+    }
+
+
+    railKickersV10.forEach(
+      el => {
+        el.textContent =
+          "LIVE RECOVERY PATH";
+      }
+    );
+
+
+    railSubtitlesV10.forEach(
+      el => {
+        el.textContent =
+          "One mission. One compatibility recovery.";
+      }
+    );
+  }
+
+
+  /*
+   * Wrap the already-proven V9 renderers.
+   * We alter presentation only AFTER their
+   * normal behavior executes.
+   */
+
+  const showDangerBeforeV10 =
+    window.showDanger;
+
+
+  window.showDanger =
+    function(data) {
+
+      showDangerBeforeV10(
+        data
+      );
+
+      showDangerEvidenceV10();
+    };
+
+
+  const showSafeBeforeV10 =
+    window.showSafe;
+
+
+  window.showSafe =
+    function(data) {
+
+      showSafeBeforeV10(
+        data
+      );
+
+      showSafeEvidenceV10();
+    };
+
+
+})();
+
+</script>
+
+
 </body>
 </html>
 
