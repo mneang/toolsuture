@@ -853,3 +853,524 @@ def demo_safe_recovery():
                     "checks"
                 ),
         }
+
+
+@app.post("/demo/shipment-recovery")
+def demo_shipment_recovery():
+    import hashlib as _hashlib
+    import json as _json
+    import os as _os
+    import subprocess as _subprocess
+    import sys as _sys
+    from fastapi import HTTPException as _HTTPException
+
+    scenario_dir = (
+        ROOT
+        / "evidence"
+        / "scenarios"
+        / "response-reshape"
+    )
+
+    provider_dir = (
+        ROOT
+        / "mcp_server"
+    )
+
+    victim_source = (
+        ROOT
+        / "shipment_victim"
+        / "agent.py"
+    )
+
+    def load_json(path):
+        try:
+            return _json.loads(
+                path.read_text()
+            )
+        except Exception:
+            return {}
+
+    def sha256(path):
+        return _hashlib.sha256(
+            path.read_bytes()
+        ).hexdigest()
+
+    def run_stage(
+        label,
+        command,
+        timeout=60,
+    ):
+        print(
+            f"\n=== CLOUD SHIPMENT {label} ===",
+            flush=True,
+        )
+
+        print(
+            "$ " + " ".join(command),
+            flush=True,
+        )
+
+        try:
+            proc = _subprocess.run(
+                command,
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+            )
+        except _subprocess.TimeoutExpired:
+            raise _HTTPException(
+                status_code=504,
+                detail=(
+                    f"Shipment stage timed out: {label}"
+                ),
+            )
+
+        if proc.stdout:
+            print(
+                proc.stdout,
+                flush=True,
+            )
+
+        if proc.stderr:
+            print(
+                proc.stderr,
+                flush=True,
+            )
+
+        return proc
+
+    # ------------------------------------------
+    # CLEAN ROOM
+    # No previous successful evidence may count.
+    # ------------------------------------------
+
+    stale_files = [
+        scenario_dir / "diagnosis.json",
+        scenario_dir / "policy.json",
+        scenario_dir / "repair-plan.json",
+        scenario_dir / "plan-validation.json",
+        scenario_dir / "replay-session.json",
+        scenario_dir / "mission-verification.json",
+        scenario_dir / "orchestration.json",
+        scenario_dir / "orchestrated-terminal.txt",
+        scenario_dir / "orchestrated-verification.json",
+        scenario_dir / "effect-probe.json",
+
+        provider_dir
+        / ".shipment_adapter_audit.jsonl",
+
+        provider_dir
+        / ".shipment_replay_context.json",
+
+        provider_dir
+        / ".deployed_adapter.json",
+    ]
+
+    for path in stale_files:
+        if path.exists():
+            path.unlink()
+
+    (
+        provider_dir
+        / ".shipment_provider_version"
+    ).write_text("v2")
+
+    victim_before = sha256(
+        victim_source
+    )
+
+    # ------------------------------------------
+    # FRESH GEMINI DIAGNOSIS
+    # ------------------------------------------
+
+    diagnose = run_stage(
+        "DIAGNOSE",
+        [
+            _sys.executable,
+            "-m",
+            "toolsuture.diagnose_case",
+            "--scenario",
+            "response-reshape",
+        ],
+    )
+
+    if diagnose.returncode != 0:
+        raise _HTTPException(
+            status_code=500,
+            detail="Fresh shipment diagnosis failed.",
+        )
+
+    diagnosis = load_json(
+        scenario_dir
+        / "diagnosis.json"
+    )
+
+    # ------------------------------------------
+    # DETERMINISTIC POLICY
+    # ------------------------------------------
+
+    policy_proc = run_stage(
+        "POLICY",
+        [
+            _sys.executable,
+            "-m",
+            "toolsuture.policy_case",
+            "--scenario",
+            "response-reshape",
+        ],
+    )
+
+    if policy_proc.returncode != 0:
+        raise _HTTPException(
+            status_code=500,
+            detail="Shipment policy stage failed.",
+        )
+
+    policy = load_json(
+        scenario_dir
+        / "policy.json"
+    )
+
+    # Fail closed.
+    # Do NOT continue planning after a blocked policy.
+    if policy.get("gate") != "APPROVED":
+        victim_after = sha256(
+            victim_source
+        )
+
+        return {
+            "cloud_execution": True,
+            "cloud_revision":
+                _os.getenv("K_REVISION"),
+            "scenario":
+                "response-reshape",
+            "fresh_semantic_diagnosis":
+                True,
+            "passed":
+                False,
+            "mode":
+                "SAFE_HOLD",
+            "diagnosis_decision":
+                diagnosis.get("decision"),
+            "risk_level":
+                diagnosis.get("risk_level"),
+            "policy_gate":
+                policy.get("gate"),
+            "execution_attempted":
+                False,
+            "mission_completed":
+                False,
+            "victim_integrity": {
+                "sha256_before":
+                    victim_before,
+                "sha256_after":
+                    victim_after,
+                "modified":
+                    victim_before != victim_after,
+                "bytes_changed":
+                    0
+                    if victim_before == victim_after
+                    else None,
+            },
+        }
+
+    # ------------------------------------------
+    # TYPED PLAN
+    # ------------------------------------------
+
+    plan_proc = run_stage(
+        "PLAN",
+        [
+            _sys.executable,
+            "-m",
+            "toolsuture.plan_case",
+            "--scenario",
+            "response-reshape",
+        ],
+    )
+
+    if plan_proc.returncode != 0:
+        raise _HTTPException(
+            status_code=500,
+            detail="Shipment repair planning failed.",
+        )
+
+    plan = load_json(
+        scenario_dir
+        / "repair-plan.json"
+    )
+
+    # ------------------------------------------
+    # DETERMINISTIC VALIDATION
+    # ------------------------------------------
+
+    validate_proc = run_stage(
+        "VALIDATE",
+        [
+            _sys.executable,
+            "-m",
+            "toolsuture.validate_plan",
+            "--scenario",
+            "response-reshape",
+        ],
+    )
+
+    if validate_proc.returncode != 0:
+        raise _HTTPException(
+            status_code=500,
+            detail="Shipment plan validation failed.",
+        )
+
+    validation = load_json(
+        scenario_dir
+        / "plan-validation.json"
+    )
+
+    if (
+        validation.get("gate")
+        != "VALIDATED"
+        or not validation.get(
+            "execution_allowed"
+        )
+    ):
+        victim_after = sha256(
+            victim_source
+        )
+
+        return {
+            "cloud_execution": True,
+            "cloud_revision":
+                _os.getenv("K_REVISION"),
+            "scenario":
+                "response-reshape",
+            "fresh_semantic_diagnosis":
+                True,
+            "passed":
+                False,
+            "mode":
+                "SAFE_HOLD",
+            "diagnosis_decision":
+                diagnosis.get("decision"),
+            "risk_level":
+                diagnosis.get("risk_level"),
+            "policy_gate":
+                policy.get("gate"),
+            "validation_gate":
+                validation.get("gate"),
+            "execution_attempted":
+                False,
+            "mission_completed":
+                False,
+            "victim_integrity": {
+                "sha256_before":
+                    victim_before,
+                "sha256_after":
+                    victim_after,
+                "modified":
+                    victim_before != victim_after,
+            },
+        }
+
+    # ------------------------------------------
+    # FROZEN ENGINE EXECUTION
+    # ------------------------------------------
+
+    recover = run_stage(
+        "RECOVERY",
+        [
+            _sys.executable,
+            "-m",
+            "toolsuture.recover_case",
+            "--scenario",
+            "response-reshape",
+            "--resume",
+            "--execute",
+        ],
+        timeout=120,
+    )
+
+    orchestration = load_json(
+        scenario_dir
+        / "orchestration.json"
+    )
+
+    verification = load_json(
+        scenario_dir
+        / "mission-verification.json"
+    )
+
+    victim_after = sha256(
+        victim_source
+    )
+
+    checks = (
+        verification.get("checks")
+        or {}
+    )
+
+    audit = (
+        verification.get("audit_event")
+        or {}
+    )
+
+    passed = all(
+        [
+            recover.returncode == 0,
+
+            diagnosis.get("decision")
+            == "AUTO_REPAIR_SAFE",
+
+            diagnosis.get("risk_level")
+            == "LOW",
+
+            policy.get("gate")
+            == "APPROVED",
+
+            validation.get("gate")
+            == "VALIDATED",
+
+            orchestration.get("mode")
+            == "RECOVERY_COMPLETE",
+
+            orchestration.get(
+                "mission_completed"
+            )
+            is True,
+
+            verification.get(
+                "mission_completed"
+            )
+            is True,
+
+            checks.get(
+                "replay_linked_audit_exists"
+            )
+            is True,
+
+            checks.get(
+                "v1_response_reconstructed"
+            )
+            is True,
+
+            checks.get(
+                "victim_reported_success"
+            )
+            is True,
+
+            victim_before
+            == victim_after,
+        ]
+    )
+
+    return {
+        "cloud_execution":
+            True,
+
+        "cloud_revision":
+            _os.getenv("K_REVISION"),
+
+        "scenario":
+            "response-reshape",
+
+        "fresh_semantic_diagnosis":
+            True,
+
+        "frozen_orchestrator_resume":
+            True,
+
+        "passed":
+            passed,
+
+        "diagnosis_decision":
+            diagnosis.get("decision"),
+
+        "risk_level":
+            diagnosis.get("risk_level"),
+
+        "policy_gate":
+            policy.get("gate"),
+
+        "validation_gate":
+            validation.get("gate"),
+
+        "mode":
+            orchestration.get("mode"),
+
+        "execution_attempted":
+            orchestration.get(
+                "execution_attempted"
+            ),
+
+        "mission_completed":
+            verification.get(
+                "mission_completed"
+            ),
+
+        "failure_class":
+            verification.get(
+                "failure_class"
+            ),
+
+        "mission_transition": {
+            "before":
+                verification.get("before"),
+
+            "after":
+                verification.get("after"),
+        },
+
+        "replay_id":
+            verification.get("replay_id"),
+
+        "plan_shape": {
+            "request_operations":
+                len(
+                    plan.get(
+                        "request_operations",
+                        [],
+                    )
+                ),
+
+            "response_operations":
+                len(
+                    plan.get(
+                        "response_operations",
+                        [],
+                    )
+                ),
+        },
+
+        "response_repair": {
+            "raw_v2_response":
+                audit.get(
+                    "raw_v2_response"
+                ),
+
+            "reconstructed_v1_response":
+                audit.get(
+                    "reconstructed_v1_response"
+                ),
+        },
+
+        "victim_integrity": {
+            "sha256_before":
+                victim_before,
+
+            "sha256_after":
+                victim_after,
+
+            "modified":
+                victim_before
+                != victim_after,
+
+            "bytes_changed":
+                0
+                if victim_before
+                == victim_after
+                else None,
+        },
+
+        "verification_checks":
+            checks,
+    }
