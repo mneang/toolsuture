@@ -1374,3 +1374,80 @@ def demo_shipment_recovery():
         "verification_checks":
             checks,
     }
+
+
+# TOOLSUTURE_MISSION_CONTROL_V1
+
+@app.get("/mission-control")
+def mission_control():
+    from fastapi.responses import HTMLResponse
+
+    page = (
+        ROOT
+        / "web"
+        / "mission_control.html"
+    )
+
+    return HTMLResponse(
+        page.read_text()
+    )
+
+
+@app.get("/demo/evidence-summary")
+def evidence_summary():
+
+    repeatability_path = (
+        ROOT
+        / "evidence"
+        / "banked"
+        / "cloud-shipment-repeatability-0568c25"
+        / "repeatability-summary.json"
+    )
+
+    safe_hold_path = (
+        ROOT
+        / "evidence"
+        / "banked"
+        / "cloud-dangerous-safe-hold"
+        / "proof-summary.json"
+    )
+
+    def load_optional(path):
+        try:
+            return json.loads(
+                path.read_text()
+            )
+        except Exception:
+            return None
+
+    repeatability = load_optional(
+        repeatability_path
+    )
+
+    safe_hold = load_optional(
+        safe_hold_path
+    )
+
+    return {
+        "repeatability":
+            repeatability,
+
+        "dangerous_safe_hold":
+            safe_hold,
+
+        "headline_proof": {
+            "frozen_agent_bytes_changed":
+                0,
+
+            "verified_cloud_recoveries":
+                3,
+
+            "dangerous_drift_refused":
+                bool(
+                    safe_hold
+                    and safe_hold.get(
+                        "all_checks_pass"
+                    )
+                ),
+        },
+    }

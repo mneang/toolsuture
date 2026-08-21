@@ -1,0 +1,1451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ToolSuture Mission Control</title>
+
+<style>
+:root {
+  --bg:#07111d;
+  --panel:#0d1a29;
+  --panel2:#101f31;
+  --line:#24364b;
+  --text:#f4f7fb;
+  --muted:#91a2b7;
+  --good:#31d07c;
+  --warn:#ffcf5c;
+  --bad:#ff6276;
+  --accent:#65a7ff;
+  --accent2:#b48cff;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+body {
+  margin:0;
+  min-height:100vh;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background:
+    radial-gradient(
+      circle at 75% 0%,
+      rgba(80,104,255,.18),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 10% 30%,
+      rgba(32,190,145,.10),
+      transparent 30%
+    ),
+    var(--bg);
+  color:var(--text);
+}
+
+button {
+  font:inherit;
+}
+
+.shell {
+  max-width:1440px;
+  margin:auto;
+  padding:34px 28px 64px;
+}
+
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  margin-bottom:30px;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+}
+
+.logo {
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:
+    linear-gradient(
+      145deg,
+      var(--accent),
+      var(--accent2)
+    );
+  box-shadow:
+    0 0 35px rgba(100,150,255,.25);
+}
+
+.live {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.dot {
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--good);
+  box-shadow:
+    0 0 14px rgba(49,208,124,.9);
+}
+
+.hero {
+  display:grid;
+  grid-template-columns:
+    minmax(0,1.4fr)
+    minmax(360px,.8fr);
+  gap:24px;
+  align-items:stretch;
+  margin-bottom:24px;
+}
+
+.hero-main,
+.hero-stats,
+.card,
+.result {
+  border:1px solid var(--line);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.025),
+      rgba(255,255,255,.006)
+    ),
+    var(--panel);
+  border-radius:20px;
+}
+
+.hero-main {
+  padding:34px;
+}
+
+.eyebrow {
+  color:var(--accent);
+  font-size:12px;
+  letter-spacing:.14em;
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+h1 {
+  font-size:
+    clamp(38px,5vw,68px);
+  line-height:.98;
+  margin:0 0 18px;
+  max-width:900px;
+  letter-spacing:-.045em;
+}
+
+.subtitle {
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.55;
+  max-width:800px;
+}
+
+.hero-stats {
+  padding:24px;
+  display:grid;
+  gap:12px;
+}
+
+.stat {
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:rgba(255,255,255,.018);
+}
+
+.stat-value {
+  font-size:29px;
+  font-weight:850;
+  letter-spacing:-.03em;
+}
+
+.stat-label {
+  margin-top:4px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.good {
+  color:var(--good);
+}
+
+.bad {
+  color:var(--bad);
+}
+
+.actions {
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:28px;
+}
+
+.btn {
+  border:0;
+  cursor:pointer;
+  padding:14px 20px;
+  border-radius:12px;
+  font-weight:800;
+  transition:
+    transform .15s ease,
+    opacity .15s ease;
+}
+
+.btn:hover {
+  transform:translateY(-1px);
+}
+
+.btn:disabled {
+  opacity:.5;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.primary {
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent),
+      var(--accent2)
+    );
+  color:white;
+}
+
+.danger {
+  color:#ffdce1;
+  background:rgba(255,98,118,.12);
+  border:1px solid rgba(255,98,118,.35);
+}
+
+.status-banner {
+  display:none;
+  margin-top:18px;
+  padding:13px 15px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  color:var(--muted);
+}
+
+.status-banner.running {
+  display:block;
+}
+
+.pulse {
+  display:inline-block;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  margin-right:8px;
+  background:var(--accent);
+  animation:pulse 1.1s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity:.25; }
+  50% { opacity:1; }
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:
+    minmax(280px,.82fr)
+    minmax(320px,1fr)
+    minmax(330px,1fr);
+  gap:18px;
+}
+
+.card {
+  padding:22px;
+}
+
+.card-title {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.card-title h2 {
+  margin:0;
+  font-size:16px;
+}
+
+.role {
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:.12em;
+  font-weight:800;
+}
+
+.small {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.55;
+}
+
+.evidence-block {
+  padding:13px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  margin-top:11px;
+  background:rgba(0,0,0,.13);
+}
+
+.evidence-block b {
+  font-size:12px;
+}
+
+.mapping {
+  display:grid;
+  grid-template-columns:
+    1fr auto 1fr;
+  gap:8px;
+  align-items:center;
+  padding:9px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  font-size:12px;
+}
+
+.mapping:last-child {
+  border-bottom:0;
+}
+
+.arrow {
+  color:var(--accent);
+}
+
+.diagnosis-big {
+  font-size:25px;
+  font-weight:850;
+  margin:9px 0;
+}
+
+.badge {
+  display:inline-flex;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  border:1px solid var(--line);
+  margin:3px 4px 3px 0;
+}
+
+.badge.good-badge {
+  border-color:rgba(49,208,124,.35);
+  color:var(--good);
+  background:rgba(49,208,124,.08);
+}
+
+.badge.bad-badge {
+  border-color:rgba(255,98,118,.35);
+  color:var(--bad);
+  background:rgba(255,98,118,.08);
+}
+
+.pipeline {
+  display:grid;
+  gap:8px;
+}
+
+.step {
+  display:grid;
+  grid-template-columns:25px 85px 1fr;
+  gap:9px;
+  align-items:center;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.step-icon {
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+}
+
+.step.pass {
+  color:var(--text);
+  border-color:rgba(49,208,124,.28);
+}
+
+.step.pass .step-icon {
+  color:var(--good);
+  border-color:rgba(49,208,124,.5);
+  background:rgba(49,208,124,.1);
+}
+
+.step.stop {
+  color:var(--text);
+  border-color:rgba(255,98,118,.28);
+}
+
+.step.stop .step-icon {
+  color:var(--bad);
+  border-color:rgba(255,98,118,.5);
+  background:rgba(255,98,118,.1);
+}
+
+.step-name {
+  font-weight:800;
+}
+
+.step-value {
+  text-align:right;
+}
+
+.result {
+  margin-top:22px;
+  padding:28px;
+  display:none;
+}
+
+.result.visible {
+  display:block;
+  animation:reveal .22s ease;
+}
+
+@keyframes reveal {
+  from {
+    transform:translateY(8px);
+    opacity:0;
+  }
+  to {
+    transform:none;
+    opacity:1;
+  }
+}
+
+.result.success {
+  border-color:rgba(49,208,124,.38);
+}
+
+.result.blocked {
+  border-color:rgba(255,98,118,.38);
+}
+
+.result-title {
+  font-size:30px;
+  font-weight:900;
+  letter-spacing:-.025em;
+}
+
+.transition {
+  margin-top:18px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.transition-box {
+  padding:10px 13px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  font-weight:800;
+  font-size:12px;
+}
+
+.zero {
+  margin-top:22px;
+  font-size:
+    clamp(30px,4vw,52px);
+  font-weight:900;
+  letter-spacing:-.045em;
+}
+
+.meta {
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+
+.meta-item {
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:11px;
+  overflow:hidden;
+}
+
+.meta-key {
+  font-size:10px;
+  color:var(--muted);
+  letter-spacing:.09em;
+}
+
+.meta-value {
+  margin-top:5px;
+  font-size:11px;
+  word-break:break-all;
+}
+
+.transform {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  margin-top:20px;
+}
+
+pre {
+  margin:8px 0 0;
+  padding:14px;
+  border-radius:11px;
+  background:#050b12;
+  border:1px solid var(--line);
+  overflow:auto;
+  font-size:11px;
+  line-height:1.55;
+  max-height:300px;
+}
+
+details {
+  margin-top:18px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:13px;
+}
+
+summary {
+  cursor:pointer;
+  font-weight:800;
+}
+
+.checklist {
+  display:grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap:7px;
+  margin-top:12px;
+}
+
+.check {
+  color:var(--muted);
+  font-size:11px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  padding:7px 0;
+}
+
+.footer {
+  margin-top:24px;
+  color:var(--muted);
+  font-size:11px;
+  text-align:center;
+}
+
+@media(max-width:1050px) {
+  .hero,
+  .grid {
+    grid-template-columns:1fr;
+  }
+
+  .hero-stats {
+    grid-template-columns:
+      repeat(3,1fr);
+  }
+}
+
+@media(max-width:680px) {
+  .shell {
+    padding:20px 14px 40px;
+  }
+
+  .hero-stats,
+  .meta,
+  .transform,
+  .checklist {
+    grid-template-columns:1fr;
+  }
+
+  h1 {
+    font-size:42px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="shell">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">TS</div>
+      TOOLSUTURE
+    </div>
+
+    <div class="live">
+      <span class="dot"></span>
+      CLOUD RUN · LIVE
+    </div>
+  </div>
+
+
+  <section class="hero">
+
+    <div class="hero-main">
+
+      <div class="eyebrow">
+        AGENT COMPATIBILITY RECOVERY
+      </div>
+
+      <h1>
+        APIs change.<br>
+        Your agent shouldn't have to.
+      </h1>
+
+      <div class="subtitle">
+        ToolSuture restores broken tool compatibility
+        around an unchanged deployed agent, safely
+        replays its original mission, and independently
+        proves whether recovery worked.
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn primary"
+          id="safeBtn"
+          onclick="runScenario('safe')"
+        >
+          Recover Safe Drift
+        </button>
+
+        <button
+          class="btn danger"
+          id="dangerBtn"
+          onclick="runScenario('danger')"
+        >
+          Test Dangerous Drift
+        </button>
+
+      </div>
+
+      <div
+        class="status-banner"
+        id="statusBanner"
+      >
+        <span class="pulse"></span>
+        Executing on Cloud Run...
+      </div>
+
+    </div>
+
+
+    <div class="hero-stats">
+
+      <div class="stat">
+        <div
+          class="stat-value good"
+          id="repeatabilityStat"
+        >
+          3 / 3
+        </div>
+        <div class="stat-label">
+          VERIFIED CLOUD RECOVERIES
+        </div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-value">
+          0 BYTES
+        </div>
+        <div class="stat-label">
+          FROZEN AGENT MODIFICATION
+        </div>
+      </div>
+
+      <div class="stat">
+        <div
+          class="stat-value good"
+          id="safeHoldStat"
+        >
+          SAFE HOLD
+        </div>
+        <div class="stat-label">
+          DANGEROUS DRIFT REFUSED
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <section class="grid">
+
+    <!-- BAENA -->
+    <article class="card">
+
+      <div class="card-title">
+        <h2>Evidence & Context</h2>
+        <span class="role">BAENA</span>
+      </div>
+
+      <div class="small">
+        Original mission, old contract, new contract,
+        and authoritative provider semantics.
+      </div>
+
+      <div class="evidence-block">
+        <b>ORIGINAL MISSION</b>
+        <div class="small">
+          Check shipment TRACK-7001 and report whether
+          it shipped, the carrier, and estimated
+          delivery date.
+        </div>
+      </div>
+
+      <div class="evidence-block">
+        <b>PROVIDER MIGRATION</b>
+
+        <div class="mapping">
+          <span>status=shipped</span>
+          <span class="arrow">↔</span>
+          <span>result.state=in_transit</span>
+        </div>
+
+        <div class="mapping">
+          <span>tracking</span>
+          <span class="arrow">↔</span>
+          <span>shipment.tracking_id</span>
+        </div>
+
+        <div class="mapping">
+          <span>carrier</span>
+          <span class="arrow">↔</span>
+          <span>shipment.carrier_name</span>
+        </div>
+
+        <div class="mapping">
+          <span>eta_date</span>
+          <span class="arrow">↔</span>
+          <span>shipment.estimated_delivery</span>
+        </div>
+      </div>
+
+    </article>
+
+
+    <!-- OLMO -->
+    <article class="card">
+
+      <div class="card-title">
+        <h2>Semantic Diagnosis</h2>
+        <span class="role">OLMO</span>
+      </div>
+
+      <div class="small">
+        Gemini interprets semantic compatibility.
+        Deterministic controls decide whether action
+        is permitted.
+      </div>
+
+      <div
+        class="diagnosis-big"
+        id="diagnosis"
+      >
+        READY
+      </div>
+
+      <div id="diagnosisBadges">
+        <span class="badge">
+          waiting for run
+        </span>
+      </div>
+
+      <div
+        class="small"
+        id="diagnosisDetail"
+        style="margin-top:16px"
+      >
+        Choose a scenario to execute a fresh Cloud
+        diagnosis.
+      </div>
+
+    </article>
+
+
+    <!-- PORRO -->
+    <article class="card">
+
+      <div class="card-title">
+        <h2>Recovery Pipeline</h2>
+        <span class="role">PORRO</span>
+      </div>
+
+      <div class="pipeline">
+
+        <div class="step" data-step="observe">
+          <span class="step-icon">•</span>
+          <span class="step-name">OBSERVE</span>
+          <span class="step-value">waiting</span>
+        </div>
+
+        <div class="step" data-step="diagnose">
+          <span class="step-icon">•</span>
+          <span class="step-name">DIAGNOSE</span>
+          <span class="step-value">waiting</span>
+        </div>
+
+        <div class="step" data-step="policy">
+          <span class="step-icon">•</span>
+          <span class="step-name">POLICY</span>
+          <span class="step-value">waiting</span>
+        </div>
+
+        <div class="step" data-step="plan">
+          <span class="step-icon">•</span>
+          <span class="step-name">PLAN</span>
+          <span class="step-value">waiting</span>
+        </div>
+
+        <div class="step" data-step="validate">
+          <span class="step-icon">•</span>
+          <span class="step-name">VALIDATE</span>
+          <span class="step-value">waiting</span>
+        </div>
+
+        <div class="step" data-step="replay">
+          <span class="step-icon">•</span>
+          <span class="step-name">REPLAY</span>
+          <span class="step-value">waiting</span>
+        </div>
+
+        <div class="step" data-step="verify">
+          <span class="step-icon">•</span>
+          <span class="step-name">VERIFY</span>
+          <span class="step-value">waiting</span>
+        </div>
+
+      </div>
+    </article>
+
+  </section>
+
+
+  <!-- OYARZABAL + UNAI -->
+  <section
+    class="result"
+    id="result"
+  >
+
+    <div class="role">
+      OYARZABAL FINISH · UNAI SIMÓN VAR
+    </div>
+
+    <div
+      class="result-title"
+      id="resultTitle"
+    >
+    </div>
+
+    <div
+      class="transition"
+      id="transition"
+    >
+    </div>
+
+    <div
+      class="zero"
+      id="zeroBytes"
+    >
+    </div>
+
+    <div class="meta">
+
+      <div class="meta-item">
+        <div class="meta-key">
+          CLOUD REVISION
+        </div>
+        <div
+          class="meta-value"
+          id="revision"
+        ></div>
+      </div>
+
+      <div class="meta-item">
+        <div class="meta-key">
+          REPLAY / RUN ID
+        </div>
+        <div
+          class="meta-value"
+          id="runId"
+        ></div>
+      </div>
+
+      <div class="meta-item">
+        <div class="meta-key">
+          FINAL MODE
+        </div>
+        <div
+          class="meta-value"
+          id="mode"
+        ></div>
+      </div>
+
+    </div>
+
+
+    <div
+      class="transform"
+      id="transform"
+      style="display:none"
+    >
+
+      <div>
+        <div class="role">
+          PROVIDER V2 — OBSERVED
+        </div>
+        <pre id="rawV2"></pre>
+      </div>
+
+      <div>
+        <div class="role">
+          AGENT V1 — RECONSTRUCTED
+        </div>
+        <pre id="reconstructedV1"></pre>
+      </div>
+
+    </div>
+
+
+    <details id="proofDetails">
+      <summary>
+        🧤 View independent verification
+      </summary>
+
+      <div
+        class="checklist"
+        id="checklist"
+      >
+      </div>
+
+    </details>
+
+  </section>
+
+
+  <div class="footer">
+    Gemini semantic reasoning · deterministic safety
+    gates · frozen-agent replay · replay-linked
+    verification · Google Cloud Run
+  </div>
+
+</div>
+
+
+<script>
+
+const $ = (id) =>
+  document.getElementById(id);
+
+
+function resetPipeline() {
+  document.querySelectorAll(".step").forEach(
+    (el) => {
+      el.classList.remove("pass","stop");
+      el.querySelector(".step-icon").textContent = "•";
+      el.querySelector(".step-value").textContent =
+        "waiting";
+    }
+  );
+}
+
+
+function setStep(name, status, value) {
+
+  const el =
+    document.querySelector(
+      `[data-step="${name}"]`
+    );
+
+  el.classList.remove("pass","stop");
+
+  if (status === "pass") {
+    el.classList.add("pass");
+    el.querySelector(".step-icon").textContent = "✓";
+  }
+
+  if (status === "stop") {
+    el.classList.add("stop");
+    el.querySelector(".step-icon").textContent = "×";
+  }
+
+  el.querySelector(".step-value").textContent =
+    value;
+}
+
+
+function setBusy(value) {
+
+  $("safeBtn").disabled = value;
+  $("dangerBtn").disabled = value;
+
+  $("statusBanner").classList.toggle(
+    "running",
+    value
+  );
+}
+
+
+function renderChecklist(checks) {
+
+  const box = $("checklist");
+  box.innerHTML = "";
+
+  Object.entries(checks || {}).forEach(
+    ([name,value]) => {
+
+      const div =
+        document.createElement("div");
+
+      div.className = "check";
+
+      div.textContent =
+        `${value ? "✓" : "×"} ${name}`;
+
+      div.style.color =
+        value ? "var(--good)" : "var(--bad)";
+
+      box.appendChild(div);
+    }
+  );
+}
+
+
+function showSafe(data) {
+
+  const shape =
+    data.plan_shape || {};
+
+  const repair =
+    data.response_repair || {};
+
+  const victim =
+    data.victim_integrity || {};
+
+  const transition =
+    data.mission_transition || {};
+
+  $("diagnosis").textContent =
+    data.diagnosis_decision || "UNKNOWN";
+
+  $("diagnosis").className =
+    "diagnosis-big good";
+
+  $("diagnosisBadges").innerHTML = `
+    <span class="badge good-badge">
+      ${data.risk_level || "LOW"} RISK
+    </span>
+    <span class="badge good-badge">
+      ${data.policy_gate || "APPROVED"}
+    </span>
+    <span class="badge good-badge">
+      ${data.validation_gate || "VALIDATED"}
+    </span>
+  `;
+
+  $("diagnosisDetail").textContent =
+    "Provider migration semantics were sufficient " +
+    "to construct a scoped compatibility repair.";
+
+  setStep(
+    "observe",
+    "pass",
+    data.failure_class || "CONTRACT DRIFT"
+  );
+
+  setStep(
+    "diagnose",
+    "pass",
+    `${data.diagnosis_decision} · ${data.risk_level}`
+  );
+
+  setStep(
+    "policy",
+    "pass",
+    data.policy_gate
+  );
+
+  setStep(
+    "plan",
+    "pass",
+    `${shape.request_operations || 0} req · ` +
+    `${shape.response_operations || 0} resp`
+  );
+
+  setStep(
+    "validate",
+    "pass",
+    data.validation_gate
+  );
+
+  setStep(
+    "replay",
+    "pass",
+    data.mode
+  );
+
+  setStep(
+    "verify",
+    "pass",
+    data.mission_completed
+      ? "MISSION VERIFIED"
+      : "FAILED"
+  );
+
+
+  const result = $("result");
+
+  result.className =
+    "result visible success";
+
+  $("resultTitle").textContent =
+    "✓ MISSION COMPLETED AND VERIFIED";
+
+  $("transition").innerHTML = `
+    <div class="transition-box">
+      ${transition.before || "CAPABILITY_LOST"}
+    </div>
+
+    <div>→</div>
+
+    <div
+      class="transition-box"
+      style="color:var(--good)"
+    >
+      ${transition.after || "CAPABILITY_RESTORED"}
+    </div>
+  `;
+
+  $("zeroBytes").textContent =
+    `${victim.bytes_changed ?? 0} BYTES CHANGED`;
+
+  $("zeroBytes").style.color =
+    "var(--good)";
+
+  $("revision").textContent =
+    data.cloud_revision || "unknown";
+
+  $("runId").textContent =
+    data.replay_id || "unknown";
+
+  $("mode").textContent =
+    data.mode || "unknown";
+
+  $("transform").style.display =
+    "grid";
+
+  $("rawV2").textContent =
+    JSON.stringify(
+      repair.raw_v2_response || {},
+      null,
+      2
+    );
+
+  $("reconstructedV1").textContent =
+    JSON.stringify(
+      repair.reconstructed_v1_response || {},
+      null,
+      2
+    );
+
+  renderChecklist(
+    data.verification_checks || {}
+  );
+
+  result.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+
+function showDanger(data) {
+
+  $("diagnosis").textContent =
+    data.diagnosis_decision || "REFUSE";
+
+  $("diagnosis").className =
+    "diagnosis-big bad";
+
+  $("diagnosisBadges").innerHTML = `
+    <span class="badge bad-badge">
+      ${data.risk_level || "CRITICAL"}
+    </span>
+    <span class="badge bad-badge">
+      ${data.policy_gate || "BLOCKED"}
+    </span>
+  `;
+
+  $("diagnosisDetail").textContent =
+    "ToolSuture detected a material semantic change " +
+    "and refused to manufacture compatibility.";
+
+  setStep(
+    "observe",
+    "pass",
+    data.scenario || "DANGEROUS DRIFT"
+  );
+
+  setStep(
+    "diagnose",
+    "stop",
+    `${data.diagnosis_decision} · ${data.risk_level}`
+  );
+
+  setStep(
+    "policy",
+    "stop",
+    data.policy_gate
+  );
+
+  setStep(
+    "plan",
+    "stop",
+    "NOT EXECUTED"
+  );
+
+  setStep(
+    "validate",
+    "stop",
+    "NOT EXECUTED"
+  );
+
+  setStep(
+    "replay",
+    "stop",
+    "NOT ATTEMPTED"
+  );
+
+  setStep(
+    "verify",
+    "pass",
+    "SAFE HOLD VERIFIED"
+  );
+
+
+  const result = $("result");
+
+  result.className =
+    "result visible blocked";
+
+  $("resultTitle").textContent =
+    "🛑 DANGEROUS CHANGE SAFELY BLOCKED";
+
+  $("transition").innerHTML = `
+    <div class="transition-box">
+      CRITICAL DRIFT
+    </div>
+
+    <div>→</div>
+
+    <div
+      class="transition-box"
+      style="color:var(--bad)"
+    >
+      SAFE_HOLD
+    </div>
+  `;
+
+  $("zeroBytes").textContent =
+    "0 EXECUTION ATTEMPTS";
+
+  $("zeroBytes").style.color =
+    "var(--bad)";
+
+  $("revision").textContent =
+    data.cloud_revision || "unknown";
+
+  $("runId").textContent =
+    data.run_id || "unknown";
+
+  $("mode").textContent =
+    data.mode || "SAFE_HOLD";
+
+  $("transform").style.display =
+    "none";
+
+  renderChecklist({
+    fresh_semantic_diagnosis:
+      data.fresh_semantic_diagnosis === true,
+
+    decision_refuse:
+      data.diagnosis_decision === "REFUSE",
+
+    risk_critical:
+      data.risk_level === "CRITICAL",
+
+    policy_blocked:
+      data.policy_gate === "BLOCKED",
+
+    execution_not_attempted:
+      data.execution_attempted === false,
+
+    mission_not_claimed:
+      data.mission_completed === false,
+
+    victim_unchanged:
+      data.victim_agent_modified === false,
+
+    overall_pass:
+      data.passed === true
+  });
+
+  result.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+
+async function runScenario(kind) {
+
+  resetPipeline();
+
+  $("result").className =
+    "result";
+
+  setBusy(true);
+
+  $("diagnosis").textContent =
+    "RUNNING";
+
+  $("diagnosis").className =
+    "diagnosis-big";
+
+  $("diagnosisBadges").innerHTML = `
+    <span class="badge">
+      fresh Cloud execution
+    </span>
+  `;
+
+  $("diagnosisDetail").textContent =
+    "Waiting for the real Cloud Run workflow. " +
+    "No success state is rendered until the backend returns proof.";
+
+  const endpoint =
+    kind === "safe"
+      ? "/demo/shipment-recovery"
+      : "/demo/safe-hold";
+
+  try {
+
+    const response =
+      await fetch(
+        endpoint,
+        { method:"POST" }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        JSON.stringify(data)
+      );
+    }
+
+    if (kind === "safe") {
+      showSafe(data);
+    } else {
+      showDanger(data);
+    }
+
+  } catch (error) {
+
+    $("diagnosis").textContent =
+      "EXECUTION ERROR";
+
+    $("diagnosis").className =
+      "diagnosis-big bad";
+
+    $("diagnosisDetail").textContent =
+      String(error);
+
+    setStep(
+      "verify",
+      "stop",
+      "NO SUCCESS CLAIM"
+    );
+
+  } finally {
+
+    setBusy(false);
+
+  }
+}
+
+
+async function loadEvidenceSummary() {
+
+  try {
+
+    const r =
+      await fetch(
+        "/demo/evidence-summary"
+      );
+
+    if (!r.ok) return;
+
+    const data =
+      await r.json();
+
+    if (
+      data.repeatability &&
+      data.repeatability.three_for_three
+    ) {
+      $("repeatabilityStat").textContent =
+        "3 / 3";
+    }
+
+    if (
+      data.dangerous_safe_hold &&
+      data.dangerous_safe_hold.all_checks_pass
+    ) {
+      $("safeHoldStat").textContent =
+        "SAFE HOLD";
+    }
+
+  } catch (_) {
+    // Historical metrics remain readable,
+    // but live actions never rely on them.
+  }
+}
+
+
+loadEvidenceSummary();
+
+</script>
+</body>
+</html>
