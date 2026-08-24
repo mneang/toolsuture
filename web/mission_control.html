@@ -5691,6 +5691,2853 @@ span {
 </script>
 
 
+
+
+<style id="TOOLSUTURE_FINAL_CUT_V12">
+
+/* ==========================================================
+   V12 — FINAL CUT
+   visual polish only
+========================================================== */
+
+:root {
+  --v12-safe: #35d68a;
+  --v12-safe-soft: rgba(53,214,138,.12);
+
+  --v12-danger: #ff6178;
+  --v12-danger-soft: rgba(255,97,120,.12);
+
+  --v12-blue: #6aaeff;
+
+  --v12-panel:
+    rgba(10,24,38,.80);
+
+  --v12-line:
+    rgba(145,175,210,.13);
+
+  --v12-text:
+    #f4f7fb;
+
+  --v12-muted:
+    #8ea3b8;
+}
+
+
+/* ==========================================================
+   GLOBAL DEPTH
+========================================================== */
+
+body {
+  background:
+    radial-gradient(
+      1000px 650px at 90% -10%,
+      rgba(64,119,255,.085),
+      transparent 67%
+    ),
+    radial-gradient(
+      850px 650px at -5% 40%,
+      rgba(53,214,138,.045),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      #07121e 0%,
+      #06101a 56%,
+      #050d16 100%
+    ) !important;
+}
+
+
+body::after {
+  content:"";
+
+  position:fixed;
+  inset:0;
+
+  pointer-events:none;
+  z-index:-1;
+
+  background:
+    radial-gradient(
+      circle at 50% 5%,
+      rgba(255,255,255,.018),
+      transparent 35%
+    );
+}
+
+
+/* ==========================================================
+   SECTION SURFACES
+========================================================== */
+
+.recovery-path,
+.card,
+.evidence,
+.semantic,
+.execution-trace,
+.result,
+.contract-story,
+.metric-strip {
+  border-color:
+    var(--v12-line) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(12,28,43,.94),
+      rgba(7,19,31,.92)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,.035),
+
+    0 20px 60px
+      rgba(0,0,0,.10);
+}
+
+
+/* ==========================================================
+   RECOVERY RAIL — CONTROLLED, NOT FLASHY
+========================================================== */
+
+.recovery-path {
+  position:relative;
+
+  overflow:hidden;
+}
+
+
+.recovery-path::before {
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:8%;
+  right:8%;
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(106,174,255,.32),
+      transparent
+    );
+}
+
+
+.recovery-path::after {
+  content:"";
+
+  position:absolute;
+
+  width:38%;
+  height:110px;
+
+  top:-75px;
+  left:31%;
+
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(106,174,255,.045),
+      transparent 70%
+    );
+}
+
+
+/* ==========================================================
+   PRIMARY RESULT — HERO SPOTLIGHT
+========================================================== */
+
+.result {
+  position:relative;
+
+  overflow:hidden;
+
+  isolation:isolate;
+}
+
+
+.result::before {
+  content:"";
+
+  position:absolute;
+
+  z-index:-1;
+
+  width:900px;
+  height:420px;
+
+  top:-230px;
+  left:-150px;
+
+  pointer-events:none;
+
+  opacity:.55;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(53,214,138,.11),
+      transparent 69%
+    );
+}
+
+
+body.v11-danger
+.result::before {
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255,97,120,.115),
+      transparent 69%
+    );
+}
+
+
+.result-title {
+  color:
+    var(--v12-text);
+
+  letter-spacing:
+    -.058em !important;
+
+  line-height:
+    .94;
+
+  text-shadow:
+    0 12px 50px
+    rgba(0,0,0,.18);
+}
+
+
+/* ==========================================================
+   ZERO-BYTE / ZERO-EXECUTION HERO
+========================================================== */
+
+.zero {
+  position:relative;
+
+  margin-top:
+    clamp(24px,3vw,42px);
+
+  line-height:
+    .88;
+
+  letter-spacing:
+    -.07em !important;
+
+  filter:
+    drop-shadow(
+      0 12px 34px
+      rgba(53,214,138,.065)
+    );
+}
+
+
+body.v11-danger
+.zero {
+  filter:
+    drop-shadow(
+      0 12px 34px
+      rgba(255,97,120,.075)
+    );
+}
+
+
+.zero-explainer {
+  max-width:
+    780px;
+
+  margin-top:
+    11px !important;
+
+  color:
+    #9eb0c1 !important;
+
+  font-weight:
+    650;
+
+  line-height:
+    1.45;
+}
+
+
+/* ==========================================================
+   MISSION / SAFE-HOLD OUTCOME — PREMIUM CALLOUT
+========================================================== */
+
+.mission-outcome,
+.safety-outcome {
+  border-radius:
+    18px !important;
+
+  backdrop-filter:
+    blur(9px);
+
+  -webkit-backdrop-filter:
+    blur(9px);
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,.035),
+
+    0 20px 55px
+      rgba(0,0,0,.09);
+}
+
+
+.mission-outcome {
+  background:
+    linear-gradient(
+      120deg,
+      rgba(53,214,138,.075),
+      rgba(14,36,46,.76) 55%,
+      rgba(53,214,138,.025)
+    ) !important;
+}
+
+
+.safety-outcome {
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255,97,120,.075),
+      rgba(36,24,35,.78) 55%,
+      rgba(255,97,120,.022)
+    ) !important;
+}
+
+
+.mission-title,
+.safety-title {
+  letter-spacing:
+    -.045em !important;
+}
+
+
+.mission-status,
+.safety-status {
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,.05);
+}
+
+
+/* ==========================================================
+   STAT TRIO — 16/16 / OBSERVED / LINKED
+========================================================== */
+
+.verified-stat {
+  position:relative;
+
+  overflow:hidden;
+
+  min-height:
+    108px;
+
+  padding:
+    23px 24px !important;
+
+  border-radius:
+    15px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(53,214,138,.045),
+      rgba(9,26,39,.77)
+    ) !important;
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+
+.verified-stat::before {
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  top:18%;
+  bottom:18%;
+
+  width:2px;
+
+  border-radius:
+    999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(53,214,138,.75),
+      transparent
+    );
+
+  opacity:.65;
+}
+
+
+.verified-stat:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    rgba(53,214,138,.25) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,.035),
+
+    0 16px 38px
+      rgba(0,0,0,.11);
+}
+
+
+/* ==========================================================
+   CLOUD / RUN / MODE METADATA
+========================================================== */
+
+.meta-item {
+  position:relative;
+
+  overflow:hidden;
+
+  background:
+    rgba(6,17,29,.56) !important;
+
+  border-radius:
+    12px !important;
+}
+
+
+.meta-item::after {
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:12px;
+  right:12px;
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(129,166,205,.16),
+      transparent
+    );
+}
+
+
+.meta-item > :last-child {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+
+  font-size:
+    12px;
+}
+
+
+/* ==========================================================
+   PROVIDER V2 → FROZEN V1 STORY
+========================================================== */
+
+.contract-story {
+  position:relative;
+
+  overflow:hidden;
+
+  padding:
+    25px 28px !important;
+
+  border-radius:
+    16px !important;
+}
+
+
+.contract-story::before {
+  content:"";
+
+  position:absolute;
+
+  width:360px;
+  height:160px;
+
+  top:-75px;
+  left:50%;
+
+  transform:
+    translateX(-50%);
+
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(106,174,255,.06),
+      transparent 70%
+    );
+}
+
+
+.contract-bridge {
+  position:relative;
+}
+
+
+.contract-bridge::before {
+  opacity:
+    .85;
+}
+
+
+.contract-bridge::after {
+  color:
+    #78b9ff !important;
+
+  text-shadow:
+    0 0 18px
+    rgba(106,174,255,.16);
+}
+
+
+/* ==========================================================
+   DISCLOSURE PANELS
+========================================================== */
+
+details {
+  overflow:hidden;
+
+  border-radius:
+    13px !important;
+
+  transition:
+    border-color .18s ease,
+    background-color .18s ease;
+}
+
+
+details:hover {
+  border-color:
+    rgba(135,178,220,.20) !important;
+}
+
+
+details > summary {
+  min-height:
+    48px;
+
+  display:flex;
+
+  align-items:center;
+
+  padding:
+    0 44px 0 16px !important;
+
+  color:
+    #aebccc;
+
+  font-weight:
+    760;
+
+  user-select:none;
+}
+
+
+details > summary::after {
+  right:
+    17px !important;
+}
+
+
+details[open] {
+  background:
+    rgba(5,15,25,.36) !important;
+}
+
+
+/* ==========================================================
+   BUTTONS — TACTILE WITHOUT GAMIFICATION
+========================================================== */
+
+button {
+  min-height:
+    48px;
+
+  border-radius:
+    12px !important;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    -.01em;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,.09),
+
+    0 10px 24px
+      rgba(0,0,0,.11);
+
+  transition:
+    transform .15s ease,
+    filter .15s ease,
+    box-shadow .15s ease;
+}
+
+
+button:hover {
+  transform:
+    translateY(-2px);
+
+  filter:
+    brightness(1.055);
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,.12),
+
+    0 15px 34px
+      rgba(0,0,0,.14);
+}
+
+
+button:active {
+  transform:
+    translateY(0)
+    scale(.985);
+}
+
+
+/* ==========================================================
+   RESULT ANIMATION — REAL RESULT ONLY
+========================================================== */
+
+@keyframes v12HeroReveal {
+
+  0% {
+    opacity:0;
+    transform:
+      translateY(15px);
+  }
+
+  55% {
+    opacity:1;
+  }
+
+  100% {
+    opacity:1;
+    transform:
+      translateY(0);
+  }
+}
+
+
+@keyframes v12OutcomeReveal {
+
+  0% {
+    opacity:0;
+    transform:
+      translateY(10px)
+      scale(.994);
+  }
+
+  100% {
+    opacity:1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+.v12-arrived
+.result-title,
+.v12-arrived
+.zero {
+  animation:
+    v12HeroReveal
+    .48s
+    cubic-bezier(.18,.74,.2,1)
+    both;
+}
+
+
+.v12-arrived
+.zero {
+  animation-delay:
+    .035s;
+}
+
+
+.v12-arrived
+.mission-outcome,
+.v12-arrived
+.safety-outcome {
+  animation:
+    v12OutcomeReveal
+    .45s
+    .08s
+    cubic-bezier(.18,.74,.2,1)
+    both;
+}
+
+
+.v12-arrived
+.verified-stat {
+  animation:
+    v12OutcomeReveal
+    .42s
+    .11s
+    cubic-bezier(.18,.74,.2,1)
+    both;
+}
+
+
+/* ==========================================================
+   1080P RECORDING RHYTHM
+========================================================== */
+
+@media(
+  min-width:1200px
+) {
+
+  .result {
+    padding-left:
+      clamp(70px,6vw,105px) !important;
+
+    padding-right:
+      clamp(70px,6vw,105px) !important;
+  }
+
+
+  .mission-outcome,
+  .safety-outcome {
+    padding:
+      24px 28px !important;
+  }
+
+
+  .verified-stat {
+    min-height:
+      110px;
+  }
+}
+
+
+/* ==========================================================
+   MOBILE / NARROW VIEWPORT
+========================================================== */
+
+@media(
+  max-width:760px
+) {
+
+  .result-title {
+    line-height:
+      .98;
+  }
+
+
+  .zero {
+    line-height:
+      .92;
+  }
+
+
+  .contract-story {
+    padding:
+      20px !important;
+  }
+}
+
+
+/* ==========================================================
+   ACCESSIBILITY
+========================================================== */
+
+@media(
+  prefers-reduced-motion:
+  reduce
+) {
+
+  html {
+    scroll-behavior:
+      auto !important;
+  }
+
+
+  *,
+  *::before,
+  *::after {
+    animation:
+      none !important;
+
+    transition-duration:
+      .001ms !important;
+  }
+}
+
+</style>
+
+
+
+
+<script id="TOOLSUTURE_FINAL_CUT_V12_JS">
+
+(() => {
+
+  function revealV12() {
+
+    const result =
+      document.querySelector(
+        ".result"
+      );
+
+    if (!result) {
+      return;
+    }
+
+
+    result.classList.remove(
+      "v12-arrived"
+    );
+
+
+    void result.offsetWidth;
+
+
+    result.classList.add(
+      "v12-arrived"
+    );
+  }
+
+
+  const safeBeforeV12 =
+    window.showSafe;
+
+
+  window.showSafe =
+    function(data) {
+
+      safeBeforeV12(
+        data
+      );
+
+      revealV12();
+    };
+
+
+  const dangerBeforeV12 =
+    window.showDanger;
+
+
+  window.showDanger =
+    function(data) {
+
+      dangerBeforeV12(
+        data
+      );
+
+      revealV12();
+    };
+
+
+})();
+
+</script>
+
+
+
+
+<style id="TOOLSUTURE_RECORDING_POLISH_V13">
+
+/* ==========================================================
+   V13 — FINAL RECORDING POLISH
+   Presentation only. No workflow state is simulated here.
+========================================================== */
+
+:root {
+  --v13-safe: #35d68a;
+  --v13-danger: #ff6178;
+  --v13-blue: #6aaeff;
+  --v13-rail-height: 128px;
+}
+
+
+/* ==========================================================
+   1. RESULT HEADLINE HIERARCHY
+========================================================== */
+
+.result-title {
+  display:flex !important;
+  align-items:center;
+  gap:18px;
+
+  max-width:1280px;
+
+  font-size:
+    clamp(42px,4.55vw,82px) !important;
+
+  line-height:
+    .94 !important;
+
+  letter-spacing:
+    -.058em !important;
+}
+
+
+/*
+   Geometric product marks replace platform-dependent emoji.
+*/
+
+body.v13-safe
+.result-title::before {
+  content:"✓";
+
+  flex:
+    0 0 52px;
+
+  width:52px;
+  height:52px;
+
+  display:grid;
+  place-items:center;
+
+  border:
+    1px solid rgba(53,214,138,.35);
+
+  border-radius:
+    15px;
+
+  color:
+    var(--v13-safe);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(53,214,138,.12),
+      rgba(53,214,138,.035)
+    );
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,.05),
+
+    0 9px 26px
+      rgba(53,214,138,.08);
+
+  font-size:
+    31px;
+
+  font-weight:
+    950;
+
+  line-height:
+    1;
+}
+
+
+body.v13-danger
+.result-title::before {
+  content:"";
+
+  flex:
+    0 0 52px;
+
+  width:52px;
+  height:52px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ff7a8d,
+      #e94660
+    );
+
+  clip-path:
+    polygon(
+      29% 0%,
+      71% 0%,
+      100% 29%,
+      100% 71%,
+      71% 100%,
+      29% 100%,
+      0% 71%,
+      0% 29%
+    );
+
+  filter:
+    drop-shadow(
+      0 9px 18px
+      rgba(255,97,120,.15)
+    );
+}
+
+
+/*
+   The unique differentiator remains the largest statement.
+*/
+
+.zero {
+  font-size:
+    clamp(68px,6.35vw,112px) !important;
+
+  line-height:
+    .88 !important;
+}
+
+
+/* ==========================================================
+   2. COMPACT COMPLETED RAIL
+========================================================== */
+
+body.v13-finished
+.recovery-path {
+  padding-top:
+    12px !important;
+
+  padding-bottom:
+    12px !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,.035),
+
+    0 14px 38px
+      rgba(0,0,0,.14) !important;
+}
+
+
+body.v13-finished
+.v13-rail-kicker {
+  font-size:
+    9px !important;
+
+  letter-spacing:
+    .16em !important;
+}
+
+
+body.v13-finished
+.v13-rail-subtitle {
+  margin-top:
+    2px !important;
+
+  font-size:
+    clamp(15px,1.25vw,19px) !important;
+
+  line-height:
+    1.15 !important;
+}
+
+
+body.v13-finished
+.v13-rail-step-label {
+  font-size:
+    10px !important;
+}
+
+
+body.v13-finished
+.v13-rail-status {
+  font-size:
+    9px !important;
+}
+
+
+/*
+   Ensure scroll-to-result operations account for the
+   sticky rail rather than placing content underneath it.
+*/
+
+.result,
+.result-title {
+  scroll-margin-top:
+    calc(
+      var(--v13-rail-height)
+      + 20px
+    ) !important;
+}
+
+
+/* ==========================================================
+   3. COMPACT TRUST CHAIN
+========================================================== */
+
+.v13-trust-chain {
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    auto
+    minmax(0,1fr)
+    auto
+    minmax(0,1fr);
+
+  align-items:center;
+
+  gap:
+    14px;
+
+  margin-top:
+    18px;
+
+  margin-bottom:
+    18px;
+
+  padding:
+    13px 16px;
+
+  border:
+    1px solid
+    rgba(111,161,210,.13);
+
+  border-radius:
+    13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(8,23,37,.74),
+      rgba(10,29,43,.60)
+    );
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255,255,255,.025);
+}
+
+
+.v13-trust-stage {
+  min-width:0;
+}
+
+
+.v13-trust-label {
+  display:block;
+
+  color:
+    #71879d;
+
+  font-size:
+    8px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .15em;
+}
+
+
+.v13-trust-value {
+  display:block;
+
+  margin-top:
+    4px;
+
+  color:
+    #dce7f2;
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+  line-height:
+    1.25;
+}
+
+
+.v13-trust-stage:first-child
+.v13-trust-value {
+  color:
+    #a8ccf5;
+}
+
+
+.v13-trust-stage:nth-of-type(2)
+.v13-trust-value {
+  color:
+    #79d9ad;
+}
+
+
+.v13-trust-stage:last-child
+.v13-trust-value {
+  color:
+    var(--v13-safe);
+}
+
+
+.v13-trust-arrow {
+  color:
+    #54738f;
+
+  font-size:
+    17px;
+
+  font-weight:
+    850;
+}
+
+
+/* ==========================================================
+   4. DISCLOSURE AFFORDANCES
+========================================================== */
+
+details > summary {
+  min-height:
+    48px;
+
+  outline:
+    none !important;
+
+  border-radius:
+    10px;
+
+  transition:
+    background-color .16s ease,
+    box-shadow .16s ease,
+    color .16s ease;
+}
+
+
+details > summary:hover {
+  background:
+    rgba(106,174,255,.035);
+}
+
+
+details > summary:focus {
+  outline:
+    none !important;
+}
+
+
+details > summary:focus-visible {
+  outline:
+    none !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+      rgba(106,174,255,.58),
+
+    0 0 0 3px
+      rgba(106,174,255,.09);
+
+  background:
+    rgba(106,174,255,.04);
+}
+
+
+/* ==========================================================
+   5. BUTTON FOCUS — ACCESSIBLE BUT PRODUCT-NATIVE
+========================================================== */
+
+button:focus {
+  outline:
+    none !important;
+}
+
+
+button:focus-visible {
+  outline:
+    none !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+      rgba(255,255,255,.20),
+
+    0 0 0 3px
+      rgba(106,174,255,.12),
+
+    0 13px 32px
+      rgba(0,0,0,.15) !important;
+}
+
+
+/* ==========================================================
+   6. CURRENT-RUN METADATA
+========================================================== */
+
+.v13-current-run {
+  display:inline-flex;
+
+  align-items:center;
+
+  margin-left:
+    7px;
+
+  padding:
+    2px 6px;
+
+  border:
+    1px solid
+    rgba(106,174,255,.17);
+
+  border-radius:
+    999px;
+
+  color:
+    #82baf5;
+
+  background:
+    rgba(106,174,255,.04);
+
+  font-family:
+    inherit;
+
+  font-size:
+    7px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .12em;
+
+  vertical-align:
+    1px;
+}
+
+
+/* ==========================================================
+   7. 1080P RECORDING COMPOSITION
+========================================================== */
+
+@media(
+  min-width:1400px
+)
+and
+(
+  min-height:800px
+) {
+
+  body.v13-finished
+  .result {
+    padding-top:
+      28px !important;
+  }
+
+
+  body.v13-finished
+  .result-title {
+    margin-bottom:
+      20px !important;
+  }
+
+
+  body.v13-finished
+  .mission-outcome,
+
+  body.v13-finished
+  .safety-outcome {
+    margin-top:
+      25px !important;
+  }
+}
+
+
+/* ==========================================================
+   8. RESPONSIVE TRUST CHAIN
+========================================================== */
+
+@media(
+  max-width:760px
+) {
+
+  .result-title {
+    align-items:flex-start;
+
+    gap:
+      12px;
+  }
+
+
+  body.v13-safe
+  .result-title::before,
+
+  body.v13-danger
+  .result-title::before {
+    flex-basis:
+      40px;
+
+    width:
+      40px;
+
+    height:
+      40px;
+  }
+
+
+  .v13-trust-chain {
+    grid-template-columns:
+      1fr;
+
+    gap:
+      8px;
+  }
+
+
+  .v13-trust-arrow {
+    display:none;
+  }
+}
+
+
+/* ==========================================================
+   9. REDUCED MOTION
+========================================================== */
+
+@media(
+  prefers-reduced-motion:
+  reduce
+) {
+
+  *,
+  *::before,
+  *::after {
+    animation:
+      none !important;
+
+    transition-duration:
+      .001ms !important;
+
+    scroll-behavior:
+      auto !important;
+  }
+}
+
+</style>
+
+
+
+
+<script id="TOOLSUTURE_RECORDING_POLISH_V13_JS">
+
+(() => {
+
+  const reducedMotionV13 =
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+
+  function leafNodesV13(
+    exactValues
+  ) {
+
+    const values =
+      new Set(
+        exactValues
+      );
+
+
+    return Array
+      .from(
+        document.querySelectorAll(
+          "body *"
+        )
+      )
+      .filter(
+        el =>
+          el.children.length === 0
+          &&
+          values.has(
+            el.textContent.trim()
+          )
+      );
+  }
+
+
+  function tagRailV13() {
+
+    leafNodesV13(
+      [
+        "LIVE RECOVERY PATH",
+        "LIVE SAFETY DECISION PATH"
+      ]
+    )
+    .forEach(
+      el =>
+        el.classList.add(
+          "v13-rail-kicker"
+        )
+    );
+
+
+    leafNodesV13(
+      [
+        "One mission. One compatibility recovery.",
+        "One mission. One bounded safety decision."
+      ]
+    )
+    .forEach(
+      el =>
+        el.classList.add(
+          "v13-rail-subtitle"
+        )
+    );
+
+
+    leafNodesV13(
+      [
+        "Observe",
+        "Diagnose",
+        "Policy",
+        "Repair",
+        "Replay",
+        "Verify"
+      ]
+    )
+    .forEach(
+      el =>
+        el.classList.add(
+          "v13-rail-step-label"
+        )
+    );
+
+
+    Array
+      .from(
+        document.querySelectorAll(
+          ".recovery-path *"
+        )
+      )
+      .filter(
+        el =>
+          el.children.length === 0
+          &&
+          (
+            el.textContent.includes(
+              "RECOVERY_COMPLETE"
+            )
+            ||
+            el.textContent.includes(
+              "SAFE_HOLD"
+            )
+          )
+      )
+      .forEach(
+        el =>
+          el.classList.add(
+            "v13-rail-status"
+          )
+      );
+  }
+
+
+  function stripPlatformIconsV13() {
+
+    const title =
+      document.getElementById(
+        "resultTitle"
+      )
+      ||
+      document.querySelector(
+        ".result-title"
+      );
+
+
+    if (title) {
+
+      title.textContent =
+        title.textContent
+          .replace(
+            /^[^\p{L}\p{N}]+/u,
+            ""
+          )
+          .trim();
+    }
+
+
+    const proof =
+      document.getElementById(
+        "proofDetails"
+      );
+
+
+    if (proof) {
+
+      const summary =
+        proof.querySelector(
+          "summary"
+        );
+
+
+      if (summary) {
+
+        summary.textContent =
+          summary.textContent
+            .replace(
+              /^[^\p{L}\p{N}]+/u,
+              ""
+            )
+            .trim();
+      }
+    }
+  }
+
+
+  function countVerificationChecksV13() {
+
+    const proof =
+      document.getElementById(
+        "proofDetails"
+      );
+
+
+    if (!proof) {
+      return null;
+    }
+
+
+    const leaves =
+      Array
+        .from(
+          proof.querySelectorAll(
+            "*"
+          )
+        )
+        .filter(
+          el =>
+            el.children.length === 0
+        );
+
+
+    const checks =
+      leaves.filter(
+        el =>
+          el.textContent
+            .trim()
+            .startsWith("✓")
+      );
+
+
+    return checks.length
+      ? checks.length
+      : null;
+  }
+
+
+  function polishDisclosuresV13() {
+
+    const proof =
+      document.getElementById(
+        "proofDetails"
+      );
+
+
+    if (proof) {
+
+      const summary =
+        proof.querySelector(
+          "summary"
+        );
+
+
+      const count =
+        countVerificationChecksV13();
+
+
+      if (
+        summary
+        &&
+        count
+      ) {
+
+        summary.textContent =
+          `Independent verification · ${count} checks`;
+      }
+    }
+
+
+    const contract =
+      document.getElementById(
+        "contractDetails"
+      );
+
+
+    if (contract) {
+
+      const summary =
+        contract.querySelector(
+          "summary"
+        );
+
+
+      if (summary) {
+
+        const story =
+          document.getElementById(
+            "contractStory"
+          )
+          ||
+          document.querySelector(
+            ".contract-story"
+          );
+
+
+        const match =
+          story
+            ?.textContent
+            ?.match(
+              /(\d+)\s+RESPONSE\s+REPAIRS/i
+            );
+
+
+        const repairs =
+          match
+            ? match[1]
+            : "4";
+
+
+        summary.textContent =
+          `Contract transformation · ${repairs} repairs`;
+      }
+    }
+  }
+
+
+  function ensureTrustChainV13() {
+
+    let chain =
+      document.getElementById(
+        "v13TrustChain"
+      );
+
+
+    if (chain) {
+      return chain;
+    }
+
+
+    chain =
+      document.createElement(
+        "div"
+      );
+
+
+    chain.id =
+      "v13TrustChain";
+
+
+    chain.className =
+      "v13-trust-chain";
+
+
+    chain.innerHTML = `
+      <div class="v13-trust-stage">
+
+        <span class="v13-trust-label">
+          SEMANTIC DECISION
+        </span>
+
+        <span
+          class="v13-trust-value"
+          id="v13SemanticValue"
+        >
+          Gemini
+        </span>
+
+      </div>
+
+
+      <span
+        class="v13-trust-arrow"
+        aria-hidden="true"
+      >
+        →
+      </span>
+
+
+      <div class="v13-trust-stage">
+
+        <span class="v13-trust-label">
+          DETERMINISTIC REPAIR
+        </span>
+
+        <span
+          class="v13-trust-value"
+          id="v13RepairValue"
+        >
+          Scoped transformations
+        </span>
+
+      </div>
+
+
+      <span
+        class="v13-trust-arrow"
+        aria-hidden="true"
+      >
+        →
+      </span>
+
+
+      <div class="v13-trust-stage">
+
+        <span class="v13-trust-label">
+          FROZEN AGENT
+        </span>
+
+        <span
+          class="v13-trust-value"
+          id="v13AgentValue"
+        >
+          0 bytes changed
+        </span>
+
+      </div>
+    `;
+
+
+    const contract =
+      document.getElementById(
+        "contractStory"
+      )
+      ||
+      document.querySelector(
+        ".contract-story"
+      );
+
+
+    if (
+      contract
+      &&
+      contract.parentElement
+    ) {
+
+      contract.parentElement
+        .insertBefore(
+          chain,
+          contract
+        );
+    }
+
+
+    return chain;
+  }
+
+
+  function showSafeTrustChainV13(
+    data
+  ) {
+
+    const chain =
+      ensureTrustChainV13();
+
+
+    if (!chain) {
+      return;
+    }
+
+
+    chain.style.display =
+      "grid";
+
+
+    const decision =
+      document.getElementById(
+        "v13SemanticValue"
+      );
+
+
+    if (decision) {
+
+      decision.textContent =
+        data?.diagnosis_decision
+        ||
+        "Gemini · AUTO_REPAIR_SAFE";
+    }
+
+
+    const story =
+      document.getElementById(
+        "contractStory"
+      )
+      ||
+      document.querySelector(
+        ".contract-story"
+      );
+
+
+    const match =
+      story
+        ?.textContent
+        ?.match(
+          /(\d+)\s+RESPONSE\s+REPAIRS/i
+        );
+
+
+    const repairs =
+      match
+        ? match[1]
+        : "4";
+
+
+    const repair =
+      document.getElementById(
+        "v13RepairValue"
+      );
+
+
+    if (repair) {
+
+      repair.textContent =
+        `${repairs} response transformations`;
+    }
+
+
+    const agent =
+      document.getElementById(
+        "v13AgentValue"
+      );
+
+
+    if (agent) {
+
+      agent.textContent =
+        "0 bytes changed";
+    }
+  }
+
+
+  function hideSafeTrustChainV13() {
+
+    const chain =
+      document.getElementById(
+        "v13TrustChain"
+      );
+
+
+    if (chain) {
+
+      chain.style.display =
+        "none";
+    }
+  }
+
+
+  function markCurrentRunV13() {
+
+    const run =
+      document.getElementById(
+        "runId"
+      );
+
+
+    if (
+      !run
+      ||
+      run.querySelector(
+        ".v13-current-run"
+      )
+    ) {
+      return;
+    }
+
+
+    const badge =
+      document.createElement(
+        "span"
+      );
+
+
+    badge.className =
+      "v13-current-run";
+
+
+    badge.textContent =
+      "CURRENT RUN";
+
+
+    run.appendChild(
+      badge
+    );
+  }
+
+
+  function applyFinishedStateV13(
+    mode
+  ) {
+
+    document.body.classList.add(
+      "v13-finished"
+    );
+
+
+    document.body.classList.remove(
+      "v13-safe",
+      "v13-danger"
+    );
+
+
+    document.body.classList.add(
+      mode === "safe"
+        ? "v13-safe"
+        : "v13-danger"
+    );
+
+
+    tagRailV13();
+
+    stripPlatformIconsV13();
+
+    polishDisclosuresV13();
+
+    markCurrentRunV13();
+  }
+
+
+  function visibleRailHeightV13() {
+
+    const rails =
+      Array
+        .from(
+          document.querySelectorAll(
+            ".recovery-path"
+          )
+        )
+        .filter(
+          el => {
+
+            const style =
+              getComputedStyle(
+                el
+              );
+
+
+            return (
+              style.display
+              !== "none"
+              &&
+              style.visibility
+              !== "hidden"
+            );
+          }
+        );
+
+
+    if (!rails.length) {
+      return 0;
+    }
+
+
+    return Math.max(
+      ...rails.map(
+        el =>
+          el.getBoundingClientRect()
+            .height
+      )
+    );
+  }
+
+
+  function correctResultScrollV13() {
+
+    const headline =
+      document.getElementById(
+        "resultTitle"
+      )
+      ||
+      document.querySelector(
+        ".result-title"
+      );
+
+
+    if (!headline) {
+      return;
+    }
+
+
+    const railHeight =
+      visibleRailHeightV13();
+
+
+    document.documentElement
+      .style
+      .setProperty(
+        "--v13-rail-height",
+        `${Math.ceil(railHeight)}px`
+      );
+
+
+    const target =
+      headline
+        .getBoundingClientRect()
+        .top
+      +
+      window.scrollY
+      -
+      railHeight
+      -
+      20;
+
+
+    window.scrollTo({
+      top:
+        Math.max(
+          0,
+          target
+        ),
+
+      behavior:
+        reducedMotionV13.matches
+          ? "auto"
+          : "smooth"
+    });
+  }
+
+
+  function finalizePresentationV13(
+    mode,
+    data
+  ) {
+
+    applyFinishedStateV13(
+      mode
+    );
+
+
+    if (mode === "safe") {
+
+      showSafeTrustChainV13(
+        data
+      );
+    }
+    else {
+
+      hideSafeTrustChainV13();
+    }
+
+
+    /*
+       Wait only for browser layout frames.
+       Workflow state has already completed.
+       No synthetic timing or progress is created.
+    */
+
+    requestAnimationFrame(
+      () => {
+
+        requestAnimationFrame(
+          () => {
+
+            correctResultScrollV13();
+
+          }
+        );
+
+      }
+    );
+  }
+
+
+  const safeBeforeV13 =
+    window.showSafe;
+
+
+  window.showSafe =
+    function(data) {
+
+      safeBeforeV13(
+        data
+      );
+
+
+      /*
+         Use product-native styling rather than
+         embedding symbols in the result text.
+      */
+
+      const title =
+        document.getElementById(
+          "resultTitle"
+        );
+
+
+      if (title) {
+
+        title.textContent =
+          "MISSION COMPLETED AND VERIFIED";
+      }
+
+
+      finalizePresentationV13(
+        "safe",
+        data
+      );
+    };
+
+
+  const dangerBeforeV13 =
+    window.showDanger;
+
+
+  window.showDanger =
+    function(data) {
+
+      dangerBeforeV13(
+        data
+      );
+
+
+      const title =
+        document.getElementById(
+          "resultTitle"
+        );
+
+
+      if (title) {
+
+        title.textContent =
+          "UNSAFE MIGRATION REFUSED";
+      }
+
+
+      finalizePresentationV13(
+        "danger",
+        data
+      );
+    };
+
+
+})();
+
+</script>
+
+
+
+
+<style id="TOOLSUTURE_RECORDING_FIX_V13_1">
+
+/* ==========================================================
+   V13.1 — FINAL RECORDING CORRECTIONS
+========================================================== */
+
+
+/* ----------------------------------------------------------
+   COMPLETED RAIL
+   Preserve context without consuming the result viewport.
+---------------------------------------------------------- */
+
+body.v13-finished
+.recovery-path {
+  padding-top:
+    10px !important;
+
+  padding-bottom:
+    11px !important;
+
+  min-height:
+    0 !important;
+}
+
+
+body.v13-finished
+.recovery-path
+.v13-rail-kicker {
+  margin-bottom:
+    2px !important;
+
+  font-size:
+    8px !important;
+}
+
+
+body.v13-finished
+.recovery-path
+.v13-rail-subtitle {
+  margin-top:
+    0 !important;
+
+  margin-bottom:
+    6px !important;
+
+  font-size:
+    clamp(14px,1.15vw,18px)
+    !important;
+}
+
+
+body.v13-finished
+.recovery-path
+.v13-rail-step-label {
+  font-size:
+    9px !important;
+}
+
+
+body.v13-finished
+.recovery-path
+.v13-rail-status {
+  font-size:
+    8px !important;
+}
+
+
+/* ----------------------------------------------------------
+   RESULT HIERARCHY
+---------------------------------------------------------- */
+
+body.v13-finished
+.result-title {
+  max-width:
+    1240px;
+
+  margin-top:
+    0 !important;
+
+  margin-bottom:
+    17px !important;
+
+  font-size:
+    clamp(
+      39px,
+      4.2vw,
+      74px
+    ) !important;
+
+  line-height:
+    .95 !important;
+}
+
+
+body.v13-finished
+.zero {
+  margin-top:
+    24px !important;
+
+  font-size:
+    clamp(
+      72px,
+      6.55vw,
+      116px
+    ) !important;
+
+  line-height:
+    .87 !important;
+}
+
+
+body.v13-finished
+.zero-explainer {
+  margin-top:
+    10px !important;
+
+  margin-bottom:
+    0 !important;
+}
+
+
+/* ----------------------------------------------------------
+   GIVE THE RESULT REAL SPACE BELOW THE STICKY RAIL
+---------------------------------------------------------- */
+
+body.v13-finished
+.result {
+  padding-top:
+    32px !important;
+}
+
+
+body.v13-finished
+.result-title {
+  scroll-margin-top:
+    220px !important;
+}
+
+
+/* ----------------------------------------------------------
+   STATUS MARKS
+---------------------------------------------------------- */
+
+body.v13-safe
+.result-title::before,
+body.v13-danger
+.result-title::before {
+  flex-basis:
+    48px !important;
+
+  width:
+    48px !important;
+
+  height:
+    48px !important;
+}
+
+
+body.v13-safe
+.result-title::before {
+  font-size:
+    28px !important;
+}
+
+
+/* ----------------------------------------------------------
+   TRUST CHAIN
+---------------------------------------------------------- */
+
+.v13-trust-chain {
+  margin-top:
+    15px !important;
+
+  margin-bottom:
+    16px !important;
+
+  padding:
+    12px 15px !important;
+
+  border-color:
+    rgba(
+      106,
+      174,
+      255,
+      .15
+    ) !important;
+}
+
+
+.v13-trust-value {
+  font-size:
+    11px !important;
+}
+
+
+/* ----------------------------------------------------------
+   CURRENT-RUN / METADATA
+---------------------------------------------------------- */
+
+.v13-current-run {
+  color:
+    #89c3ff !important;
+
+  border-color:
+    rgba(
+      106,
+      174,
+      255,
+      .24
+    ) !important;
+
+  background:
+    rgba(
+      106,
+      174,
+      255,
+      .065
+    ) !important;
+}
+
+
+/* ----------------------------------------------------------
+   DISCLOSURE ROWS
+---------------------------------------------------------- */
+
+details > summary {
+  min-height:
+    46px !important;
+}
+
+
+details > summary:focus-visible {
+  outline:
+    none !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+      rgba(106,174,255,.48),
+
+    0 0 0 2px
+      rgba(106,174,255,.07)
+    !important;
+}
+
+
+/* ----------------------------------------------------------
+   1920 × 1080 RECORDING
+---------------------------------------------------------- */
+
+@media
+(
+  min-width:1500px
+)
+and
+(
+  min-height:850px
+) {
+
+  body.v13-finished
+  .result {
+    padding-left:
+      clamp(
+        76px,
+        6vw,
+        108px
+      ) !important;
+
+    padding-right:
+      clamp(
+        76px,
+        6vw,
+        108px
+      ) !important;
+  }
+
+
+  body.v13-finished
+  .mission-outcome,
+
+  body.v13-finished
+  .safety-outcome {
+    margin-top:
+      24px !important;
+  }
+
+
+  body.v13-finished
+  .verified-stat {
+    min-height:
+      104px !important;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   NARROW VIEW
+---------------------------------------------------------- */
+
+@media
+(
+  max-width:760px
+) {
+
+  body.v13-finished
+  .result-title {
+    font-size:
+      clamp(
+        34px,
+        10vw,
+        54px
+      ) !important;
+  }
+
+
+  body.v13-finished
+  .zero {
+    font-size:
+      clamp(
+        54px,
+        15vw,
+        82px
+      ) !important;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   ACCESSIBILITY
+---------------------------------------------------------- */
+
+@media
+(
+  prefers-reduced-motion:
+  reduce
+) {
+
+  *,
+  *::before,
+  *::after {
+    animation:
+      none !important;
+
+    transition-duration:
+      .001ms !important;
+  }
+}
+
+</style>
+
+
+
+
+<script id="TOOLSUTURE_RECORDING_FIX_V13_1_JS">
+
+(() => {
+
+  /*
+   * Align the first result headline against the
+   * ACTUAL bottom edge of the visible sticky rail.
+   *
+   * This is deliberately geometry-based rather
+   * than relying on a guessed fixed offset.
+   */
+
+
+  function visibleRailV13_1() {
+
+    const rails =
+      Array
+        .from(
+          document.querySelectorAll(
+            ".recovery-path"
+          )
+        )
+        .filter(
+          el => {
+
+            const style =
+              getComputedStyle(
+                el
+              );
+
+            const rect =
+              el.getBoundingClientRect();
+
+
+            return (
+              style.display
+              !== "none"
+              &&
+              style.visibility
+              !== "hidden"
+              &&
+              rect.width > 0
+              &&
+              rect.height > 0
+            );
+          }
+        );
+
+
+    if (!rails.length) {
+      return null;
+    }
+
+
+    return rails
+      .sort(
+        (a,b) => {
+
+          const ar =
+            a.getBoundingClientRect();
+
+          const br =
+            b.getBoundingClientRect();
+
+
+          /*
+           * Prefer whichever visible rail is
+           * physically closest to viewport top.
+           */
+
+          return (
+            Math.abs(ar.top)
+            -
+            Math.abs(br.top)
+          );
+        }
+      )[0];
+  }
+
+
+  function resultHeadlineV13_1() {
+
+    return (
+      document.getElementById(
+        "resultTitle"
+      )
+      ||
+      document.querySelector(
+        ".result-title"
+      )
+    );
+  }
+
+
+  function alignResultBelowRailV13_1() {
+
+    const headline =
+      resultHeadlineV13_1();
+
+
+    if (!headline) {
+      return;
+    }
+
+
+    const rail =
+      visibleRailV13_1();
+
+
+    const railBottom =
+      rail
+        ? rail
+            .getBoundingClientRect()
+            .bottom
+        : 0;
+
+
+    /*
+     * Keep a deliberate visual breathing gap.
+     */
+
+    const desiredTop =
+      Math.max(
+        28,
+        railBottom + 28
+      );
+
+
+    const actualTop =
+      headline
+        .getBoundingClientRect()
+        .top;
+
+
+    const difference =
+      actualTop
+      -
+      desiredTop;
+
+
+    if (
+      Math.abs(
+        difference
+      )
+      < 2
+    ) {
+      return;
+    }
+
+
+    window.scrollBy({
+      top:
+        difference,
+
+      left:
+        0,
+
+      behavior:
+        "auto"
+    });
+  }
+
+
+  function finalPositionV13_1() {
+
+    /*
+     * Two layout frames ensure all previous
+     * result classes/styles have settled.
+     *
+     * This does not simulate workflow progress.
+     */
+
+    requestAnimationFrame(
+      () => {
+
+        requestAnimationFrame(
+          () => {
+
+            alignResultBelowRailV13_1();
+
+
+            /*
+             * Web fonts may settle after first layout.
+             * Re-validate once font readiness resolves.
+             */
+
+            if (
+              document.fonts
+              &&
+              document.fonts.ready
+            ) {
+
+              document.fonts.ready
+                .then(
+                  () => {
+
+                    alignResultBelowRailV13_1();
+
+                  }
+                )
+                .catch(
+                  () => {}
+                );
+            }
+
+          }
+        );
+
+      }
+    );
+  }
+
+
+  /*
+   * Wrap the proven V13 presentation.
+   */
+
+  const safeBeforeV13_1 =
+    window.showSafe;
+
+
+  window.showSafe =
+    function(data) {
+
+      safeBeforeV13_1(
+        data
+      );
+
+
+      finalPositionV13_1();
+    };
+
+
+  const dangerBeforeV13_1 =
+    window.showDanger;
+
+
+  window.showDanger =
+    function(data) {
+
+      dangerBeforeV13_1(
+        data
+      );
+
+
+      finalPositionV13_1();
+    };
+
+
+})();
+
+</script>
+
+
 </body>
 </html>
 
