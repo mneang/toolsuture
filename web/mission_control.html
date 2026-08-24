@@ -8538,6 +8538,725 @@ and
 </script>
 
 
+
+
+<style id="TOOLSUTURE_VIEWPORT_AUTHORITY_V13_2">
+
+/* ==========================================================
+   V13.2 — FINAL VIEWPORT AUTHORITY
+   Presentation-only correction.
+========================================================== */
+
+
+/* ----------------------------------------------------------
+   COMPLETED RAIL
+   Keep context, reclaim vertical space.
+---------------------------------------------------------- */
+
+body.v13-finished
+.recovery-path {
+  padding-top:
+    8px !important;
+
+  padding-bottom:
+    8px !important;
+}
+
+
+body.v13-finished
+.v13-rail-kicker {
+  font-size:
+    7.5px !important;
+
+  line-height:
+    1 !important;
+
+  margin-bottom:
+    1px !important;
+}
+
+
+body.v13-finished
+.v13-rail-subtitle {
+  margin-top:
+    1px !important;
+
+  margin-bottom:
+    4px !important;
+
+  font-size:
+    clamp(
+      14px,
+      1.08vw,
+      17px
+    ) !important;
+
+  line-height:
+    1.08 !important;
+}
+
+
+body.v13-finished
+.v13-rail-step-label {
+  font-size:
+    8.5px !important;
+}
+
+
+body.v13-finished
+.v13-rail-status {
+  font-size:
+    8px !important;
+}
+
+
+/* ----------------------------------------------------------
+   RESULT BREATHING ROOM
+---------------------------------------------------------- */
+
+body.v13-finished
+.result {
+  padding-top:
+    40px !important;
+}
+
+
+body.v13-finished
+.result-title {
+  margin-top:
+    0 !important;
+
+  margin-bottom:
+    18px !important;
+}
+
+
+/*
+   The unique proof statement remains the loudest
+   piece of typography.
+*/
+
+body.v13-finished
+.zero {
+  margin-top:
+    23px !important;
+}
+
+
+/* ----------------------------------------------------------
+   DANGEROUS STATUS MARK
+   Native geometry: no emoji / external icon.
+---------------------------------------------------------- */
+
+body.v13-danger
+.result-title {
+  position:
+    relative;
+}
+
+
+body.v13-danger
+.result-title::after {
+  content:"";
+
+  position:absolute;
+
+  left:
+    13px;
+
+  top:
+    22px;
+
+  z-index:
+    3;
+
+  width:
+    22px;
+
+  height:
+    4px;
+
+  border-radius:
+    999px;
+
+  pointer-events:
+    none;
+
+  background:
+    rgba(
+      255,
+      250,
+      250,
+      .95
+    );
+
+  box-shadow:
+    0 1px 8px
+    rgba(
+      0,
+      0,
+      0,
+      .14
+    );
+}
+
+
+/* ----------------------------------------------------------
+   CURRENT RUN
+---------------------------------------------------------- */
+
+.v13-current-run {
+  box-shadow:
+    inset 0 1px 0
+    rgba(255,255,255,.035);
+}
+
+
+/* ----------------------------------------------------------
+   DISCLOSURE ROWS
+---------------------------------------------------------- */
+
+details > summary {
+  transition:
+    background-color .14s ease,
+    box-shadow .14s ease,
+    color .14s ease;
+}
+
+
+/* ----------------------------------------------------------
+   1080P RECORDING
+---------------------------------------------------------- */
+
+@media
+(
+  min-width:1500px
+)
+and
+(
+  min-height:850px
+) {
+
+  body.v13-finished
+  .result {
+    padding-top:
+      42px !important;
+  }
+
+
+  body.v13-finished
+  .result-title {
+    margin-bottom:
+      19px !important;
+  }
+
+
+  body.v13-finished
+  .mission-outcome,
+
+  body.v13-finished
+  .safety-outcome {
+    margin-top:
+      23px !important;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   MOBILE STATUS MARK
+---------------------------------------------------------- */
+
+@media
+(
+  max-width:760px
+) {
+
+  body.v13-danger
+  .result-title::after {
+    left:
+      10px;
+
+    top:
+      18px;
+
+    width:
+      19px;
+
+    height:
+      3px;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   ACCESSIBILITY
+---------------------------------------------------------- */
+
+@media
+(
+  prefers-reduced-motion:
+  reduce
+) {
+
+  *,
+  *::before,
+  *::after {
+    animation:
+      none !important;
+
+    transition-duration:
+      .001ms !important;
+  }
+}
+
+</style>
+
+
+
+
+<script id="TOOLSUTURE_VIEWPORT_AUTHORITY_V13_2_JS">
+
+(() => {
+
+  /*
+   * V13 introduced a smooth result scroll.
+   * V13.1 introduced geometry correction.
+   *
+   * Both were individually reasonable,
+   * but together they can compete for the
+   * final viewport position.
+   *
+   * V13.2 establishes one final authority.
+   */
+
+
+  const nativeScrollToV13_2 =
+    window.scrollTo.bind(
+      window
+    );
+
+
+  let scrollOverrideActiveV13_2 =
+    false;
+
+
+  function installScrollAuthorityV13_2() {
+
+    if (
+      scrollOverrideActiveV13_2
+    ) {
+      return;
+    }
+
+
+    scrollOverrideActiveV13_2 =
+      true;
+
+
+    window.scrollTo =
+      function(
+        first,
+        second
+      ) {
+
+        /*
+         * Older presentation code may request
+         * smooth scrolling.
+         *
+         * During result settlement we convert
+         * that to an immediate movement so no
+         * animation can continue fighting the
+         * final geometry correction.
+         */
+
+        if (
+          first
+          &&
+          typeof first
+          === "object"
+        ) {
+
+          const options = {
+            ...first
+          };
+
+
+          if (
+            options.behavior
+            === "smooth"
+          ) {
+
+            options.behavior =
+              "auto";
+          }
+
+
+          return nativeScrollToV13_2(
+            options
+          );
+        }
+
+
+        return nativeScrollToV13_2(
+          first,
+          second
+        );
+      };
+  }
+
+
+  function restoreNativeScrollV13_2() {
+
+    window.scrollTo =
+      nativeScrollToV13_2;
+
+
+    scrollOverrideActiveV13_2 =
+      false;
+  }
+
+
+  function afterFramesV13_2(
+    remaining,
+    callback
+  ) {
+
+    if (
+      remaining <= 0
+    ) {
+
+      callback();
+
+      return;
+    }
+
+
+    requestAnimationFrame(
+      () => {
+
+        afterFramesV13_2(
+          remaining - 1,
+          callback
+        );
+
+      }
+    );
+  }
+
+
+  function resultHeadlineV13_2() {
+
+    return (
+      document.getElementById(
+        "resultTitle"
+      )
+      ||
+      document.querySelector(
+        ".result-title"
+      )
+    );
+  }
+
+
+  function visibleStickyRailV13_2() {
+
+    const rails =
+      Array
+        .from(
+          document.querySelectorAll(
+            ".recovery-path"
+          )
+        )
+        .filter(
+          el => {
+
+            const style =
+              getComputedStyle(
+                el
+              );
+
+
+            const rect =
+              el
+                .getBoundingClientRect();
+
+
+            if (
+              style.display
+              === "none"
+              ||
+              style.visibility
+              === "hidden"
+              ||
+              rect.width <= 0
+              ||
+              rect.height <= 0
+            ) {
+
+              return false;
+            }
+
+
+            /*
+             * The relevant rail is the one
+             * intersecting / nearest the top
+             * of the current viewport.
+             */
+
+            return (
+              rect.bottom > 0
+              &&
+              rect.top
+              <
+              window.innerHeight
+            );
+          }
+        );
+
+
+    if (
+      !rails.length
+    ) {
+      return null;
+    }
+
+
+    rails.sort(
+      (a,b) => {
+
+        const ar =
+          a.getBoundingClientRect();
+
+
+        const br =
+          b.getBoundingClientRect();
+
+
+        return (
+          Math.abs(
+            ar.top
+          )
+          -
+          Math.abs(
+            br.top
+          )
+        );
+      }
+    );
+
+
+    return rails[0];
+  }
+
+
+  function exactFinalAlignmentV13_2() {
+
+    const headline =
+      resultHeadlineV13_2();
+
+
+    if (
+      !headline
+    ) {
+      return;
+    }
+
+
+    const rail =
+      visibleStickyRailV13_2();
+
+
+    const railRect =
+      rail
+        ? rail
+            .getBoundingClientRect()
+        : null;
+
+
+    const railBottom =
+      railRect
+        ? Math.max(
+            0,
+            railRect.bottom
+          )
+        : 0;
+
+
+    /*
+     * Deliberate visual gap under the sticky
+     * workflow rail.
+     */
+
+    const desiredHeadlineTop =
+      Math.max(
+        30,
+        railBottom + 30
+      );
+
+
+    const headlineRect =
+      headline
+        .getBoundingClientRect();
+
+
+    const absoluteHeadlineTop =
+      window.scrollY
+      +
+      headlineRect.top;
+
+
+    const targetScrollY =
+      Math.max(
+        0,
+        absoluteHeadlineTop
+        -
+        desiredHeadlineTop
+      );
+
+
+    nativeScrollToV13_2({
+      top:
+        targetScrollY,
+
+      left:
+        window.scrollX,
+
+      behavior:
+        "auto"
+    });
+  }
+
+
+  function settleFinalViewportV13_2() {
+
+    /*
+     * By four browser frames, all older V13
+     * and V13.1 frame-scheduled positioning
+     * has executed.
+     *
+     * No fake workflow timing is involved.
+     */
+
+    afterFramesV13_2(
+      4,
+      () => {
+
+        restoreNativeScrollV13_2();
+
+
+        exactFinalAlignmentV13_2();
+
+
+        /*
+         * Verify again one layout frame later.
+         */
+
+        requestAnimationFrame(
+          () => {
+
+            exactFinalAlignmentV13_2();
+
+          }
+        );
+
+
+        /*
+         * Font settlement can change headline
+         * geometry slightly.
+         */
+
+        if (
+          document.fonts
+          &&
+          document.fonts.ready
+        ) {
+
+          document.fonts.ready
+            .then(
+              () => {
+
+                requestAnimationFrame(
+                  () => {
+
+                    exactFinalAlignmentV13_2();
+
+                  }
+                );
+
+              }
+            )
+            .catch(
+              () => {}
+            );
+        }
+
+      }
+    );
+  }
+
+
+  function runFinalPresentationV13_2(
+    previousRenderer,
+    data
+  ) {
+
+    installScrollAuthorityV13_2();
+
+
+    try {
+
+      previousRenderer(
+        data
+      );
+
+    }
+    catch (
+      error
+    ) {
+
+      restoreNativeScrollV13_2();
+
+      throw error;
+    }
+
+
+    settleFinalViewportV13_2();
+  }
+
+
+  const safeBeforeV13_2 =
+    window.showSafe;
+
+
+  window.showSafe =
+    function(data) {
+
+      runFinalPresentationV13_2(
+        safeBeforeV13_2,
+        data
+      );
+    };
+
+
+  const dangerBeforeV13_2 =
+    window.showDanger;
+
+
+  window.showDanger =
+    function(data) {
+
+      runFinalPresentationV13_2(
+        dangerBeforeV13_2,
+        data
+      );
+    };
+
+
+})();
+
+</script>
+
+
 </body>
 </html>
 
