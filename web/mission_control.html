@@ -2717,10 +2717,7 @@ function showSafe(data) {
     data.verification_checks || {}
   );
 
-  result.scrollIntoView({
-    behavior:"smooth",
-    block:"start"
-  });
+  // Terminal viewport positioning is handled centrally by V13.3.
 }
 
 
@@ -2857,10 +2854,7 @@ function showDanger(data) {
       data.passed === true
   });
 
-  result.scrollIntoView({
-    behavior:"smooth",
-    block:"start"
-  });
+  // Terminal viewport positioning is handled centrally by V13.3.
 }
 
 
@@ -7758,58 +7752,9 @@ and
 
   function correctResultScrollV13() {
 
-    const headline =
-      document.getElementById(
-        "resultTitle"
-      )
-      ||
-      document.querySelector(
-        ".result-title"
-      );
-
-
-    if (!headline) {
-      return;
-    }
-
-
-    const railHeight =
-      visibleRailHeightV13();
-
-
-    document.documentElement
-      .style
-      .setProperty(
-        "--v13-rail-height",
-        `${Math.ceil(railHeight)}px`
-      );
-
-
-    const target =
-      headline
-        .getBoundingClientRect()
-        .top
-      +
-      window.scrollY
-      -
-      railHeight
-      -
-      20;
-
-
-    window.scrollTo({
-      top:
-        Math.max(
-          0,
-          target
-        ),
-
-      behavior:
-        reducedMotionV13.matches
-          ? "auto"
-          : "smooth"
-    });
-  }
+    // Superseded by the single V13.3 terminal viewport controller.
+    return;
+}
 
 
   function finalizePresentationV13(
@@ -8449,52 +8394,9 @@ and
 
   function finalPositionV13_1() {
 
-    /*
-     * Two layout frames ensure all previous
-     * result classes/styles have settled.
-     *
-     * This does not simulate workflow progress.
-     */
-
-    requestAnimationFrame(
-      () => {
-
-        requestAnimationFrame(
-          () => {
-
-            alignResultBelowRailV13_1();
-
-
-            /*
-             * Web fonts may settle after first layout.
-             * Re-validate once font readiness resolves.
-             */
-
-            if (
-              document.fonts
-              &&
-              document.fonts.ready
-            ) {
-
-              document.fonts.ready
-                .then(
-                  () => {
-
-                    alignResultBelowRailV13_1();
-
-                  }
-                )
-                .catch(
-                  () => {}
-                );
-            }
-
-          }
-        );
-
-      }
-    );
-  }
+    // Superseded by the single V13.3 terminal viewport controller.
+    return;
+}
 
 
   /*
@@ -9200,28 +9102,13 @@ and
     data
   ) {
 
-    installScrollAuthorityV13_2();
+    previousRenderer(
+      data
+    );
 
-
-    try {
-
-      previousRenderer(
-        data
-      );
-
-    }
-    catch (
-      error
-    ) {
-
-      restoreNativeScrollV13_2();
-
-      throw error;
-    }
-
-
-    settleFinalViewportV13_2();
-  }
+    // Viewport positioning is handled once, after all
+    // presentation layers have finished, by V13.3.
+}
 
 
   const safeBeforeV13_2 =
@@ -9249,6 +9136,307 @@ and
         dangerBeforeV13_2,
         data
       );
+    };
+
+
+})();
+
+</script>
+
+
+
+
+<script id="TOOLSUTURE_SINGLE_VIEWPORT_V13_3">
+
+(() => {
+
+  /*
+   * One terminal-state viewport controller.
+   *
+   * Safe and dangerous outcomes use identical positioning.
+   * Older V13 / V13.1 / V13.2 scroll behavior is disabled.
+   */
+
+
+  function terminalResultV13_3() {
+
+    return (
+      document.getElementById(
+        "result"
+      )
+      ||
+      document.querySelector(
+        ".result"
+      )
+    );
+  }
+
+
+  function visibleTopRailV13_3() {
+
+    const rails =
+      Array
+        .from(
+          document.querySelectorAll(
+            ".recovery-path"
+          )
+        )
+        .filter(
+          el => {
+
+            const style =
+              getComputedStyle(
+                el
+              );
+
+            const rect =
+              el.getBoundingClientRect();
+
+
+            return (
+              style.display !== "none"
+              &&
+              style.visibility !== "hidden"
+              &&
+              rect.width > 0
+              &&
+              rect.height > 0
+              &&
+              rect.bottom > 0
+              &&
+              rect.top < window.innerHeight
+            );
+          }
+        );
+
+
+    if (!rails.length) {
+      return null;
+    }
+
+
+    rails.sort(
+      (a, b) => {
+
+        const ar =
+          a.getBoundingClientRect();
+
+        const br =
+          b.getBoundingClientRect();
+
+
+        /*
+         * Choose the visible rail closest to the
+         * top edge of the viewport.
+         */
+
+        return (
+          Math.abs(ar.top)
+          -
+          Math.abs(br.top)
+        );
+      }
+    );
+
+
+    return rails[0];
+  }
+
+
+  function alignTerminalResultV13_3() {
+
+    const result =
+      terminalResultV13_3();
+
+
+    if (!result) {
+      return;
+    }
+
+
+    const rail =
+      visibleTopRailV13_3();
+
+
+    const railBottom =
+      rail
+        ? Math.max(
+            0,
+            rail
+              .getBoundingClientRect()
+              .bottom
+          )
+        : 0;
+
+
+    /*
+     * Deliberate gap between sticky rail and
+     * beginning of terminal result.
+     */
+
+    const desiredResultTop =
+      Math.max(
+        20,
+        railBottom + 20
+      );
+
+
+    const resultRect =
+      result.getBoundingClientRect();
+
+
+    const absoluteResultTop =
+      window.scrollY
+      +
+      resultRect.top;
+
+
+    const targetScrollY =
+      Math.max(
+        0,
+        absoluteResultTop
+        -
+        desiredResultTop
+      );
+
+
+    /*
+     * Immediate positioning is intentional.
+     * The result itself already has entrance motion.
+     * A second scrolling animation only introduces race risk.
+     */
+
+    window.scrollTo({
+      top:
+        targetScrollY,
+
+      left:
+        window.scrollX,
+
+      behavior:
+        "auto"
+    });
+  }
+
+
+  function afterFramesV13_3(
+    count,
+    callback
+  ) {
+
+    if (count <= 0) {
+
+      callback();
+
+      return;
+    }
+
+
+    requestAnimationFrame(
+      () => {
+
+        afterFramesV13_3(
+          count - 1,
+          callback
+        );
+
+      }
+    );
+  }
+
+
+  function settleTerminalViewportV13_3() {
+
+    /*
+     * Allow all existing render wrappers, trust-chain
+     * insertion, disclosure relabeling and CSS classes
+     * to finish before measuring geometry.
+     */
+
+    afterFramesV13_3(
+      4,
+      () => {
+
+        alignTerminalResultV13_3();
+
+
+        /*
+         * Verify once more on the next layout frame.
+         */
+
+        requestAnimationFrame(
+          () => {
+
+            alignTerminalResultV13_3();
+
+          }
+        );
+
+
+        /*
+         * Webfont settlement can change large headline
+         * geometry. Re-check after fonts are ready.
+         */
+
+        if (
+          document.fonts
+          &&
+          document.fonts.ready
+        ) {
+
+          document.fonts.ready
+            .then(
+              () => {
+
+                requestAnimationFrame(
+                  () => {
+
+                    alignTerminalResultV13_3();
+
+                  }
+                );
+
+              }
+            )
+            .catch(
+              () => {}
+            );
+        }
+
+      }
+    );
+  }
+
+
+  const safeBeforeV13_3 =
+    window.showSafe;
+
+
+  window.showSafe =
+    function(data) {
+
+      safeBeforeV13_3(
+        data
+      );
+
+
+      settleTerminalViewportV13_3();
+    };
+
+
+  const dangerBeforeV13_3 =
+    window.showDanger;
+
+
+  window.showDanger =
+    function(data) {
+
+      dangerBeforeV13_3(
+        data
+      );
+
+
+      settleTerminalViewportV13_3();
     };
 
 
