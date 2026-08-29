@@ -7,6 +7,7 @@ import threading
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 
 
 ROOT = Path(__file__).resolve().parent
@@ -39,17 +40,12 @@ app = FastAPI(
 )
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def root():
-    return {
-        "service": "ToolSuture",
-        "mission": (
-            "Keep deployed agents working "
-            "when their tools change."
-        ),
-        "cloud": "Google Cloud Run",
-        "victim_agent_modified": False,
-    }
+    return RedirectResponse(
+        url="/mission-control",
+        status_code=307,
+    )
 
 
 @app.get("/healthz")
