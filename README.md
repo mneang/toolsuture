@@ -443,6 +443,68 @@ http://localhost:8080/mission-control
 
 ---
 
+## Reproducible testing
+
+ToolSuture includes two judge-facing scenarios that exercise both autonomous recovery and safe refusal.
+
+### Safe recovery
+
+1. Start Mission Control:
+
+```bash
+uvicorn cloud_app:app --host 0.0.0.0 --port 8080
+```
+
+2. Open:
+
+```text
+http://localhost:8080/mission-control
+```
+
+3. Click **Recover Safe Drift**.
+
+ToolSuture will execute the recovery workflow against the changed shipment-provider contract.
+
+Expected result:
+
+```text
+MISSION COMPLETED AND VERIFIED
+CAPABILITY_LOST → CAPABILITY_RESTORED
+0 BYTES CHANGED
+```
+
+A successful run should also expose a unique run/replay ID and replay-linked verification evidence.
+
+### Dangerous drift
+
+In the same Mission Control interface, click **Test Dangerous Drift**.
+
+This scenario changes a recoverable delete into irreversible permanent deletion.
+
+Expected result:
+
+```text
+REFUSE
+BLOCKED
+SAFE_HOLD
+0 EXECUTION ATTEMPTS
+```
+
+The blocked result is intentional. ToolSuture must stop before repair, replay, or any destructive provider call.
+
+### Verify frozen-agent integrity
+
+After testing, confirm that the deployed victim agents remain unchanged:
+
+```bash
+sha256sum -c shipment_victim.sha256
+sha256sum -c victim_agent.sha256
+```
+
+Both integrity checks should return `OK`.
+
+---
+
 ## Deploy to Cloud Run
 
 ```bash
